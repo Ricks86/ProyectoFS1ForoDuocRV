@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Config/WebClientConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/Post.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Repository/PostRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-AuthService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +33,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Kotlin Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -72,6 +77,9 @@
     <commands />
     <urls />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -93,8 +101,9 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.AuthApplication.executor": "Run",
+    "Spring Boot.PostApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/ms-AuthService",
+    "git-widget-placeholder": "feature/ms-PostService",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/W608-PCXX/Downloads/ProyectoForoRV",
@@ -103,12 +112,12 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "Runtime.Targets.Configurable",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.AuthApplication">
+  <component name="RunManager" selected="Spring Boot.PostApplication">
     <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
         <env name="WALLET" value="$PROJECT_DIR$/../../Wallet/Wallet_DataBaseForoRV" />
@@ -121,7 +130,7 @@
     </configuration>
     <configuration name="PostApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
-        <env name="WALLET" value="/larutadondetengaslawallet" />
+        <env name="WALLET" value="$PROJECT_DIR$/../../Wallet/Wallet_DataBaseForoRV" />
       </envs>
       <module name="Post" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Post.PostApplication" />
@@ -156,7 +165,7 @@
       <workItem from="1776370774155" duration="968000" />
       <workItem from="1776371757790" duration="115000" />
       <workItem from="1776388080170" duration="8803000" />
-      <workItem from="1776537406319" duration="3496000" />
+      <workItem from="1776537406319" duration="11120000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <option name="closed" value="true" />
@@ -174,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776396883603</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
+      <option name="closed" value="true" />
+      <created>1776542243842</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776542243842</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,7 +223,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="prueba" />
     <MESSAGE value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
+    <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
