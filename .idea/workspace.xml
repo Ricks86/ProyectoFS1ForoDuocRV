@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/Post.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Repository/PostRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Service/PostService.java" afterDir="false" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Post) Implementar estructura base,persistencia y comunicación con futuro ms-Users&#10;-Implementación de la Entidad Post con anotaciones JPA y validaciones JSR 3800&#10;-Creación de Post Repository para la gestión de persistencia con Oracle Cloud&#10;-Definición de PostRequestDTO y PostResponseDTO para la separación de capas y manejo seguro de los datos&#10;-Implementación de PostServices incluyendo:&#10;  - Lógica de creación de post con mapeo manual&#10;  - Método para listar post por comunidad y listeo general&#10;- Integración de WebCLient para validación de usuarios mediante llamada al ms_users &#10;- COnfiguración de WebClientConfig para habilitar la comunicación entre microservicios&#10;-Implementación de PostController con rutas semánticas y manejo de estados HTTP mediante ResponseEntity&lt;&gt;&#10;- Inclusión de logs estructurados con SLF4J&#10;- Conexión con base de datos ORACLE mediante usuario MSPost1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,9 +51,9 @@
     &quot;accountId&quot;: &quot;9380bc6c-434a-4c3d-a932-2695e907a97b&quot;
   }
 }</component>
-  <component name="HttpClientOnboardingState"><![CDATA[{
-  "isOnboardingCommentShown": true
-}]]></component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -88,35 +80,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AuthApplication.executor": "Run",
-    "Spring Boot.PostApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/ms-PostService",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/W608-PCXX/Downloads/ProyectoForoRV",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Runtime.Targets.Configurable",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuthApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PostApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/ms-PostService&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/W608-PCXX/Downloads/ProyectoForoRV&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Runtime.Targets.Configurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.PostApplication">
     <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
@@ -165,7 +157,7 @@
       <workItem from="1776370774155" duration="968000" />
       <workItem from="1776371757790" duration="115000" />
       <workItem from="1776388080170" duration="8803000" />
-      <workItem from="1776537406319" duration="11120000" />
+      <workItem from="1776537406319" duration="12254000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <option name="closed" value="true" />
@@ -191,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776542243842</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat(Post) Implementar estructura base,persistencia y comunicación con futuro ms-Users&#10;-Implementación de la Entidad Post con anotaciones JPA y validaciones JSR 3800&#10;-Creación de Post Repository para la gestión de persistencia con Oracle Cloud&#10;-Definición de PostRequestDTO y PostResponseDTO para la separación de capas y manejo seguro de los datos&#10;-Implementación de PostServices incluyendo:&#10;  - Lógica de creación de post con mapeo manual&#10;  - Método para listar post por comunidad y listeo general&#10;- Integración de WebCLient para validación de usuarios mediante llamada al ms_users &#10;- COnfiguración de WebClientConfig para habilitar la comunicación entre microservicios&#10;-Implementación de PostController con rutas semánticas y manejo de estados HTTP mediante ResponseEntity&lt;&gt;&#10;- Inclusión de logs estructurados con SLF4J&#10;- Conexión con base de datos ORACLE mediante usuario MSPost1">
+      <option name="closed" value="true" />
+      <created>1776554404959</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776554404959</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,7 +224,8 @@
     <MESSAGE value="prueba" />
     <MESSAGE value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
     <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
+    <MESSAGE value="feat(Post) Implementar estructura base,persistencia y comunicación con futuro ms-Users&#10;-Implementación de la Entidad Post con anotaciones JPA y validaciones JSR 3800&#10;-Creación de Post Repository para la gestión de persistencia con Oracle Cloud&#10;-Definición de PostRequestDTO y PostResponseDTO para la separación de capas y manejo seguro de los datos&#10;-Implementación de PostServices incluyendo:&#10;  - Lógica de creación de post con mapeo manual&#10;  - Método para listar post por comunidad y listeo general&#10;- Integración de WebCLient para validación de usuarios mediante llamada al ms_users &#10;- COnfiguración de WebClientConfig para habilitar la comunicación entre microservicios&#10;-Implementación de PostController con rutas semánticas y manejo de estados HTTP mediante ResponseEntity&lt;&gt;&#10;- Inclusión de logs estructurados con SLF4J&#10;- Conexión con base de datos ORACLE mediante usuario MSPost1" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(Post) Implementar estructura base,persistencia y comunicación con futuro ms-Users&#10;-Implementación de la Entidad Post con anotaciones JPA y validaciones JSR 3800&#10;-Creación de Post Repository para la gestión de persistencia con Oracle Cloud&#10;-Definición de PostRequestDTO y PostResponseDTO para la separación de capas y manejo seguro de los datos&#10;-Implementación de PostServices incluyendo:&#10;  - Lógica de creación de post con mapeo manual&#10;  - Método para listar post por comunidad y listeo general&#10;- Integración de WebCLient para validación de usuarios mediante llamada al ms_users &#10;- COnfiguración de WebClientConfig para habilitar la comunicación entre microservicios&#10;-Implementación de PostController con rutas semánticas y manejo de estados HTTP mediante ResponseEntity&lt;&gt;&#10;- Inclusión de logs estructurados con SLF4J&#10;- Conexión con base de datos ORACLE mediante usuario MSPost1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
