@@ -5,16 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/Post.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Model/PostResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Repository/PostRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-PostService/src/main/java/com/ms/Post/Service/PostService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Config/WebClientConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Controller/CommentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/Comment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Repository/CommentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,9 +60,9 @@
     &quot;accountId&quot;: &quot;9380bc6c-434a-4c3d-a932-2695e907a97b&quot;
   }
 }</component>
-  <component name="HttpClientOnboardingState"><![CDATA[{
-  "isOnboardingCommentShown": true
-}]]></component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -101,9 +102,10 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.AuthApplication.executor": "Run",
+    "Spring Boot.CommentApplication.executor": "Run",
     "Spring Boot.PostApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/ms-PostService",
+    "git-widget-placeholder": "feat/CommentService",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/W608-PCXX/Downloads/ProyectoForoRV",
@@ -112,18 +114,73 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
     "settings.editor.selected.configurable": "Runtime.Targets.Configurable",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.PostApplication">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="CommentApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.CommentApplication">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="Post" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
         <env name="WALLET" value="$PROJECT_DIR$/../../Wallet/Wallet_DataBaseForoRV" />
       </envs>
       <module name="Auth" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Auth.AuthApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CommentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="WALLET" value="$PROJECT_DIR$/../../Wallet/Wallet_DataBaseForoRV" />
+      </envs>
+      <module name="Comment" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Comment.CommentApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -138,7 +195,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="Post" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Spring Boot.CommentApplication" />
       <item itemvalue="Spring Boot.AuthApplication" />
       <item itemvalue="Spring Boot.PostApplication" />
     </list>

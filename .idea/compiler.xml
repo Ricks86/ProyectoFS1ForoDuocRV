@@ -3,21 +3,27 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for Post" enabled="true">
+      <profile name="Annotation profile for Comment" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
         </processorPath>
+        <module name="Comment" />
         <module name="Post" />
         <module name="Auth" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Comment-Serevice" target="25" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Auth" options="-parameters" />
+      <module name="Comment" options="-parameters" />
+      <module name="Comment-Serevice" options="-parameters" />
       <module name="Post" options="-parameters" />
     </option>
   </component>
