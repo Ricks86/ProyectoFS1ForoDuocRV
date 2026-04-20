@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/ms-PostService/pom.xml" />
         <option value="$PROJECT_DIR$/ms-AuthService/pom.xml" />
         <option value="$PROJECT_DIR$/ms-CommentService/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-MessaginService/pom.xml" />
       </list>
     </option>
   </component>

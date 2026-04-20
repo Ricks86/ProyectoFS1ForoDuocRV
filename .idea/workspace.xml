@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Controller/CommentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Repository/CommentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Service/CommentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Config/MessageConfigWC.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Controller/MessageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Model/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Model/MessageRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Model/MessageResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Repository/MessageRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/java/com/ms/Messasing/Service/MessageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -105,7 +105,7 @@
     "Spring Boot.CommentApplication.executor": "Run",
     "Spring Boot.PostApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feat/CommentService",
+    "git-widget-placeholder": "feature/MessaginService",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/W608-PCXX/Downloads/ProyectoForoRV",
@@ -129,19 +129,19 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="CommentApplication" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="RunManager" selected="Spring Boot.CommentApplication">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Post" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Post" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Post" />
       <option name="ENV_FILES" value="" />
@@ -185,6 +185,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MessasingApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Messasing" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Messasing.MessasingApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PostApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
         <env name="WALLET" value="$PROJECT_DIR$/../../Wallet/Wallet_DataBaseForoRV" />
@@ -209,6 +216,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Spring Boot.MessasingApplication" />
       <item itemvalue="Spring Boot.CommentApplication" />
       <item itemvalue="Spring Boot.AuthApplication" />
       <item itemvalue="Spring Boot.PostApplication" />
