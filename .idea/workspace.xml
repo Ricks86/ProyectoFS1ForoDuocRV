@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Controller/CommentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Model/CommentResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Repository/CommentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-CommentService/src/main/java/com/ms/Comment/Service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(comment): implementar microservicio de comentarios con validación cruzada y persistencia real&#10;- Implementación de la entidad Comment con Oracle Cloud y validaciones JSR 380&#10;- Creación de CommentRepository con métodos de consulta derivados para filtrado por postId&#10;- Definición de CommentRequestDTO y CommentResponseDTO para asegurar la separación de capas&#10;- Desarrollo de CommentService aplicando el patrón CSR&#10; destacando:&#10;    - Implementación de WebClient para validar existencia de Usuario y Post&#10;    - Lógica de mapeo manual entre entidades y objetos de transferencia&#10;- Configuración de CommentController (Puerto 8084) con endpoints para creación y listado de hilos&#10;- Inclusión de trazabilidad mediante logs de SLF4J para monitorear el diálogo entre microservicios">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -262,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776542243842</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat(comment): implementar microservicio de comentarios con validación cruzada y persistencia real&#10;- Implementación de la entidad Comment con Oracle Cloud y validaciones JSR 380&#10;- Creación de CommentRepository con métodos de consulta derivados para filtrado por postId&#10;- Definición de CommentRequestDTO y CommentResponseDTO para asegurar la separación de capas&#10;- Desarrollo de CommentService aplicando el patrón CSR&#10; destacando:&#10;    - Implementación de WebClient para validar existencia de Usuario y Post&#10;    - Lógica de mapeo manual entre entidades y objetos de transferencia&#10;- Configuración de CommentController (Puerto 8084) con endpoints para creación y listado de hilos&#10;- Inclusión de trazabilidad mediante logs de SLF4J para monitorear el diálogo entre microservicios">
+      <option name="closed" value="true" />
+      <created>1776646521522</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776646521522</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +293,8 @@
     <MESSAGE value="prueba" />
     <MESSAGE value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
     <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
+    <MESSAGE value="feat(comment): implementar microservicio de comentarios con validación cruzada y persistencia real&#10;- Implementación de la entidad Comment con Oracle Cloud y validaciones JSR 380&#10;- Creación de CommentRepository con métodos de consulta derivados para filtrado por postId&#10;- Definición de CommentRequestDTO y CommentResponseDTO para asegurar la separación de capas&#10;- Desarrollo de CommentService aplicando el patrón CSR&#10; destacando:&#10;    - Implementación de WebClient para validar existencia de Usuario y Post&#10;    - Lógica de mapeo manual entre entidades y objetos de transferencia&#10;- Configuración de CommentController (Puerto 8084) con endpoints para creación y listado de hilos&#10;- Inclusión de trazabilidad mediante logs de SLF4J para monitorear el diálogo entre microservicios" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(comment): implementar microservicio de comentarios con validación cruzada y persistencia real&#10;- Implementación de la entidad Comment con Oracle Cloud y validaciones JSR 380&#10;- Creación de CommentRepository con métodos de consulta derivados para filtrado por postId&#10;- Definición de CommentRequestDTO y CommentResponseDTO para asegurar la separación de capas&#10;- Desarrollo de CommentService aplicando el patrón CSR&#10; destacando:&#10;    - Implementación de WebClient para validar existencia de Usuario y Post&#10;    - Lógica de mapeo manual entre entidades y objetos de transferencia&#10;- Configuración de CommentController (Puerto 8084) con endpoints para creación y listado de hilos&#10;- Inclusión de trazabilidad mediante logs de SLF4J para monitorear el diálogo entre microservicios" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
