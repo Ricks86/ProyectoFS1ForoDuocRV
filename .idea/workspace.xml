@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="Implementación de pom padre e hijos para actuales microservicios">
+      <change afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19-04-2026_19_26_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19-04-2026_19_26__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-AuthService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-CommentService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-CommentService/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms-MessaginService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-MessaginService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +111,9 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;Runtime.Targets.Configurable&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
@@ -186,6 +189,13 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <configuration name="AuditApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Audit" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Audit.AuditApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <envs>
         <env name="WALLET" value="$USER_HOME$/Descargas/wallet_foro" />
@@ -202,6 +212,20 @@
       </envs>
       <module name="Comment" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Comment.CommentApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ComunityApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Comunity" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Comunity.ComunityApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InteractionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Interaction" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Interaction.InteractionApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -226,7 +250,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ReportApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Report" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ms.Report.ReportApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="Spring Boot.AuditApplication" />
+      <item itemvalue="Spring Boot.ComunityApplication" />
+      <item itemvalue="Spring Boot.InteractionApplication" />
+      <item itemvalue="Spring Boot.ReportApplication" />
       <item itemvalue="Spring Boot.MessasingApplication" />
       <item itemvalue="Spring Boot.CommentApplication" />
       <item itemvalue="Spring Boot.AuthApplication" />
@@ -257,7 +292,9 @@
       <workItem from="1776388080170" duration="8803000" />
       <workItem from="1776537406319" duration="11120000" />
       <workItem from="1776971759018" duration="456000" />
-      <workItem from="1776972228887" duration="3418000" />
+      <workItem from="1776972228887" duration="4780000" />
+      <workItem from="1777293585842" duration="801000" />
+      <workItem from="1777294641246" duration="1101000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <option name="closed" value="true" />
@@ -283,7 +320,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776542243842</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implementación de pom padre e hijos para actuales microservicios">
+      <option name="closed" value="true" />
+      <created>1776975748433</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776975748433</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -316,7 +361,8 @@
     <MESSAGE value="prueba" />
     <MESSAGE value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
     <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
+    <MESSAGE value="Implementación de pom padre e hijos para actuales microservicios" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementación de pom padre e hijos para actuales microservicios" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -8,6 +8,10 @@
         <option value="$PROJECT_DIR$/ms-AuthService/pom.xml" />
         <option value="$PROJECT_DIR$/ms-CommentService/pom.xml" />
         <option value="$PROJECT_DIR$/ms-MessaginService/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-Comunity/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-Interaction/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-Report/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-Audit/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,36 @@
+services:
+  db-auth:
+    image: mysql:8.0
+    container_name: db-auth
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: auth_db
+    ports:
+      - "33061:3306"
+
+  db-post:
+    image: mysql:8.0
+    container_name: db-post
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: post_db
+    ports:
+      - "33062:3306"
+
+  db-comment:
+    image: mysql:8.0
+    container_name: db-comment
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: comment_db
+    ports:
+      - "33063:3306"
+
+  db-messaging:
+    image: mysql:8.0
+    container_name: db-messaging
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: messaging_db
+    ports:
+      - "33064:3306"

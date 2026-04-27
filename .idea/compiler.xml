@@ -3,17 +3,27 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Audit" />
+        <module name="Comunity" />
+        <module name="Report" />
+        <module name="Interaction" />
+        <module name="Auth" />
+      </profile>
       <profile name="Annotation profile for ms-PostService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
         <module name="Comment" />
-        <module name="Messasing" />
         <module name="Post" />
-        <module name="Auth" />
+        <module name="Messasing" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,11 +32,15 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Audit" options="-parameters" />
       <module name="Auth" options="-parameters" />
       <module name="Comment" options="-parameters" />
       <module name="Comment-Serevice" options="-parameters" />
+      <module name="Comunity" options="-parameters" />
+      <module name="Interaction" options="-parameters" />
       <module name="Messasing" options="-parameters" />
       <module name="Post" options="-parameters" />
+      <module name="Report" options="-parameters" />
     </option>
   </component>
 </project>

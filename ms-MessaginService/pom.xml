@@ -13,7 +13,6 @@
 	<artifactId>ms-MessaginService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-MessaginService</name>
-	<description>Microservicio de Mensajería Privada para DuckyProtocol</description>
 
 	<properties>
 		<java.version>25</java.version>
