@@ -15,7 +15,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin_password
       MYSQL_DATABASE: post_db
     ports:
-      - "33062:3306"
+      - "33063:3306"
 
   db-comment:
     image: mysql:8.0
@@ -24,7 +24,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin_password
       MYSQL_DATABASE: comment_db
     ports:
-      - "33063:3306"
+      - "33064:3306"
 
   db-messaging:
     image: mysql:8.0
@@ -33,4 +33,4 @@ services:
       MYSQL_ROOT_PASSWORD: admin_password
       MYSQL_DATABASE: messaging_db
     ports:
-      - "33064:3306"
+      - "33065:3306"

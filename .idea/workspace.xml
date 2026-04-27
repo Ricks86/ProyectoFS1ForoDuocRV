@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="Implementación de pom padre e hijos para actuales microservicios">
-      <change afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19-04-2026_19_26_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19-04-2026_19_26__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-AuthService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-CommentService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-CommentService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-CommentService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-CommentService/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms-MessaginService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-MessaginService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-MessaginService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,6 +302,7 @@
       <workItem from="1776972228887" duration="4780000" />
       <workItem from="1777293585842" duration="801000" />
       <workItem from="1777294641246" duration="1101000" />
+      <workItem from="1777295974182" duration="1286000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <option name="closed" value="true" />
@@ -328,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776975748433</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="implementacion de bases para microservicios faltantes">
+      <option name="closed" value="true" />
+      <created>1777296071853</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1777296071853</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +378,8 @@
     <MESSAGE value="feat(Auth) implementación de la estrucutra CSR inicial para el AuthService&#10;&#10;-UserAuth definido con JPA annotations para Persitencia en oracle&#10;-AuthRepository con extensión de JpaReposiroy creado&#10;&#10;-Implementación de DTOs para registrarse, loguearse y un token con validación JSR 380&#10;-AuthService con logica para registrase y loguearse&#10;-AuthController con endpoint (/register y /login)" />
     <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
     <MESSAGE value="Implementación de pom padre e hijos para actuales microservicios" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementación de pom padre e hijos para actuales microservicios" />
+    <MESSAGE value="implementacion de bases para microservicios faltantes" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementacion de bases para microservicios faltantes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -8,21 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Audit" />
+        <module name="Comment" />
         <module name="Comunity" />
         <module name="Report" />
         <module name="Interaction" />
-        <module name="Auth" />
-      </profile>
-      <profile name="Annotation profile for ms-PostService" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
-        </processorPath>
-        <module name="Comment" />
         <module name="Post" />
+        <module name="Auth" />
         <module name="Messasing" />
       </profile>
     </annotationProcessing>
