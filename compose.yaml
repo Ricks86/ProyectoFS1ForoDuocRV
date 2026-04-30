@@ -34,3 +34,12 @@ services:
       MYSQL_DATABASE: messaging_db
     ports:
       - "33065:3306"
+
+  db-audit:
+    image: mysql:8.0
+    container_name: db-audit
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: messaging_db
+    ports:
+      - "33070:3306"

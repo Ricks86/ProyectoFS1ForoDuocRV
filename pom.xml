@@ -21,6 +21,9 @@
         <module>ms-AuthService</module>
         <module>ms-CommentService</module>
         <module>ms-MessaginService</module>
+        <module>ms-Audit</module>
+        <module>ms-Interaction</module>
+        <module>ms-Comunity</module>
     </modules>
 
     <properties>
