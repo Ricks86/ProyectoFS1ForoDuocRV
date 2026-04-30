@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-AuthService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-AuthService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-CommentService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-CommentService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-CommentService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-CommentService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-MessaginService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-MessaginService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-MessaginService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-MessaginService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ms-PostService/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,12 +42,12 @@
     &quot;assignee&quot;: &quot;Ricks86&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Ricks86/ProyectoFS1ForoDuocRV.git&quot;,
-    &quot;accountId&quot;: &quot;9380bc6c-434a-4c3d-a932-2695e907a97b&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Ricks86/ProyectoFS1ForoDuocRV",
+    "accountId": "2d8aa387-6cbb-44b8-a484-f9a3120c5b4a"
   }
-}</component>
+}]]></component>
   <component name="HttpClientOnboardingState">{
   &quot;isOnboardingCommentShown&quot;: true
 }</component>
@@ -135,17 +120,6 @@
         <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
-    </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="PostApplication" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.PostApplication">
@@ -278,8 +252,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
       </set>
     </attachedChunks>
   </component>
@@ -303,6 +277,7 @@
       <workItem from="1777293585842" duration="801000" />
       <workItem from="1777294641246" duration="1101000" />
       <workItem from="1777295974182" duration="1286000" />
+      <workItem from="1777576541075" duration="1154000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <option name="closed" value="true" />
@@ -361,7 +336,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="develop" />
                       </list>
                     </value>
                   </entry>
