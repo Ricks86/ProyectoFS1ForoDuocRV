@@ -16,6 +16,18 @@
         <module name="Auth" />
         <module name="Messasing" />
       </profile>
+      <profile name="Annotation profile for foro-parent" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="ms-AuthService" />
+        <module name="ms-PostService" />
+        <module name="ms-CommentService" />
+        <module name="ms-MessaginService" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Comment-Serevice" target="25" />
@@ -32,6 +44,10 @@
       <module name="Messasing" options="-parameters" />
       <module name="Post" options="-parameters" />
       <module name="Report" options="-parameters" />
+      <module name="ms-AuthService" options="-parameters" />
+      <module name="ms-CommentService" options="-parameters" />
+      <module name="ms-MessaginService" options="-parameters" />
+      <module name="ms-PostService" options="-parameters" />
     </option>
   </component>
 </project>
