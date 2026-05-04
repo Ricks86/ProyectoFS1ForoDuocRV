@@ -4,6 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="falta controller de audit">
+      <change afterPath="$PROJECT_DIR$/ms-Audit/src/main/java/com/ms/Audit/Controller/AuditController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +27,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
+        <option value="Record" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -42,6 +47,10 @@
     &quot;assignee&quot;: &quot;Ricks86&quot;
   }
 }</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ricks86/ProyectoFS1ForoDuocRV.git&quot;,
+    &quot;accountId&quot;: &quot;850ef25f-28bb-4d1b-8828-2dfa07c146d0&quot;
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Ricks86/ProyectoFS1ForoDuocRV",
@@ -94,7 +103,7 @@
     &quot;Spring Boot.PostApplication.executor&quot;: &quot;Run&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Feature/auditservice&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/W608-PCXX/Downloads/ProyectoForoRV&quot;,
@@ -276,6 +285,10 @@
       <workItem from="1776972228887" duration="4780000" />
       <workItem from="1777293585842" duration="801000" />
       <workItem from="1777294641246" duration="1101000" />
+      <workItem from="1777295974182" duration="2981000" />
+      <workItem from="1777487917321" duration="3411000" />
+      <workItem from="1777576345827" duration="3169000" />
+      <workItem from="1777898841869" duration="687000" />
       <workItem from="1777295974182" duration="1286000" />
       <workItem from="1777576541075" duration="1154000" />
     </task>
@@ -319,7 +332,31 @@
       <option name="project" value="LOCAL" />
       <updated>1777296071853</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="cambios de puertos y actualización de dependencias">
+      <option name="closed" value="true" />
+      <created>1777297374167</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1777297374167</updated>
+    </task>
+    <task id="LOCAL-00007" summary="falta controller de audit">
+      <option name="closed" value="true" />
+      <created>1777577280605</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777577280605</updated>
+    </task>
+    <task id="LOCAL-00008" summary="falta controller de audit">
+      <option name="closed" value="true" />
+      <created>1777898886819</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1777898886819</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,7 +391,9 @@
     <MESSAGE value="feat(Auth) configuración de persistencia OracleCLoud y estabilidad para hikari&#10;&#10;Se utiliza Oracle JDBC dirver (8) y depedencias de seguridad (oraclepki,osdt_core,osdt_cert) para permitir conexión mutua TLS&#10;Se implemento un envoirement variable para TNS_ADMIN para mejor manejo cooperativo de la wallet con ${WALLET}&#10;Se optimizo la conexión con HikariCP usando (keepalive-time y max-lifetime)" />
     <MESSAGE value="Implementación de pom padre e hijos para actuales microservicios" />
     <MESSAGE value="implementacion de bases para microservicios faltantes" />
-    <option name="LAST_COMMIT_MESSAGE" value="implementacion de bases para microservicios faltantes" />
+    <MESSAGE value="cambios de puertos y actualización de dependencias" />
+    <MESSAGE value="falta controller de audit" />
+    <option name="LAST_COMMIT_MESSAGE" value="falta controller de audit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
