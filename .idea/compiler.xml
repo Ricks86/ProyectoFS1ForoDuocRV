@@ -11,6 +11,7 @@
         <module name="Comment" />
         <module name="Comunity" />
         <module name="Report" />
+        <module name="ms-Audit" />
         <module name="Interaction" />
         <module name="Post" />
         <module name="Auth" />
@@ -22,9 +23,10 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="ms-AuthService" />
         <module name="ms-PostService" />
+        <module name="ms-AuthService" />
         <module name="ms-CommentService" />
         <module name="ms-MessaginService" />
       </profile>
@@ -44,6 +46,7 @@
       <module name="Messasing" options="-parameters" />
       <module name="Post" options="-parameters" />
       <module name="Report" options="-parameters" />
+      <module name="ms-Audit" options="-parameters" />
       <module name="ms-AuthService" options="-parameters" />
       <module name="ms-CommentService" options="-parameters" />
       <module name="ms-MessaginService" options="-parameters" />

@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes" />
+    <list default="true" id="73890c1d-465e-4274-9d42-2afdf68bc9d0" name="Changes" comment="implementacion de bases para microservicios faltantes">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-Comunity/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-Comunity/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-Interaction/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-Interaction/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-Report/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-Report/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,12 +49,12 @@
     &quot;assignee&quot;: &quot;Ricks86&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Ricks86/ProyectoFS1ForoDuocRV",
-    "accountId": "2d8aa387-6cbb-44b8-a484-f9a3120c5b4a"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ricks86/ProyectoFS1ForoDuocRV&quot;,
+    &quot;accountId&quot;: &quot;2d8aa387-6cbb-44b8-a484-f9a3120c5b4a&quot;
   }
-}]]></component>
+}</component>
   <component name="HttpClientOnboardingState">{
   &quot;isOnboardingCommentShown&quot;: true
 }</component>
@@ -122,7 +129,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.PostApplication">
+  <component name="RunManager">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Post" />
       <option name="ENV_FILES" value="" />
@@ -238,24 +245,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Spring Boot.AuditApplication" />
-      <item itemvalue="Spring Boot.ComunityApplication" />
-      <item itemvalue="Spring Boot.InteractionApplication" />
-      <item itemvalue="Spring Boot.ReportApplication" />
-      <item itemvalue="Spring Boot.MessasingApplication" />
-      <item itemvalue="Spring Boot.CommentApplication" />
-      <item itemvalue="Spring Boot.AuthApplication" />
-      <item itemvalue="Spring Boot.PostApplication" />
-    </list>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
