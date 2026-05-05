@@ -7,8 +7,10 @@
     <file url="file://$PROJECT_DIR$/ms-Comunity/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-Interaction/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-MessaginService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-Notification/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-PostService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-Report/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-User/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

@@ -30,6 +30,24 @@
         <module name="ms-CommentService" />
         <module name="ms-MessaginService" />
       </profile>
+      <profile name="Annotation profile for Notification" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="Notification" />
+      </profile>
+      <profile name="Annotation profile for User" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+        </processorPath>
+        <module name="User" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Comment-Serevice" target="25" />
@@ -37,20 +55,22 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Audit" options="-parameters" />
+      <module name="Audit" options="" />
       <module name="Auth" options="-parameters" />
       <module name="Comment" options="-parameters" />
       <module name="Comment-Serevice" options="-parameters" />
-      <module name="Comunity" options="-parameters" />
-      <module name="Interaction" options="-parameters" />
+      <module name="Comunity" options="" />
+      <module name="Interaction" options="" />
       <module name="Messasing" options="-parameters" />
+      <module name="Notification" options="-parameters" />
       <module name="Post" options="-parameters" />
-      <module name="Report" options="-parameters" />
+      <module name="Report" options="" />
+      <module name="User" options="-parameters" />
       <module name="ms-Audit" options="-parameters" />
-      <module name="ms-AuthService" options="-parameters" />
-      <module name="ms-CommentService" options="-parameters" />
-      <module name="ms-MessaginService" options="-parameters" />
-      <module name="ms-PostService" options="-parameters" />
+      <module name="ms-AuthService" options="" />
+      <module name="ms-CommentService" options="" />
+      <module name="ms-MessaginService" options="" />
+      <module name="ms-PostService" options="" />
     </option>
   </component>
 </project>
