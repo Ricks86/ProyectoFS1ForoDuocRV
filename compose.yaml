@@ -7,7 +7,6 @@ services:
       MYSQL_DATABASE: auth_db
     ports:
       - "33061:3306"
-
   db-post:
     image: mysql:8.0
     container_name: db-post
@@ -40,6 +39,51 @@ services:
     container_name: db-audit
     environment:
       MYSQL_ROOT_PASSWORD: admin_password
-      MYSQL_DATABASE: messaging_db
+      MYSQL_DATABASE: audit_db
     ports:
       - "33070:3306"
+
+  db-user:
+    image: mysql:8.0
+    container_name: db-user
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: user_db
+    ports:
+      - "33062:3306"
+
+  db-notification:
+    image: mysql:8.0
+    container_name: db-notification
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: notification_db
+    ports:
+      - "33066:3306"
+
+  db-report:
+    image: mysql:8.0
+    container_name: db-report
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: report_db
+    ports:
+      - "33071:3306"
+
+  db-interaction:
+    image: mysql:8.0
+    container_name: db-interaction
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: interaction_db
+    ports:
+      - "33069:3306"
+
+  db-community:
+    image: mysql:8.0
+    container_name: db-community
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password
+      MYSQL_DATABASE: community_db
+    ports:
+      - "33067:3306"

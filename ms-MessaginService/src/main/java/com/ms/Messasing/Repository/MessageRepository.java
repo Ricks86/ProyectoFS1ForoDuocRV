@@ -12,7 +12,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findByIdEmisorOrIdReceptorOrderByFechaEnvioDesc(Long idEmisor, Long idReceptor);
 
-    List<Message> findbyIdEmisorAndIdReceptorOrIdReceptorAndIdEmisorOrderByFechaEnvioDesc(Long eId1, Long rId1, Long eId2, Long rId2);
+    List<Message> findByIdEmisorAndIdReceptorOrIdReceptorAndIdEmisorOrderByFechaEnvioDesc(Long eId1, Long rId1, Long eId2, Long rId2);
 
     long countByIdReceptorAndLeidoFalse(Long idReceptor);
 }

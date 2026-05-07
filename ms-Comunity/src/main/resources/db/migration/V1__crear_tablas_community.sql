@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS communities (
+                                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                           name VARCHAR(50) NOT NULL UNIQUE,
+                                           description VARCHAR(500) NOT NULL,
+                                           creator_username VARCHAR(255) NOT NULL,
+                                           created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                           member_count INT DEFAULT 0
+);
