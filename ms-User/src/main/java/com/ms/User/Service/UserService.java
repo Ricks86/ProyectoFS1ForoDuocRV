@@ -36,7 +36,7 @@ public class UserService {
     public UserProfileDTO getProfile(String username) {
         log.info("Obteniendo perfil para: {}", username);
 
-        UserModel user = userRepository.findByUserName(username)
+        UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     log.error("Usuario no encontrado: {}", username);
                     return new RuntimeException("Usuario no encontrado");
@@ -56,7 +56,7 @@ public class UserService {
     public UserProfileDTO updateProfile(String username, UserUpdateDTO updateData) {
         log.info("Actualizando perfil de: {}", username);
 
-        UserModel user = userRepository.findByUserName(username)
+        UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     log.error("Usuario no encontrado: {}", username);
                     return new RuntimeException("Usuario no encontrado");
@@ -81,7 +81,7 @@ public class UserService {
     public void addReputation(String username, int points) {
         log.info("Sumando {} puntos de reputacion a {}", points, username);
 
-        UserModel user = userRepository.findByUserName(username)
+        UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         user.setReputationLevel(user.getReputationLevel() + points);

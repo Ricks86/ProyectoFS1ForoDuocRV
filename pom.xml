@@ -24,6 +24,9 @@
         <module>ms-Audit</module>
         <module>ms-Interaction</module>
         <module>ms-Comunity</module>
+        <module>ms-User</module>
+        <module>ms-Report</module>
+        <module>ms-Notification</module>
     </modules>
 
     <properties>

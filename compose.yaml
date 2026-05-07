@@ -39,7 +39,7 @@ services:
     container_name: db-audit
     environment:
       MYSQL_ROOT_PASSWORD: admin_password
-      MYSQL_DATABASE: messaging_db
+      MYSQL_DATABASE: audit_db
     ports:
       - "33070:3306"
 
@@ -68,7 +68,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin_password
       MYSQL_DATABASE: report_db
     ports:
-      - "33068:3306"
+      - "33071:3306"
 
   db-interaction:
     image: mysql:8.0
