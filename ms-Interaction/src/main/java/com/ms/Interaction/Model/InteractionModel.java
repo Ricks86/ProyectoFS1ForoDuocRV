@@ -36,7 +36,6 @@ public class InteractionModel {
     @Column(nullable = false)
     private Long entityId;
 
-    // Valores: "UPVOTE" (1) o "DOWNVOTE" (-1)
     @NotBlank(message = "El tipo de voto es obligatorio")
     @Column(nullable = false)
     private String voteType;

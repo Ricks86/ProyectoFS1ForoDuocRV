@@ -31,6 +31,9 @@ public class NotificationModel {
     @Column(nullable = false)
     private String type;
 
+    @NotBlank(message = "El servicio de origen es obligatorio")
+    private String serviceOrigin;
+
     @NotBlank(message = "El mensaje es obligatorio")
     @Column(nullable = false, length = 500)
     private String message;

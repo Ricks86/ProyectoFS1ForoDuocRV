@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "communities")
@@ -35,6 +37,15 @@ public class CommunityModel {
     @NotBlank(message = "El creador es obligatorio")
     @Column(nullable = false)
     private String creatorUsername;
+
+    @NotBlank(message = "El codigo de acceso es obligatorio")
+    private String accessCode;
+
+    @ElementCollection
+    @CollectionTable(name = "community_members", joinColumns = @JoinColumn(name = "community_id"))
+    @Column(name = "user_id")
+    @Builder.Default
+    private List<Long> memberIds = new ArrayList<>();
 
     @Builder.Default
     @Column(nullable = false)

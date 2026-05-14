@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "user_profiles")
 @Data
@@ -18,12 +20,22 @@ public class UserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private Long authId;
+
     @NotBlank(message = "El nombre de usuario es obligatorio")
     @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String email;
+
     @Column(length = 500)
     private String bio;
+
+    private String alias;
+
+    private String birthday;
 
     private String avatarUrl;
 
@@ -35,4 +47,7 @@ public class UserModel {
 
     @Builder.Default
     private Integer followingCount = 0;
+
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
