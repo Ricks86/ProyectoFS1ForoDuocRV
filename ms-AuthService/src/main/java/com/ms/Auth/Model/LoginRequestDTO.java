@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequestDTO {
+public class LoginRequestDTO {
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String nombreUser;
