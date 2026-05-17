@@ -1,15 +1,18 @@
 package com.ms.Auth.Service;
 
 
-import com.ms.Auth.Model.AuthRequestDTO;
+import com.ms.Auth.Model.LoginRequestDTO;
 import com.ms.Auth.Model.RegisterRequestDTO;
 import com.ms.Auth.Model.TokenResponseDTO;
 import com.ms.Auth.Model.UserAuth;
 import com.ms.Auth.Repository.UserAuthRepository;
+import com.ms.Auth.Security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 
 @Service
 @Slf4j
@@ -17,51 +20,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final UserAuthRepository userAuthRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Transactional
-    public UserAuth register( RegisterRequestDTO userAuth) {
-        log.info("Registrando usario {}", userAuth.getNombreUser());
+    public String register( RegisterRequestDTO userAuth) {
 
         if (userAuthRepository.existsByNombreUser(userAuth.getNombreUser())) {
-            log.warn(userAuth.getNombreUser() + " Ya existe");
             throw new RuntimeException("El nombre de usuario ya existe");
         }
 
         if (userAuthRepository.existsByEmail(userAuth.getEmail())) {
-            log.warn(userAuth.getEmail() + " Ya existe");
-            throw new RuntimeException("El email ya está en usp");
+            throw new RuntimeException("El email ya está en uso");
         }
 
         UserAuth nuevo = UserAuth.builder()
                 .nombreUser(userAuth.getNombreUser())
                 .email(userAuth.getEmail())
-                .password(userAuth.getPassword())
+                .password(passwordEncoder.encode(userAuth.getPassword()))
                 .build();
 
-        UserAuth guardado = userAuthRepository.save(nuevo);
-        log.info("Registrando usario {}", userAuth.getNombreUser());
-        return guardado;
+        userAuthRepository.save(nuevo);
+        return "Usuario '" + nuevo.getNombreUser() + "' registrado con éxito en el sistema.";
     }
 
-    public TokenResponseDTO login(AuthRequestDTO AuthRequest){
-        log.info("Login usario {}", AuthRequest.getNombreUser());
+    public TokenResponseDTO login(LoginRequestDTO request){
 
-        UserAuth user = userAuthRepository.findByNombreUser(AuthRequest.getNombreUser())
-                .orElseThrow(() -> {
-                    log.error("usuario no encontrado: {}", AuthRequest.getNombreUser());
-                    return new RuntimeException("Usuario no encontrado");
-                });
+        UserAuth user = userAuthRepository.findByNombreUser(request.getNombreUser())
+                .orElseThrow(() -> new RuntimeException("Credenciales Invalidas"));
 
-        if (!user.getPassword().equals(AuthRequest.getPassword())){
-            log.error("Contraseña incorrecta para el usuario: {}", AuthRequest.getNombreUser());
-            throw new RuntimeException("Contraseña incorrecta");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new RuntimeException("Credenciales invalidas");
         }
 
-        log.info("Login exitoso para el usario: {}", AuthRequest.getNombreUser());
+        String token = jwtService.generateToken(user);
 
         return TokenResponseDTO.builder()
-                .token("token-fake-para-" + user.getNombreUser())
-                .type("Bearer")
+                .token(token)
                 .username(user.getNombreUser())
                 .build();
     }
