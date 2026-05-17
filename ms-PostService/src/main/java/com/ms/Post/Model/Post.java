@@ -33,8 +33,7 @@ public class Post {
     @Column(name = "ID_USUARIO", nullable = false)
     private Long idUsuario;
 
-    @NotNull(message = "El ID de comunidad es obligatorio")
-    @Column(name = "ID_COMUNIDAD", nullable = false)
+    @Column(name = "ID_COMUNIDAD")
     private Long idComunidad;
 
     @Column(name = "FECHA_CREACION", nullable = false)

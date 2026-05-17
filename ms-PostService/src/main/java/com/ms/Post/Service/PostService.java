@@ -2,20 +2,19 @@ package com.ms.Post.Service;
 
 
 import com.ms.Post.Model.Post;
-import com.ms.Post.Model.PostRequestDTO;
+import com.ms.Post.Model.PostCreateDTO;
 import com.ms.Post.Model.PostResponseDTO;
+import com.ms.Post.Model.UserDTO;
 import com.ms.Post.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class PostService {
 
@@ -23,60 +22,126 @@ public class PostService {
     private final WebClient.Builder webClientBuilder;
 
     @Transactional
-    public PostResponseDTO crearPost(PostRequestDTO dto) {
-        log.info("Creando post para el user: {}", dto.getIdUsuario());
+    public PostResponseDTO crearPost(PostCreateDTO crear, Long idUsuarioLogueado) {
 
-        Boolean userExiste = webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8081/api/usuarios/{id}", dto.getIdUsuario())
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
-
-        if (userExiste == null || !userExiste) {
-            log.error("Usuario con ID {} no existe", dto.getIdUsuario());
-            throw new RuntimeException("Usuario no existe");
-        }
-
-        Post post = Post.builder()
-                .titulo(dto.getTitulo())
-                .contenido(dto.getContenido())
-                .idUsuario(dto.getIdUsuario())
-                .idComunidad(dto.getIdComunidad())
+        Post nuevoPost = Post.builder()
+                .titulo(crear.getTitulo())
+                .contenido(crear.getContenido())
+                .idComunidad(crear.getIdComunidad())
+                .idUsuario(idUsuarioLogueado)
                 .build();
 
-        Post savedPost = postRepository.save(post);
-        log.info("Post saved: {}", savedPost.getId(), savedPost.getIdComunidad());
+        Post postGuardado = postRepository.save(nuevoPost);
 
-        return mapToResponseDTO(savedPost);
+        UserDTO autorDto;
+        //esperar a que el victor tenga el servicio
+        try {
+            autorDto = webClientBuilder.build()
+                    .get()
+                    .uri("http://localhost:8082/users/{id}", idUsuarioLogueado)
+                    .retrieve()
+                    .bodyToMono(UserDTO.class)
+                    .block();
+        } catch (Exception e) {
+            autorDto = new UserDTO(idUsuarioLogueado, "Usuario Temporal", "Alias No Disponible");
+        }
+
+        return PostResponseDTO.builder()
+                .id(postGuardado.getId())
+                .titulo(postGuardado.getTitulo())
+                .contenido(postGuardado.getContenido())
+                .fechaCreacion(postGuardado.getFechaCreacion())
+                .idComunidad(postGuardado.getIdComunidad())
+                .autor(autorDto)
+                .build();
     }
 
-    @Transactional(readOnly = true)
-    public List<PostResponseDTO> listarPorComunidadId(Long idComunidad) {
-        log.info("Listando posts para el comunidad: {}", idComunidad);
-        return postRepository.findByIdComunidadOrderByFechaCreacionDesc(idComunidad)
-                .stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
-    }
+    @Transactional(readOnly = true) //
+    public PostResponseDTO obtenerPostPorId(Long id) {
 
-    @Transactional(readOnly = true)
-    public List<PostResponseDTO> listarPost() {
-        log.info("Listando todos los posts");
-        return postRepository.findAll()
-                .stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
-    }
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El post con ID " + id + " no existe."));
 
-    private PostResponseDTO mapToResponseDTO(Post post){
+        UserDTO autorDto;
+        try {
+            autorDto = webClientBuilder.build()
+                    .get()
+                    .uri("http://localhost:8082/users/{id}", post.getIdUsuario())
+                    .retrieve()
+                    .bodyToMono(UserDTO.class)
+                    .block(); // Esperamos la respuesta síncronamente
+        } catch (Exception e) {
+            autorDto = new UserDTO(post.getIdUsuario(), "Usuario Temporal", "Alias No Disponible");
+        }
+
         return PostResponseDTO.builder()
                 .id(post.getId())
                 .titulo(post.getTitulo())
                 .contenido(post.getContenido())
-                .idUsuario(post.getIdUsuario())
-                .idComunidad(post.getIdComunidad())
                 .fechaCreacion(post.getFechaCreacion())
+                .idComunidad(post.getIdComunidad())
+                .autor(autorDto)
                 .build();
     }
+
+    @Transactional(readOnly = true)
+    public List<PostResponseDTO> obtenerPostsCreadosAntesDe(LocalDateTime fecha) {
+        List<Post> posts = postRepository.findByFechaCreacionBefore(fecha);
+
+        return posts.stream()
+                .map(post -> {
+                    UserDTO autorDto;
+                    try {
+                        autorDto = webClientBuilder.build()
+                                .get()
+                                .uri("http://localhost:8082/users/{id}", post.getIdUsuario())
+                                .retrieve()
+                                .bodyToMono(UserDTO.class)
+                                .block();
+                    } catch (Exception e) {
+                        autorDto = new UserDTO(post.getIdUsuario(), "Usuario Temporal", "Alias No Disponible");
+                    }
+
+                    return PostResponseDTO.builder()
+                            .id(post.getId())
+                            .titulo(post.getTitulo())
+                            .contenido(post.getContenido())
+                            .fechaCreacion(post.getFechaCreacion())
+                            .idComunidad(post.getIdComunidad())
+                            .autor(autorDto)
+                            .build();
+                })
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponseDTO> obtenerPostsPorUsername(String username) {
+
+        UserDTO autorDto;
+        //pedirle al victor que haga ese endpoint
+        try {
+            autorDto = webClientBuilder.build()
+                    .get()
+                    .uri("http://localhost:8082/users/username/{username}", username)
+                    .retrieve()
+                    .bodyToMono(UserDTO.class)
+                    .block();
+        } catch (Exception e) {
+            throw new RuntimeException("El usuario '@" + username + "' no existe en el DuckyProtocol.");
+        }
+
+        List<Post> posts = postRepository.findByIdUsuario(autorDto.getId());
+
+        return posts.stream()
+                .map(post -> PostResponseDTO.builder()
+                        .id(post.getId())
+                        .titulo(post.getTitulo())
+                        .contenido(post.getContenido())
+                        .fechaCreacion(post.getFechaCreacion())
+                        .idComunidad(post.getIdComunidad())
+                        .autor(autorDto) // Inyectamos el mismo autor a todos sus posts
+                        .build())
+                .toList();
+    }
+
 }
