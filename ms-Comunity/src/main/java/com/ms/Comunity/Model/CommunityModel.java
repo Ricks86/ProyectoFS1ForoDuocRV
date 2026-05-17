@@ -27,7 +27,7 @@ public class CommunityModel {
     @NotBlank(message = "El nombre de la comunidad es obligatorio")
     @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
     @Column(unique = true, nullable = false)
-    private String name; // Ej: "r/tecnologia"
+    private String name;
 
     @NotBlank(message = "La descripción es obligatoria")
     @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
