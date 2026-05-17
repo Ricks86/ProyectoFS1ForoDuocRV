@@ -28,7 +28,6 @@ public class UserAuth {
     private String email;
 
     @NotBlank(message = "La contraseña es obligatorio")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     @Column(nullable = false)
     private String password;
 
