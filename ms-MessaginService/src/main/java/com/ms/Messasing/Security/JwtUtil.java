@@ -1,4 +1,4 @@
-package com.ms.Comment.Security;
+package com.ms.Messasing.Security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
