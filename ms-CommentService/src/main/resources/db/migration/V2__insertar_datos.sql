@@ -1,14 +1,8 @@
-INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION)
-VALUES ('¡Excelente artículo! Me sirvió mucho para mi proyecto.', 101, 50, NOW());
+INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION) VALUES
+    ('¡Excelente iniciativa! Hacía falta un espacio así para la comunidad informática.', 2, 1, NOW()),
+    ('Buenísimo, sintoniza totalmente con el estilo Linux.', 3, 1, NOW());
 
-INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION)
-VALUES ('No estoy de acuerdo con el segundo punto, creo que falta profundidad.', 102, 50, NOW());
-
-INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION)
-VALUES ('¿Alguien sabe si esto aplica también para microservicios con Go?', 105, 52, NOW());
-
-INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION)
-VALUES ('Muchas gracias por compartir esta información, muy clara.', 110, 55, NOW());
-
-INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION)
-VALUES ('He intentado replicar el ejemplo pero obtengo un error en el paso 3.', 101, 52, NOW());
+INSERT INTO comments (CONTENIDO, ID_USUARIO, ID_POST, FECHA_CREACION) VALUES
+    ('Me pasaba lo mismo en Nobara. Revisa si el puerto 3306 ya está ocupado por un servicio local.', 2, 3, NOW()),
+    ('Asegúrate de que el contenedor de la app y el de MySQL estén en la misma Docker Network.', 3, 3, NOW()),
+    ('¡Gracias muchachos! Mapeé bien la red en el docker-compose y levantó de inmediato.', 1, 3, NOW());

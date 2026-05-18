@@ -1,7 +1,8 @@
 package com.ms.Comment.Controller;
 
-import com.ms.Comment.Model.CommentRequestDTO;
+import com.ms.Comment.Model.CommentCreateDTO;
 import com.ms.Comment.Model.CommentResponseDTO;
+import com.ms.Comment.Security.JwtUtil;
 import com.ms.Comment.Service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +20,23 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
-    public ResponseEntity<CommentResponseDTO> crear(@Valid @RequestBody CommentRequestDTO dto) {
-        log.info("Petición para crear comentario para el post {}", dto.getPostId());
-        CommentResponseDTO response = commentService.crearComentario(dto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<CommentResponseDTO> crearComentario(
+            @Valid @RequestBody CommentCreateDTO request,
+            @RequestHeader("Authorization") String token) {
+
+        Long userIdLogueado = jwtUtil.extractUserId(token);
+
+        CommentResponseDTO nuevoComentario = commentService.crearComentario(request, userIdLogueado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoComentario);
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<CommentResponseDTO>> obtenerComentarioPorPost(@PathVariable Long postId) {
-        log.info("Petición para listar comentarios del post {}", postId);
-        List<CommentResponseDTO> comentarios = commentService.getComentarioByPostId(postId);
+    public ResponseEntity<List<CommentResponseDTO>> obtenerComentariosPorPost(@PathVariable Long postId) {
+        List<CommentResponseDTO> comentarios = commentService.obtenerComentariosPorPostId(postId);
         return ResponseEntity.ok(comentarios);
     }
 }

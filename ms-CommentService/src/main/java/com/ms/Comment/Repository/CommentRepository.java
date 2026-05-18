@@ -5,11 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface    CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findByPostId(Long postId);
-
-    List<Comment> findByuserId(Long userId);
-
-    long countByPostId(Long postId);
+    List<Comment> findByPostIdOrderByCreatedAtAsc(Long postId);
 }
