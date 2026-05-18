@@ -1,8 +1,9 @@
 package com.ms.Messasing.Service;
 
 import com.ms.Messasing.Model.Message;
-import com.ms.Messasing.Model.MessageRequestDTO;
+import com.ms.Messasing.Model.MessageCreatetDTO;
 import com.ms.Messasing.Model.MessageResponseDTO;
+import com.ms.Messasing.Model.UserDTO;
 import com.ms.Messasing.Repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -22,66 +22,97 @@ public class MessageService {
     private final WebClient.Builder webClientBuilder;
 
     @Transactional
-    public MessageResponseDTO enviarMessage(MessageRequestDTO dto) {
-        log.info("Enviando Mensaje de Id: {} para Id: {}", dto.getEmisorId(), dto.getReceptorId());
+    public MessageResponseDTO enviarMensajePorUsername(String usernameReceptor, MessageCreatetDTO request, Long idEmisorLogueado) {
 
-        if (!usuarioExists(dto.getEmisorId()) || !usuarioExists(dto.getReceptorId())) {
-            log.error("Emisor/Receptor no existe");
-            throw new IllegalArgumentException("El emisor o receptor no existe");
-        }
+        UserDTO receptorDto = obtenerUsuarioPorUsername(usernameReceptor);
+        UserDTO emisorDto = obtenerUsuarioPorId(idEmisorLogueado);
 
-        Message mensaje = Message.builder()
-                .contenido(dto.getContenido())
-                .idEmisor(dto.getEmisorId().intValue())
-                .idReceptor(dto.getReceptorId().intValue())
+        Message nuevoMensaje = Message.builder()
+                .contenido(request.getContenido())
+                .idEmisor(idEmisorLogueado)
+                .idReceptor(receptorDto.getId())
                 .build();
 
-        Message guardado = messageRepository.save(mensaje);
-        return mapToResponseDTO(guardado);
+        Message mensajeGuardado = messageRepository.save(nuevoMensaje);
+
+        return MessageResponseDTO.builder()
+                .id(mensajeGuardado.getId())
+                .contenido(mensajeGuardado.getContenido())
+                .fechaEnvio(mensajeGuardado.getFechaEnvio())
+                .leido(mensajeGuardado.isLeido())
+                .receptor(receptorDto)
+                .emisor(emisorDto)
+                .build();
     }
 
     @Transactional(readOnly = true)
-    public List<MessageResponseDTO> obtenerMessages(Long userId) {
-        log.info("Obteniendo mensajes para el usuario Id: {}", userId);
+    public List<UserDTO> obtenerBandejaEntrada(Long idLogueado) {
 
-        return messageRepository.findByIdEmisorOrIdReceptorOrderByFechaEnvioDesc(userId, userId)
-                .stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+        List<Long> idsEmisores = messageRepository.findDistinctEmisoresByIdReceptor(idLogueado);
+
+        return idsEmisores.stream()
+                .map(idEmisor -> {
+                    try {
+                        return webClientBuilder.build()
+                                .get()
+                                .uri("http://localhost:8082/users/{id}", idEmisor)
+                                .retrieve()
+                                .bodyToMono(UserDTO.class)
+                                .block(); // Llamada síncrona por cada remitente
+                    } catch (Exception e) {
+                        return new UserDTO(idEmisor, "Usuario Temporal", "Alias No Disponible");
+                    }
+                })
+                .toList();
     }
 
-    private boolean usuarioExists(Long userId) {
-        return Boolean.TRUE.equals(webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8081/api/users/{id}", userId)
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .block());
+    @Transactional(readOnly = true)
+    public List<MessageResponseDTO> obtenerConversacion(Long idLogueado, Long idOtroUsuario) {
+
+        List<Message> mensajes = messageRepository.findConversacionCompleta(idLogueado, idOtroUsuario);
+
+        UserDTO perfilLogueado = obtenerUsuarioPorId(idLogueado);
+        UserDTO perfilOtro = obtenerUsuarioPorId(idOtroUsuario);
+
+        return mensajes.stream()
+                .map(mensaje -> {
+                    UserDTO emisor = (mensaje.getIdEmisor().equals(idLogueado)) ? perfilLogueado : perfilOtro;
+                    UserDTO receptor = (mensaje.getIdReceptor().equals(idLogueado)) ? perfilLogueado : perfilOtro;
+
+                    return MessageResponseDTO.builder()
+                            .id(mensaje.getId())
+                            .contenido(mensaje.getContenido())
+                            .fechaEnvio(mensaje.getFechaEnvio())
+                            .leido(mensaje.isLeido())
+                            .emisor(emisor)
+                            .receptor(receptor)
+                            .build();
+                })
+                .toList();
     }
 
-    private String getUserName(Long userId) {
+    private UserDTO obtenerUsuarioPorId(Long userId) {
         try {
             return webClientBuilder.build()
                     .get()
-                    .uri("http://localhost:8081/api/users/{id}/name", userId)
+                    .uri("http://localhost:8082/users/{id}", userId)
                     .retrieve()
-                    .bodyToMono(String.class)
+                    .bodyToMono(UserDTO.class)
                     .block();
         } catch (Exception e) {
-            return "Usuario Desconocido";
+            return new UserDTO(userId, "Usuario Temporal", "Alias No Disponible");
         }
     }
-
-    private MessageResponseDTO mapToResponseDTO(Message mensaje){
-        return MessageResponseDTO.builder()
-                .id((long) mensaje.getId())
-                .contenido(mensaje.getContenido())
-                .emisorId((long) mensaje.getIdEmisor())
-                .emisorNombre(getUserName((long) mensaje.getIdEmisor()))
-                .receptorId((long) mensaje.getIdReceptor())
-                .receptorNombre(getUserName((long) mensaje.getIdReceptor()))
-                .enviadoEl(mensaje.getFechaEnvio())
-                .leido(mensaje.isLeido())
-                .build();
+    private UserDTO obtenerUsuarioPorUsername(String username) {
+        try {
+            return webClientBuilder.build()
+                    .get()
+                    .uri("http://localhost:8082/users/username/{username}", username)
+                    .retrieve()
+                    .bodyToMono(UserDTO.class)
+                    .block();
+        } catch (Exception e) {
+            throw new RuntimeException("El usuario '@" + username + "' no existe.");
+        }
     }
 }

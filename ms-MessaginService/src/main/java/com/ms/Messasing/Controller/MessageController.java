@@ -1,7 +1,9 @@
 package com.ms.Messasing.Controller;
 
-import com.ms.Messasing.Model.MessageRequestDTO;
+import com.ms.Messasing.Model.MessageCreatetDTO;
 import com.ms.Messasing.Model.MessageResponseDTO;
+import com.ms.Messasing.Model.UserDTO;
+import com.ms.Messasing.Security.JwtUtil;
 import com.ms.Messasing.Service.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,24 +20,37 @@ import java.util.List;
 @Slf4j
 public class MessageController {
     private final MessageService messageService;
+    private final JwtUtil jwtUtil;
 
-    @PostMapping
-    public ResponseEntity<MessageResponseDTO> enviarMensaje(@Valid @RequestBody MessageRequestDTO dto) {
-        log.info("Iniciando envio de mensaje des el usuario {} hacia {}", dto.getEmisorId(), dto.getReceptorId());
+    @PostMapping("/enviar/{usernameReceptor}")
+    public ResponseEntity<MessageResponseDTO> enviarMensaje(
+            @PathVariable String usernameReceptor,
+            @Valid @RequestBody MessageCreatetDTO request,
+            @RequestHeader("Authorization") String token) {
 
-        MessageResponseDTO response = messageService.enviarMessage(dto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        Long idEmisorLogueado = jwtUtil.extractUserId(token);
+
+        MessageResponseDTO respuesta = messageService.enviarMensajePorUsername(usernameReceptor, request, idEmisorLogueado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<MessageResponseDTO>> obtenerMensajes(@PathVariable Long userId) {
-        log.info("Iniciando obtener mensajes por usuario {}", userId);
-        List<MessageResponseDTO> mensajes = messageService.obtenerMessages(userId);
+    @GetMapping("/bandeja")
+    public ResponseEntity<List<UserDTO>> obtenerBandeja(@RequestHeader("Authorization") String token) {
 
-        if (mensajes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        Long idLogueado = jwtUtil.extractUserId(token);
 
-        return ResponseEntity.ok(mensajes);
+        List<UserDTO> bandeja = messageService.obtenerBandejaEntrada(idLogueado);
+        return ResponseEntity.ok(bandeja);
+    }
+
+    @GetMapping("/conversacion/{idOtroUsuario}")
+    public ResponseEntity<List<MessageResponseDTO>> obtenerChat(
+            @PathVariable Long idOtroUsuario,
+            @RequestHeader("Authorization") String token) {
+
+        Long idLogueado = jwtUtil.extractUserId(token);
+
+        List<MessageResponseDTO> conversacion = messageService.obtenerConversacion(idLogueado, idOtroUsuario);
+        return ResponseEntity.ok(conversacion);
     }
 }

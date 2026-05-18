@@ -1,7 +1,6 @@
 package com.ms.Comment.Model;
 
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor

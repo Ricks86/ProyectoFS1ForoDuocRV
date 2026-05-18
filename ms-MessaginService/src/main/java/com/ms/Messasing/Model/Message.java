@@ -15,7 +15,7 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotBlank(message = "El mensaje no puede estar vacío")
     @Size(max = 500, message = "El mensaje no puede exceder los 500 caracteres")
@@ -24,11 +24,11 @@ public class Message {
 
     @NotNull(message = "El emisor es obligatorio")
     @Column(name = "Id_EMISOR", nullable = false)
-    private int idEmisor;
+    private Long idEmisor;
 
     @NotNull(message = "El receptor es obligatorio")
     @Column(name = "Id_RECEPTOR", nullable = false)
-    private int idReceptor;
+    private Long idReceptor;
 
     @Column(name = "FECHA_ENVIO")
     private LocalDateTime fechaEnvio;
@@ -39,7 +39,7 @@ public class Message {
     @PrePersist
     public void alEnviar(){
         this.fechaEnvio = LocalDateTime.now();
-        this.leido = true;
+        this.leido = false;
     }
 
 }

@@ -10,13 +10,9 @@ import java.time.LocalDateTime;
 public class MessageResponseDTO {
     private Long id;
     private String contenido;
-
-    private Long emisorId;
-    private String emisorNombre;
-
-    private Long  receptorId;
-    private String receptorNombre;
-
-    private LocalDateTime enviadoEl;
+    private LocalDateTime fechaEnvio;
     private boolean leido;
+
+    private UserDTO emisor;
+    private UserDTO receptor;
 }
