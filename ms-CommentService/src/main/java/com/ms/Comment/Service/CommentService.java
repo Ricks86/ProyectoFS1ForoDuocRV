@@ -1,8 +1,9 @@
 package com.ms.Comment.Service;
 
 import com.ms.Comment.Model.Comment;
-import com.ms.Comment.Model.CommentRequestDTO;
+import com.ms.Comment.Model.CommentCreateDTO;
 import com.ms.Comment.Model.CommentResponseDTO;
+import com.ms.Comment.Model.UserDTO;
 import com.ms.Comment.Repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,52 +23,54 @@ public class CommentService {
     private final WebClient.Builder webClientBuilder;
 
     @Transactional
-    public CommentResponseDTO crearComentario(CommentRequestDTO dto) {
-        log.info("Intentando crear comentario para Post Id: {} por usuario ID: {}", dto.getPostId(), dto.getUserId());
+    public CommentResponseDTO crearComentario(CommentCreateDTO request, Long userIdLogueado) {
 
-        //Cambiar por usuario en futuras actualizaciones
-        Boolean userExists = checkExists("http://localhost:8081/api/auth/check/" + dto.getUserId());
-
-        Boolean postExists = checkExists("http://localhost:8083/api/posts/check/" + dto.getPostId());
-
-        if (!userExists || !postExists) {
-            log.info("Usuario o post no existe");
-            throw new RuntimeException("Usuario o post no existe");
-        }
-
-        Comment comment = Comment.builder()
-                .content(dto.getContent())
-                .userId(dto.getUserId())
-                .postId(dto.getPostId())
+        Comment nuevoComentario = Comment.builder()
+                .content(request.getContent())
+                .postId(request.getPostId())
+                .userId(userIdLogueado)
                 .build();
 
-        Comment savedComment = commentRepository.save(comment);
-        log.info("Comentario creado con ID: {}", savedComment.getId());
-        return mapToDTO(savedComment);
+        Comment comentarioGuardado = commentRepository.save(nuevoComentario);
+
+        UserDTO autorDto = obtenerAutorPorId(userIdLogueado);
+
+        return construirResponseDTO(comentarioGuardado, autorDto);
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDTO> getComentarioByPostId(Long postId) {
-        log.info("Intentando listar comentarios del post {}", postId);
+    public List<CommentResponseDTO> obtenerComentariosPorPostId(Long postId) {
 
-        return commentRepository.findByPostId(postId)
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        List<Comment> comentarios = commentRepository.findByPostIdOrderByCreatedAtAsc(postId);
+
+        return comentarios.stream()
+                .map(comentario -> {
+                    UserDTO autorDto = obtenerAutorPorId(comentario.getUserId());
+                    return construirResponseDTO(comentario, autorDto);
+                })
+                .toList();
     }
 
-    private Boolean checkExists(String url) {
-        return webClientBuilder.build().get().uri(url).retrieve()
-                .bodyToMono(Boolean.class).block();
+    private UserDTO obtenerAutorPorId(Long userId) {
+        try {
+            return webClientBuilder.build()
+                    .get()
+                    .uri("http://localhost:8082/users/{id}", userId)
+                    .retrieve()
+                    .bodyToMono(UserDTO.class)
+                    .block();
+        } catch (Exception e) {
+            return new UserDTO(userId, "Usuario Temporal", "Alias No Disponible");
+        }
     }
-    private CommentResponseDTO mapToDTO(Comment comment) {
+
+    private CommentResponseDTO construirResponseDTO(Comment comentario, UserDTO autor) {
         return CommentResponseDTO.builder()
-                .id(comment.getId())
-                .content(comment.getContent())
-                .userId(comment.getUserId())
-                .postId(comment.getPostId())
-                .fechaCreacion(comment.getCreatedAt())
+                .id(comentario.getId())
+                .content(comentario.getContent())
+                .postId(comentario.getPostId())
+                .createdAt(comentario.getCreatedAt())
+                .autor(autor)
                 .build();
     }
-
 }
