@@ -1,5 +1,6 @@
 package com.ms.User.Controller;
 
+import com.ms.User.Model.UserDTO;
 import com.ms.User.Model.UserModel;
 import com.ms.User.Model.UserProfileDTO;
 import com.ms.User.Model.UserUpdateDTO;
@@ -51,5 +52,19 @@ public class UserController {
         log.info("Petición para actualizar reputación a: {}", username);
         userService.addReputation(username, points);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> obtenerPorId(@PathVariable Long id) {
+        // Buscamos el usuario y lo mapeamos al DTO público
+        UserDTO usuario = userService.obtenerUsuarioDtoPorId(id);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDTO> obtenerPorUsername(@PathVariable String username) {
+        // Buscamos por el username único y mapeamos al DTO público
+        UserDTO usuario = userService.obtenerUsuarioDtoPorUsername(username);
+        return ResponseEntity.ok(usuario);
     }
 }

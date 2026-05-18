@@ -1,13 +1,13 @@
 package com.ms.User.Service;
 
+import com.ms.User.Model.UserDTO;
 import com.ms.User.Model.UserModel;
 import com.ms.User.Model.UserProfileDTO;
 import com.ms.User.Model.UserUpdateDTO;
 import com.ms.User.Repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,10 +19,8 @@ public class UserService {
 
     @Transactional
     public UserModel createInitialProfile(String username) {
-        log.info("Registrando perfil inicial para : {}", username);
 
         if (userRepository.existsByUsername(username)) {
-            log.warn("El perfil para {} ya existe", username);
             throw new RuntimeException("El perfil de usuario ya existe");
         }
 
@@ -34,11 +32,9 @@ public class UserService {
     }
 
     public UserProfileDTO getProfile(String username) {
-        log.info("Obteniendo perfil para: {}", username);
 
         UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.error("Usuario no encontrado: {}", username);
                     return new RuntimeException("Usuario no encontrado");
                 });
 
@@ -54,7 +50,6 @@ public class UserService {
 
     @Transactional
     public UserProfileDTO updateProfile(String username, UserUpdateDTO updateData) {
-        log.info("Actualizando perfil de: {}", username);
 
         UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
@@ -86,6 +81,24 @@ public class UserService {
 
         user.setReputationLevel(user.getReputationLevel() + points);
         userRepository.save(user);
+    }
+
+    //Dtos
+
+    @Transactional(readOnly = true)
+    public UserDTO obtenerUsuarioDtoPorId(Long id) {
+        UserModel usuario = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        return new UserDTO(usuario.getId(), usuario.getUsername(), usuario.getAlias());
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO obtenerUsuarioDtoPorUsername(String username) {
+        UserModel usuario = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con username: " + username));
+
+        return new UserDTO(usuario.getId(), usuario.getUsername(), usuario.getAlias());
     }
 
 }
