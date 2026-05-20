@@ -13,30 +13,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/{username}/init")
-    public ResponseEntity<UserModel> initProfile(@PathVariable String username) {
-        log.info("Petición para inicializar perfil: {}", username);
-        UserModel user = userService.createInitialProfile(username);
+    @PostMapping("/init")
+    public ResponseEntity<UserModel> initProfile(@RequestBody Map<String, Object> request) {
+        Long authId = ((Number) request.get("authId")).longValue();
+        String username = (String) request.get("username");
+        String email = (String) request.get("email");
+
+        UserModel user = userService.createInitialProfile(authId, username, email);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
 
-    @GetMapping("/{username}")
+    @GetMapping("/perfil/{username}")
     public ResponseEntity<UserProfileDTO> getProfile(@PathVariable String username) {
         log.info("Petición GET perfil para: {}", username);
         UserProfileDTO profile = userService.getProfile(username);
         return ResponseEntity.ok(profile);
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/acutalizar/{username}")
     public ResponseEntity<UserProfileDTO> updateProfile(
             @PathVariable String username,
             @Valid @RequestBody UserUpdateDTO updateDTO) {
@@ -56,7 +61,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> obtenerPorId(@PathVariable Long id) {
-        // Buscamos el usuario y lo mapeamos al DTO público
         UserDTO usuario = userService.obtenerUsuarioDtoPorId(id);
         return ResponseEntity.ok(usuario);
     }

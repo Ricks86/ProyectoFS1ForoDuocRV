@@ -18,14 +18,15 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserModel createInitialProfile(String username) {
-
+    public UserModel createInitialProfile(Long authId, String username, String email) {
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("El perfil de usuario ya existe");
         }
 
         UserModel newUser = UserModel.builder()
+                .authId(authId)
                 .username(username)
+                .email(email)
                 .build();
 
         return userRepository.save(newUser);
@@ -87,7 +88,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDTO obtenerUsuarioDtoPorId(Long id) {
-        UserModel usuario = userRepository.findById(id)
+        UserModel usuario = userRepository.findByAuthId(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
         return new UserDTO(usuario.getId(), usuario.getUsername(), usuario.getAlias());

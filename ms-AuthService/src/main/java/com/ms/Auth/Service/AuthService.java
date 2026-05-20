@@ -12,7 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -22,6 +26,7 @@ public class AuthService {
     private final UserAuthRepository userAuthRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final WebClient.Builder webClientBuilder;
 
     @Transactional
     public String register( RegisterRequestDTO userAuth) {
@@ -41,6 +46,19 @@ public class AuthService {
                 .build();
 
         userAuthRepository.save(nuevo);
+
+        Map<String, Object> initData = new HashMap<>();
+        initData.put("authId", nuevo.getId()); // El ID que te devolvió la BD de Auth
+        initData.put("username", nuevo.getNombreUser());
+        initData.put("email", nuevo.getEmail());
+
+        webClientBuilder.build()
+                .post()
+                .uri("http://localhost:8082/users/init")
+                .bodyValue(initData)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
         return "Usuario '" + nuevo.getNombreUser() + "' registrado con éxito en el sistema.";
     }
 

@@ -16,6 +16,7 @@ public class PostResponseDTO {
     private String contenido;
     private LocalDateTime fechaCreacion;
     private Long idComunidad;
+    private Long idUsuario;
 
     private UserDTO autor;
 }

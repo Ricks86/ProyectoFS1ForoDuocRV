@@ -52,6 +52,7 @@ public class PostService {
                 .contenido(postGuardado.getContenido())
                 .fechaCreacion(postGuardado.getFechaCreacion())
                 .idComunidad(postGuardado.getIdComunidad())
+                .idUsuario(idUsuarioLogueado)
                 .autor(autorDto)
                 .build();
     }
@@ -69,7 +70,7 @@ public class PostService {
                     .uri("http://localhost:8082/users/{id}", post.getIdUsuario())
                     .retrieve()
                     .bodyToMono(UserDTO.class)
-                    .block(); // Esperamos la respuesta síncronamente
+                    .block();
         } catch (Exception e) {
             autorDto = new UserDTO(post.getIdUsuario(), "Usuario Temporal", "Alias No Disponible");
         }

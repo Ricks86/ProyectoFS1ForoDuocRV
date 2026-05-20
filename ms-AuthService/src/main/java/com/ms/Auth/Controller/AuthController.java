@@ -22,7 +22,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginRequestDTO request) {
-        // Al devolver ResponseEntity<TokenResponseDTO>, Spring genera el JSON automáticamente
         return ResponseEntity.ok(authService.login(request));
     }
 

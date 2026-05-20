@@ -19,6 +19,5 @@ public class PostCreateDTO {
     @Size(min = 10, max = 2000, message = "El contenido debe tener entre 10 y 2000 caracteres")
     private String contenido;
 
-    @NotNull(message = "El ID de comunidad es obligatorio")
     private Long idComunidad;
 }

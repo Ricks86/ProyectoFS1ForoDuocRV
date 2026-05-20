@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounaf";
+    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounafantasiaendondeperuinvadechileychiletienequeexportar";
 
     public Long extractUserId(String token) {
         if (token.startsWith("Bearer ")) {

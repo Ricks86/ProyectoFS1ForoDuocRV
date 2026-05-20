@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounaf";//32
+    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounafantasiaendondeperuinvadechileychiletienequeexportar";//32
     private static final long EXPIRATION_TIME = 86400000;
 
     public String generateToken(UserAuth user){
@@ -26,15 +27,10 @@ public class JwtService {
                 .setSubject(user.getNombreUser())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Firmamos con nuestra llave
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        if (keyBytes.length < 32) {
-            // Si la clave es muy corta, tirará error. Usamos texto plano si no es Base64
-            return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-        }
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 }
