@@ -14,4 +14,5 @@ public class CommentCreateDTO {
 
     @NotNull(message = "El Id de post es obligatorio")
     private Long postId;
+
 }

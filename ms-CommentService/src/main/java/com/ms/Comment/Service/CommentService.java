@@ -52,16 +52,12 @@ public class CommentService {
     }
 
     private UserDTO obtenerAutorPorId(Long userId) {
-        try {
             return webClientBuilder.build()
                     .get()
                     .uri("http://localhost:8082/users/{id}", userId)
                     .retrieve()
                     .bodyToMono(UserDTO.class)
                     .block();
-        } catch (Exception e) {
-            return new UserDTO(userId, "Usuario Temporal", "Alias No Disponible");
-        }
     }
 
     private CommentResponseDTO construirResponseDTO(Comment comentario, UserDTO autor) {
@@ -69,6 +65,7 @@ public class CommentService {
                 .id(comentario.getId())
                 .content(comentario.getContent())
                 .postId(comentario.getPostId())
+                .userId(comentario.getUserId())
                 .createdAt(comentario.getCreatedAt())
                 .autor(autor)
                 .build();

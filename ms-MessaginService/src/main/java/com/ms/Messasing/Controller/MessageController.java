@@ -1,5 +1,6 @@
 package com.ms.Messasing.Controller;
 
+import com.ms.Messasing.Model.BandejaItemDTO;
 import com.ms.Messasing.Model.MessageCreatetDTO;
 import com.ms.Messasing.Model.MessageResponseDTO;
 import com.ms.Messasing.Model.UserDTO;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/messages")
+    @RequestMapping("/api/messages")
 @RequiredArgsConstructor
 @Slf4j
 public class MessageController {
@@ -35,22 +36,23 @@ public class MessageController {
     }
 
     @GetMapping("/bandeja")
-    public ResponseEntity<List<UserDTO>> obtenerBandeja(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<List<BandejaItemDTO>> obtenerBandeja(@RequestHeader("Authorization") String token) {
 
         Long idLogueado = jwtUtil.extractUserId(token);
 
-        List<UserDTO> bandeja = messageService.obtenerBandejaEntrada(idLogueado);
+        List<BandejaItemDTO> bandeja = messageService.obtenerBandejaEntrada(idLogueado);
         return ResponseEntity.ok(bandeja);
     }
 
-    @GetMapping("/conversacion/{idOtroUsuario}")
+    @GetMapping("/conversacion/{otroUsuario}")
     public ResponseEntity<List<MessageResponseDTO>> obtenerChat(
-            @PathVariable Long idOtroUsuario,
+            @PathVariable String otroUsuario,
             @RequestHeader("Authorization") String token) {
 
         Long idLogueado = jwtUtil.extractUserId(token);
 
-        List<MessageResponseDTO> conversacion = messageService.obtenerConversacion(idLogueado, idOtroUsuario);
+        List<MessageResponseDTO> conversacion = messageService.obtenerConversacion(idLogueado, otroUsuario);
+
         return ResponseEntity.ok(conversacion);
     }
 }

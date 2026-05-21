@@ -1,12 +1,11 @@
 package com.ms.Post.Service;
 
 
-import com.ms.Post.Model.Post;
-import com.ms.Post.Model.PostCreateDTO;
-import com.ms.Post.Model.PostResponseDTO;
-import com.ms.Post.Model.UserDTO;
+import com.ms.Post.Model.*;
 import com.ms.Post.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -143,6 +142,33 @@ public class PostService {
                         .autor(autorDto) // Inyectamos el mismo autor a todos sus posts
                         .build())
                 .toList();
+    }
+
+    public Page<PostFeedDTO> getFeedPaginado(Pageable pageable) {
+        Page<Post> postsPage = postRepository.findAllByOrderByFechaCreacionAsc(pageable);
+
+        return postsPage.map(post -> {
+            UserDTO autorDto = null;
+            try {
+
+                autorDto = webClientBuilder.build()
+                        .get()
+                        .uri("http://localhost:8082/users/{id}", post.getIdUsuario())
+                        .retrieve()
+                        .bodyToMono(UserDTO.class)
+                        .block();
+            } catch (Exception e) {
+                autorDto = new UserDTO(post.getIdUsuario(), "Usuario Desconocido", "N/A");
+            }
+
+            return new PostFeedDTO(
+                    post.getId(),
+                    post.getTitulo(),
+                    post.getContenido(),
+                    post.getFechaCreacion(),
+                    autorDto
+            );
+        });
     }
 
 }

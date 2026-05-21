@@ -1,9 +1,6 @@
 package com.ms.Messasing.Service;
 
-import com.ms.Messasing.Model.Message;
-import com.ms.Messasing.Model.MessageCreatetDTO;
-import com.ms.Messasing.Model.MessageResponseDTO;
-import com.ms.Messasing.Model.UserDTO;
+import com.ms.Messasing.Model.*;
 import com.ms.Messasing.Repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,7 +27,7 @@ public class MessageService {
 
         Message nuevoMensaje = Message.builder()
                 .contenido(request.getContenido())
-                .idEmisor(idEmisorLogueado)
+                .idEmisor(emisorDto.getId())
                 .idReceptor(receptorDto.getId())
                 .build();
 
@@ -46,38 +44,46 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserDTO> obtenerBandejaEntrada(Long idLogueado) {
+    public List<BandejaItemDTO> obtenerBandejaEntrada(Long idLogueado) {
+        UserDTO userlog = obtenerUsuarioPorId(idLogueado);
+        List<Object[]> resultados = messageRepository.getResumenBandeja(userlog.getId());
 
-        List<Long> idsEmisores = messageRepository.findDistinctEmisoresByIdReceptor(idLogueado);
+        return resultados.stream().map(fila -> {
+            Long idEmisor = ((Number) fila[0]).longValue();
+            Long sinLeer = ((Number) fila[1]).longValue();
+            LocalDateTime ultimaFecha = (LocalDateTime) fila[2];
 
-        return idsEmisores.stream()
-                .map(idEmisor -> {
-                    try {
-                        return webClientBuilder.build()
-                                .get()
-                                .uri("http://localhost:8082/users/{id}", idEmisor)
-                                .retrieve()
-                                .bodyToMono(UserDTO.class)
-                                .block(); // Llamada síncrona por cada remitente
-                    } catch (Exception e) {
-                        return new UserDTO(idEmisor, "Usuario Temporal", "Alias No Disponible");
-                    }
-                })
-                .toList();
+            UserDTO emisorDto;
+            try {
+                emisorDto = webClientBuilder.build()
+                        .get()
+                        .uri("http://localhost:8082/users/{id}", idEmisor)
+                        .retrieve()
+                        .bodyToMono(UserDTO.class)
+                        .block();
+            } catch (Exception e) {
+                emisorDto = new UserDTO(idEmisor, "Usuario Desconocido", "N/A");
+            }
+
+            return new BandejaItemDTO(emisorDto, sinLeer, ultimaFecha);
+        }).toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<MessageResponseDTO> obtenerConversacion(Long idLogueado, Long idOtroUsuario) {
+    @Transactional
+    public List<MessageResponseDTO> obtenerConversacion(Long idLogueado, String otroUsuario) {
 
-        List<Message> mensajes = messageRepository.findConversacionCompleta(idLogueado, idOtroUsuario);
+        UserDTO otroUsuarioDto = obtenerUsuarioPorUsername(otroUsuario);
+        UserDTO usuarioLog = obtenerUsuarioPorId(idLogueado);
 
-        UserDTO perfilLogueado = obtenerUsuarioPorId(idLogueado);
-        UserDTO perfilOtro = obtenerUsuarioPorId(idOtroUsuario);
+        messageRepository.marcarMensajesComoLeidos(otroUsuarioDto.getId(), usuarioLog.getId());
+
+        List<Message> mensajes = messageRepository.findConversacionCompleta(usuarioLog.getId(), otroUsuarioDto.getId());
+
 
         return mensajes.stream()
                 .map(mensaje -> {
-                    UserDTO emisor = (mensaje.getIdEmisor().equals(idLogueado)) ? perfilLogueado : perfilOtro;
-                    UserDTO receptor = (mensaje.getIdReceptor().equals(idLogueado)) ? perfilLogueado : perfilOtro;
+                    UserDTO emisor = (mensaje.getIdEmisor().equals(usuarioLog.getId()) ? usuarioLog : otroUsuarioDto);
+                    UserDTO receptor = (mensaje.getIdReceptor().equals(usuarioLog.getId())) ? usuarioLog : otroUsuarioDto;
 
                     return MessageResponseDTO.builder()
                             .id(mensaje.getId())

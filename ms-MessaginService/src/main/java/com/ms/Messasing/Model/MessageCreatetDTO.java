@@ -13,6 +13,4 @@ public class MessageCreatetDTO {
     @Size(max = 500)
     private String contenido;
 
-    @NotNull(message = "El ID del receptor es obligatorio")
-    private Long receptorId;
 }
