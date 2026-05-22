@@ -1,6 +1,8 @@
 package com.ms.Post.Repository;
 
 import com.ms.Post.Model.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByIdUsuario(Long idUsuario);
 
     List<Post> findByIdUsuarioAndFechaCreacionBefore(Long idUsuario, LocalDateTime fecha);
+
+    Page<Post> findAllByOrderByFechaCreacionAsc(Pageable pageable);
 }
