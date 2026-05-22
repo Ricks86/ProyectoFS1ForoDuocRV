@@ -17,22 +17,19 @@ public class AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nombreServicio;
+    @Column(name = "usuario_id", nullable = false)
+    private Long usuarioId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String accion;
 
-    private String userId;
+    @Column(nullable = false, length = 50)
+    private String recurso;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, length = 500)
     private String detalles;
 
     @Column(nullable = false)
-    private LocalDateTime timestamp;
-
-    @PrePersist
-    protected void alCrear() {
-        this.timestamp = LocalDateTime.now();
-    }
+    @Builder.Default
+    private LocalDateTime fecha = LocalDateTime.now();
 }

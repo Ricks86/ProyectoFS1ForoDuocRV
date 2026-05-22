@@ -1,14 +1,13 @@
 package com.ms.Auth.Service;
 
 
-import com.ms.Auth.Model.LoginRequestDTO;
-import com.ms.Auth.Model.RegisterRequestDTO;
-import com.ms.Auth.Model.TokenResponseDTO;
-import com.ms.Auth.Model.UserAuth;
+import com.ms.Auth.Client.AuditClient;
+import com.ms.Auth.Model.*;
 import com.ms.Auth.Repository.UserAuthRepository;
 import com.ms.Auth.Security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public class AuthService {
     private final WebClient.Builder webClientBuilder;
 
     @Transactional
-    public String register( RegisterRequestDTO userAuth) {
+    public TokenResponseDTO register( RegisterRequestDTO userAuth) {
 
         if (userAuthRepository.existsByNombreUser(userAuth.getNombreUser())) {
             throw new RuntimeException("El nombre de usuario ya existe");
@@ -48,7 +47,7 @@ public class AuthService {
         userAuthRepository.save(nuevo);
 
         Map<String, Object> initData = new HashMap<>();
-        initData.put("authId", nuevo.getId()); // El ID que te devolvió la BD de Auth
+        initData.put("authId", nuevo.getId());
         initData.put("username", nuevo.getNombreUser());
         initData.put("email", nuevo.getEmail());
 
@@ -59,7 +58,11 @@ public class AuthService {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
-        return "Usuario '" + nuevo.getNombreUser() + "' registrado con éxito en el sistema.";
+        return TokenResponseDTO.builder()
+                .token(null)
+                .username(nuevo.getNombreUser())
+                .usuarioId(nuevo.getId())
+                .build();
     }
 
     public TokenResponseDTO login(LoginRequestDTO request){
@@ -76,6 +79,7 @@ public class AuthService {
         return TokenResponseDTO.builder()
                 .token(token)
                 .username(user.getNombreUser())
+                .usuarioId(user.getId())
                 .build();
     }
 
