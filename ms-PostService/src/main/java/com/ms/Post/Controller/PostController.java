@@ -5,6 +5,7 @@ import com.ms.Post.Model.PostCreateDTO;
 import com.ms.Post.Model.PostFeedDTO;
 import com.ms.Post.Model.PostResponseDTO;
 import com.ms.Post.Security.JwtUtil;
+import com.ms.Post.Service.AuditService;
 import com.ms.Post.Service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
     private final JwtUtil jwtUtil;
+    private final AuditService auditoriaService;
 
     @PostMapping
     public ResponseEntity<PostResponseDTO> crearPost(
@@ -36,6 +38,13 @@ public class PostController {
         Long idUsuarioLogueado = jwtUtil.extractUserId(token);
 
         PostResponseDTO nuevoPost = postService.crearPost(request, idUsuarioLogueado);
+
+        auditoriaService.registrarLog(
+                idUsuarioLogueado,
+                "CREATE_POST",
+                "Post publicado exitosamente con ID [" + nuevoPost.getId() + "] y título: '" + nuevoPost.getTitulo()
+        );
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPost);
     }
 

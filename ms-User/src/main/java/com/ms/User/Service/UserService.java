@@ -54,7 +54,6 @@ public class UserService {
 
         UserModel user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.error("Usuario no encontrado: {}", username);
                     return new RuntimeException("Usuario no encontrado");
                 });
 

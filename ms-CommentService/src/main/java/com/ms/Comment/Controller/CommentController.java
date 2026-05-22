@@ -3,6 +3,7 @@ package com.ms.Comment.Controller;
 import com.ms.Comment.Model.CommentCreateDTO;
 import com.ms.Comment.Model.CommentResponseDTO;
 import com.ms.Comment.Security.JwtUtil;
+import com.ms.Comment.Service.AuditService;
 import com.ms.Comment.Service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final JwtUtil jwtUtil;
+    private final AuditService auditoriaService; // 🚨 Tu mensajero espía inyectado
 
     @PostMapping
     public ResponseEntity<CommentResponseDTO> crearComentario(
@@ -31,12 +33,20 @@ public class CommentController {
 
         CommentResponseDTO nuevoComentario = commentService.crearComentario(request, userIdLogueado);
 
+        auditoriaService.registrarLog(
+                userIdLogueado,
+                "CREATE_COMMENT",
+                "Comentario ID [" + nuevoComentario.getId() + "] publicado en el Post ID [" + request.getPostId() + "]"
+        );
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoComentario);
     }
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<CommentResponseDTO>> obtenerComentariosPorPost(@PathVariable Long postId) {
+
         List<CommentResponseDTO> comentarios = commentService.obtenerComentariosPorPostId(postId);
+
         return ResponseEntity.ok(comentarios);
     }
 }

@@ -1,11 +1,12 @@
 package com.ms.Audit.Service;
 
 import com.ms.Audit.Model.AuditModel;
-import com.ms.Audit.Model.AuditRequestDto;
+import com.ms.Audit.Model.AuditRequestDTO;
 import com.ms.Audit.Repository.AuditRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,30 +17,28 @@ import java.util.List;
 public class AuditService {
     private final AuditRepository repositorio;
 
-    public void crearLog(AuditRequestDto dto){
-        log.info("Registrando actividad del servicio: {}",dto.nombreService());
+    private final AuditRepository auditRepository;
 
-        AuditModel logIn = AuditModel.builder()
-                .nombreServicio(dto.nombreService())
-                .accion(dto.accion())
-                .userId(dto.userID())
-                .detalles(dto.details())
-                .timestamp(LocalDateTime.now())
-                .build();
+    @Transactional
+    public void registrarAuditoria(AuditRequestDTO requestDTO) {
+        try {
+            AuditModel nuevoLog = AuditModel.builder()
+                    .usuarioId(requestDTO.getUsuarioId())
+                    .accion(requestDTO.getAccion())
+                    .recurso(requestDTO.getRecurso())
+                    .detalles(requestDTO.getDetalles())
+                    .build();
 
-        repositorio.save(logIn);
-    }
+            auditRepository.save(nuevoLog);
 
-    public List<AuditModel>getAllLog(){
-        return repositorio.findAll();
-    }
+            log.info("Auditoría guardada: Acción [{}] en [{}] por Usuario ID [{}]",
+                    nuevoLog.getAccion(), nuevoLog.getRecurso(), nuevoLog.getUsuarioId());
 
-    public List<AuditModel>getLogsPorNombre(String nombre){
-        return repositorio.findByNombreServicio(nombre);
-    }
+        } catch (Exception e) {
+            log.error("Error crítico al persistir auditoría: {}", e.getMessage(), e);
 
-    public List<AuditModel>getLogsPorRangoFecha(LocalDateTime start, LocalDateTime end){
-        return repositorio.findByTimestampBetween(start, end);
+            throw new RuntimeException("Fallo al guardar el registro de auditoría", e);
+        }
     }
 
 }
