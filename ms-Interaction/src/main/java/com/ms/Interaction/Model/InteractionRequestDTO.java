@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InteractionRequesrDTO {
+public class InteractionRequestDTO {
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String username;
 
