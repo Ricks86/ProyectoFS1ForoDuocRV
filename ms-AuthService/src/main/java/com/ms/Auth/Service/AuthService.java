@@ -2,6 +2,7 @@ package com.ms.Auth.Service;
 
 
 import com.ms.Auth.Client.AuditClient;
+import com.ms.Auth.Client.UserClient;
 import com.ms.Auth.Model.*;
 import com.ms.Auth.Repository.UserAuthRepository;
 import com.ms.Auth.Security.JwtService;
@@ -25,10 +26,10 @@ public class AuthService {
     private final UserAuthRepository userAuthRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final WebClient.Builder webClientBuilder;
+    private final UserClient userClient;
 
     @Transactional
-    public TokenResponseDTO register( RegisterRequestDTO userAuth) {
+    public RegisterResponseDTO register( RegisterRequestDTO userAuth) {
 
         if (userAuthRepository.existsByNombreUser(userAuth.getNombreUser())) {
             throw new RuntimeException("El nombre de usuario ya existe");
@@ -51,18 +52,17 @@ public class AuthService {
         initData.put("username", nuevo.getNombreUser());
         initData.put("email", nuevo.getEmail());
 
-        webClientBuilder.build()
-                .post()
-                .uri("http://localhost:8082/users/init")
-                .bodyValue(initData)
-                .retrieve()
-                .bodyToMono(Void.class)
-                .block();
-        return TokenResponseDTO.builder()
-                .token(null)
-                .username(nuevo.getNombreUser())
-                .usuarioId(nuevo.getId())
-                .build();
+        try {
+            userClient.inicializarUsuario(initData);
+            log.info("Perfil inicializado en ms-User para authId [{}]", nuevo.getId());
+        } catch (Exception e) {
+            log.error("Error al contactar ms-User para inicializar perfil. authId [{}]. Detalle: {}", nuevo.getId(), e.getMessage());
+        }
+
+        return new RegisterResponseDTO(
+                nuevo.getId(),
+                "Usuario '" + nuevo.getNombreUser() + "' registrado con éxito en el sistema."
+        );
     }
 
     public TokenResponseDTO login(LoginRequestDTO request){

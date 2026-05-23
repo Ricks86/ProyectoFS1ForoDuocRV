@@ -50,12 +50,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileDTO updateProfile(String username, UserUpdateDTO updateData) {
+    public UserProfileDTO updateProfile(String username, UserUpdateDTO updateData, Long idUsuarioLogueado) {
 
         UserModel user = userRepository.findByUsername(username)
-                .orElseThrow(() -> {
-                    return new RuntimeException("Usuario no encontrado");
-                });
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (!user.getAuthId().equals(idUsuarioLogueado)) {
+            throw new RuntimeException("Acceso denegado: No tienes permisos para modificar el perfil de otro usuario");
+        }
 
         if (updateData.getBio() != null ) user.setBio(updateData.getBio());
         if (updateData.getAvatarUrl() != null) user.setAvatarUrl(updateData.getAvatarUrl());
@@ -90,7 +92,7 @@ public class UserService {
         UserModel usuario = userRepository.findByAuthId(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
-        return new UserDTO(usuario.getId(), usuario.getUsername(), usuario.getAlias());
+        return new UserDTO(usuario.getAuthId(), usuario.getUsername(), usuario.getAlias());
     }
 
     @Transactional(readOnly = true)
@@ -98,7 +100,7 @@ public class UserService {
         UserModel usuario = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con username: " + username));
 
-        return new UserDTO(usuario.getId(), usuario.getUsername(), usuario.getAlias());
+        return new UserDTO(usuario.getAuthId(), usuario.getUsername(), usuario.getAlias());
     }
 
 }

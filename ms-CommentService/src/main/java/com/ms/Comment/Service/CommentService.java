@@ -1,5 +1,6 @@
 package com.ms.Comment.Service;
 
+import com.ms.Comment.Client.UserClient;
 import com.ms.Comment.Model.Comment;
 import com.ms.Comment.Model.CommentCreateDTO;
 import com.ms.Comment.Model.CommentResponseDTO;
@@ -9,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -20,10 +21,10 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final WebClient.Builder webClientBuilder;
+    private final UserClient userClient;
 
     @Transactional
-    public CommentResponseDTO crearComentario(CommentCreateDTO request, Long userIdLogueado) {
+    public CommentResponseDTO crearComentario(CommentCreateDTO request, Long userIdLogueado, String token) {
 
         Comment nuevoComentario = Comment.builder()
                 .content(request.getContent())
@@ -33,31 +34,34 @@ public class CommentService {
 
         Comment comentarioGuardado = commentRepository.save(nuevoComentario);
 
-        UserDTO autorDto = obtenerAutorPorId(userIdLogueado);
+        UserDTO autorDto = obtenerAutorSeguro(userIdLogueado, token);
 
         return construirResponseDTO(comentarioGuardado, autorDto);
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDTO> obtenerComentariosPorPostId(Long postId) {
+    public List<CommentResponseDTO> obtenerComentariosPorPostId(Long postId, String token) {
 
         List<Comment> comentarios = commentRepository.findByPostIdOrderByCreatedAtAsc(postId);
 
+        Map<Long, UserDTO> userCache = new HashMap<>();
+
         return comentarios.stream()
                 .map(comentario -> {
-                    UserDTO autorDto = obtenerAutorPorId(comentario.getUserId());
+                    UserDTO autorDto = userCache.computeIfAbsent(comentario.getUserId(),
+                            id -> obtenerAutorSeguro(id, token));
                     return construirResponseDTO(comentario, autorDto);
                 })
                 .toList();
     }
 
-    private UserDTO obtenerAutorPorId(Long userId) {
-            return webClientBuilder.build()
-                    .get()
-                    .uri("http://localhost:8082/users/{id}", userId)
-                    .retrieve()
-                    .bodyToMono(UserDTO.class)
-                    .block();
+    private UserDTO obtenerAutorSeguro(Long userId, String token) {
+        try {
+            return userClient.obtenerUsuarioPorId(userId, token);
+        } catch (Exception e) {
+            log.warn("Fallo al contactar ms-User para ID {}: {}", userId, e.getMessage());
+            return new UserDTO(userId, "Usuario Desconocido", "Alias No Disponible");
+        }
     }
 
     private CommentResponseDTO construirResponseDTO(Comment comentario, UserDTO autor) {

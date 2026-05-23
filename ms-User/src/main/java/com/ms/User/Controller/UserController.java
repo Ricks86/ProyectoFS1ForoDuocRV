@@ -1,35 +1,35 @@
 package com.ms.User.Controller;
 
-import com.ms.User.Model.UserDTO;
-import com.ms.User.Model.UserModel;
-import com.ms.User.Model.UserProfileDTO;
-import com.ms.User.Model.UserUpdateDTO;
+import com.ms.User.Model.*;
+import com.ms.User.Security.JwtUtil;
+import com.ms.User.Service.AuditService;
 import com.ms.User.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private final AuditService auditoriaService;
 
     @PostMapping("/init")
-    public ResponseEntity<UserModel> initProfile(@RequestBody Map<String, Object> request) {
-        Long authId = ((Number) request.get("authId")).longValue();
-        String username = (String) request.get("username");
-        String email = (String) request.get("email");
+    public ResponseEntity<UserModel> initProfile(@Valid @RequestBody UserInitDTO request) {
 
-        UserModel user = userService.createInitialProfile(authId, username, email);
+        UserModel user = userService.createInitialProfile(
+                request.getAuthId(),
+                request.getUsername(),
+                request.getEmail()
+        );
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
@@ -41,12 +41,24 @@ public class UserController {
         return ResponseEntity.ok(profile);
     }
 
-    @PutMapping("/acutalizar/{username}")
+    @PutMapping("/actualizar/{username}")
     public ResponseEntity<UserProfileDTO> updateProfile(
             @PathVariable String username,
-            @Valid @RequestBody UserUpdateDTO updateDTO) {
+            @Valid @RequestBody UserUpdateDTO updateDTO,
+            @RequestHeader("Authorization") String token) {
+
+        Long idUsuarioLogueado = jwtUtil.extractUserId(token);
+
         log.info("Petición PUT perfil para: {}", username);
-        UserProfileDTO updated = userService.updateProfile(username, updateDTO);
+
+        UserProfileDTO updated = userService.updateProfile(username, updateDTO, idUsuarioLogueado);
+
+        auditoriaService.registrarLog(
+                idUsuarioLogueado,
+                "UPDATE_PROFILE",
+                "El usuario actualizó su biografía o avatar en el sistema"
+        );
+
         return ResponseEntity.ok(updated);
     }
 

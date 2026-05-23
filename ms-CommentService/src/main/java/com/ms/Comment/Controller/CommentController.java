@@ -1,6 +1,6 @@
 package com.ms.Comment.Controller;
 
-import com.ms.Comment.Model.CommentCreateDTO;
+import  com.ms.Comment.Model.CommentCreateDTO;
 import com.ms.Comment.Model.CommentResponseDTO;
 import com.ms.Comment.Security.JwtUtil;
 import com.ms.Comment.Service.AuditService;
@@ -22,16 +22,16 @@ public class CommentController {
 
     private final CommentService commentService;
     private final JwtUtil jwtUtil;
-    private final AuditService auditoriaService; // 🚨 Tu mensajero espía inyectado
+    private final AuditService auditoriaService;
 
     @PostMapping
     public ResponseEntity<CommentResponseDTO> crearComentario(
             @Valid @RequestBody CommentCreateDTO request,
-            @RequestHeader("Authorization") String token) {
+            @RequestHeader("Authorization") String token) { // 🚨 Token recibido
 
         Long userIdLogueado = jwtUtil.extractUserId(token);
 
-        CommentResponseDTO nuevoComentario = commentService.crearComentario(request, userIdLogueado);
+        CommentResponseDTO nuevoComentario = commentService.crearComentario(request, userIdLogueado, token);
 
         auditoriaService.registrarLog(
                 userIdLogueado,
@@ -43,9 +43,11 @@ public class CommentController {
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<CommentResponseDTO>> obtenerComentariosPorPost(@PathVariable Long postId) {
+    public ResponseEntity<List<CommentResponseDTO>> obtenerComentariosPorPost(
+            @PathVariable Long postId,
+            @RequestHeader("Authorization") String token) { // 🚨 Token recibido para leer comentarios
 
-        List<CommentResponseDTO> comentarios = commentService.obtenerComentariosPorPostId(postId);
+        List<CommentResponseDTO> comentarios = commentService.obtenerComentariosPorPostId(postId, token);
 
         return ResponseEntity.ok(comentarios);
     }

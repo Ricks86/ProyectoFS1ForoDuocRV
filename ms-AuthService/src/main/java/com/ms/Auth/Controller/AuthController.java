@@ -1,9 +1,6 @@
 package com.ms.Auth.Controller;
 
-import com.ms.Auth.Model.LoginRequestDTO;
-import com.ms.Auth.Model.RegisterRequestDTO;
-import com.ms.Auth.Model.TokenResponseDTO;
-import com.ms.Auth.Model.UserAuth;
+import com.ms.Auth.Model.*;
 import com.ms.Auth.Service.AuditService;
 import com.ms.Auth.Service.AuthService;
 import jakarta.validation.Valid;
@@ -37,8 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TokenResponseDTO> register(@RequestBody RegisterRequestDTO request) {
-        TokenResponseDTO response = authService.register(request);
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO request) {
+        RegisterResponseDTO response = authService.register(request);
 
         auditoriaService.registrarLog(
                 response.getUsuarioId(),
