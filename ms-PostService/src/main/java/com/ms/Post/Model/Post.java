@@ -27,8 +27,6 @@ public class Post {
     @Column(name = "CONTENIDO", nullable = false,length = 2000)
     private String contenido;
 
-    //relaciones
-
     @NotNull(message = "El id del usuario es obligatorio")
     @Column(name = "ID_USUARIO", nullable = false)
     private Long idUsuario;

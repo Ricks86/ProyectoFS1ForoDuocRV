@@ -27,7 +27,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponseDTO> crearComentario(
             @Valid @RequestBody CommentCreateDTO request,
-            @RequestHeader("Authorization") String token) { // 🚨 Token recibido
+            @RequestHeader("Authorization") String token) {
 
         Long userIdLogueado = jwtUtil.extractUserId(token);
 
@@ -45,7 +45,7 @@ public class CommentController {
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<CommentResponseDTO>> obtenerComentariosPorPost(
             @PathVariable Long postId,
-            @RequestHeader("Authorization") String token) { // 🚨 Token recibido para leer comentarios
+            @RequestHeader("Authorization") String token) {
 
         List<CommentResponseDTO> comentarios = commentService.obtenerComentariosPorPostId(postId, token);
 

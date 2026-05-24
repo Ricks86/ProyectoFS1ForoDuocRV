@@ -23,7 +23,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/users/init").permitAll()
-                        .requestMatchers(HttpMethod.GET,"api/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/users/username/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/users/id/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
