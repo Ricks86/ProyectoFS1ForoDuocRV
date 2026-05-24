@@ -3,7 +3,6 @@ package com.ms.Messasing.Controller;
 import com.ms.Messasing.Model.BandejaItemDTO;
 import com.ms.Messasing.Model.MessageCreatetDTO;
 import com.ms.Messasing.Model.MessageResponseDTO;
-import com.ms.Messasing.Model.UserDTO;
 import com.ms.Messasing.Security.JwtUtil;
 import com.ms.Messasing.Service.AuditService;
 import com.ms.Messasing.Service.MessageService;
@@ -33,7 +32,7 @@ public class MessageController {
 
         Long idEmisorLogueado = jwtUtil.extractUserId(token);
 
-        MessageResponseDTO respuesta = messageService.enviarMensajePorUsername(usernameReceptor, request, idEmisorLogueado);
+        MessageResponseDTO respuesta = messageService.enviarMensajePorUsername(usernameReceptor, request, idEmisorLogueado, token);
 
         auditoriaService.registrarLog(
                 idEmisorLogueado,
@@ -49,7 +48,7 @@ public class MessageController {
 
         Long idLogueado = jwtUtil.extractUserId(token);
 
-        List<BandejaItemDTO> bandeja = messageService.obtenerBandejaEntrada(idLogueado);
+        List<BandejaItemDTO> bandeja = messageService.obtenerBandejaEntrada(idLogueado, token);
         return ResponseEntity.ok(bandeja);
     }
 
@@ -60,7 +59,7 @@ public class MessageController {
 
         Long idLogueado = jwtUtil.extractUserId(token);
 
-        List<MessageResponseDTO> conversacion = messageService.obtenerConversacion(idLogueado, otroUsuario);
+        List<MessageResponseDTO> conversacion = messageService.obtenerConversacion(idLogueado, otroUsuario, token);
 
         return ResponseEntity.ok(conversacion);
     }

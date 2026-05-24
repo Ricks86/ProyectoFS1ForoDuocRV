@@ -37,44 +37,49 @@ public class PostController {
 
         Long idUsuarioLogueado = jwtUtil.extractUserId(token);
 
-        PostResponseDTO nuevoPost = postService.crearPost(request, idUsuarioLogueado);
+        PostResponseDTO nuevoPost = postService.crearPost(request, idUsuarioLogueado, token);
 
         auditoriaService.registrarLog(
                 idUsuarioLogueado,
                 "CREATE_POST",
-                "Post publicado exitosamente con ID [" + nuevoPost.getId() + "] y título: '" + nuevoPost.getTitulo()
+                "Post publicado exitosamente con ID [" + nuevoPost.getId() + "] y título: '" + nuevoPost.getTitulo() + "'"
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPost);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> obtenerPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.obtenerPostPorId(id));
+    public ResponseEntity<PostResponseDTO> obtenerPorId(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(postService.obtenerPostPorId(id, token));
     }
 
     @GetMapping("/filtrar/antes-de")
     public ResponseEntity<List<PostResponseDTO>> obtenerAntesDe(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestHeader("Authorization") String token) {
 
         LocalDateTime fechaLimite = fecha.atStartOfDay();
-
-        return ResponseEntity.ok(postService.obtenerPostsCreadosAntesDe(fechaLimite));
+        return ResponseEntity.ok(postService.obtenerPostsCreadosAntesDe(fechaLimite, token));
     }
 
     @GetMapping("/usuario/{username}")
-    public ResponseEntity<List<PostResponseDTO>> obtenerPorUsername(@PathVariable String username) {
-        return ResponseEntity.ok(postService.obtenerPostsPorUsername(username));
+    public ResponseEntity<List<PostResponseDTO>> obtenerPorUsername(
+            @PathVariable String username,
+            @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(postService.obtenerPostsPorUsername(username, token));
     }
 
     @GetMapping("/feed")
     public ResponseEntity<Page<PostFeedDTO>> obtenerFeed(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestHeader("Authorization") String token) {
 
         Pageable pageable = PageRequest.of(page, size);
+        Page<PostFeedDTO> feed = postService.getFeedPaginado(pageable, token);
 
-        Page<PostFeedDTO> feed = postService.getFeedPaginado(pageable);
         return ResponseEntity.ok(feed);
     }
 }
