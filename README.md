@@ -282,7 +282,7 @@ Este microservicio gestiona las interacciones de texto que los usuarios realizan
 
 ---
 
-### 🔌 Guía de Endpoints (Pruebas en Postman)
+###  Guía de Endpoints (Pruebas en Postman)
 
 #### 1. Publicar un Comentario
 Agrega una respuesta a una publicación existente.
@@ -348,7 +348,7 @@ Este microservicio regula la comunicación directa y privada entre los usuarios 
 
 ---
 
-### 🔌 Guía de Endpoints (Pruebas en Postman)
+###  Guía de Endpoints (Pruebas en Postman)
 
 #### 1. Enviar Mensaje Privado
 Despacha un mensaje a un usuario utilizando su nombre de cuenta.
