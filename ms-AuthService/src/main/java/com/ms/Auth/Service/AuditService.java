@@ -27,7 +27,6 @@ public class AuditService {
             log.info("Auditoría enviada asíncronamente: {}", accion);
 
         } catch (Exception e) {
-            // Cumplimos la rúbrica manejando la excepción sin afectar el flujo principal
             log.error("Fallo al contactar ms-Audit (El sistema sigue funcionando): {}", e.getMessage());
         }
     }

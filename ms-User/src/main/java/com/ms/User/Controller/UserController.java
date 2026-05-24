@@ -79,7 +79,6 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> obtenerPorUsername(@PathVariable String username) {
-        // Buscamos por el username único y mapeamos al DTO público
         UserDTO usuario = userService.obtenerUsuarioDtoPorUsername(username);
         return ResponseEntity.ok(usuario);
     }
