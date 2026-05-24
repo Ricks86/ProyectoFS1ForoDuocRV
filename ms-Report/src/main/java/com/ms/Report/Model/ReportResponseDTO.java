@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReportResponseDTO {
     private Long id;
-    private String reporterUsername;
+    private UserDTO reporter;
     private String reportedEntityType;
     private Long reportedEntityId;
     private String reason;

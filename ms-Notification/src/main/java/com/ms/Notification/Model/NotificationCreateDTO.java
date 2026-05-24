@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationCreateDTO {
+public class    NotificationCreateDTO {
 
     @NotBlank(message = "El destinatario es obligatorio")
-    private String recipientUsername;
+    private Long recipientId;
 
-    private String senderUsername;
+    private Long senderId;
 
     @NotBlank(message = "El tipo es obligatorio")
     private String Type;

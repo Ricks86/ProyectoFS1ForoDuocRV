@@ -2,6 +2,9 @@ package com.ms.Report.Controller;
 
 import com.ms.Report.Model.ReportCreateDTO;
 import com.ms.Report.Model.ReportModel;
+import com.ms.Report.Model.ReportResponseDTO;
+import com.ms.Report.Security.JwtUtil;
+import com.ms.Report.Service.AuditService;
 import com.ms.Report.Service.ReportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,34 +22,57 @@ import java.util.List;
 public class ReportController {
 
     private final ReportService reportService;
+    private final JwtUtil jwtUtil;
+    private final AuditService auditoriaService;
 
     @PostMapping("/create")
-    public ResponseEntity<ReportModel> createReport(@Valid @RequestBody ReportCreateDTO request) {
-        log.info("Peticion de reporte creada por el usuario: {}", request.getReporterUsername());
+    public ResponseEntity<ReportResponseDTO> createReport(
+            @Valid @RequestBody ReportCreateDTO request,
+            @RequestHeader("Authorization") String token) {
 
-        ReportModel newReport = reportService.createReport(
-                request.getReporterUsername(),
-                request.getReportedEntityType(),
-                request.getReportedEntityId(),
-                request.getReason()
+        Long reporterIdLogueado = jwtUtil.extractUserId(token);
+        log.info("Peticion de reporte creada por el ID: {}", reporterIdLogueado);
+
+        ReportResponseDTO newReport = reportService.createReport(request, reporterIdLogueado, token);
+
+        auditoriaService.registrarLog(
+                reporterIdLogueado,
+                "CREATE_REPORT",
+                "Reporte creado contra entidad [" + request.getReportedEntityType() + "] con ID [" + request.getReportedEntityId() + "]"
         );
+
         return new ResponseEntity<>(newReport, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/resolve")
-    public ResponseEntity<ReportModel> resolveReport(@PathVariable Long id) {
-        log.info("Peticion para resolver el reporte con ID: {}", id);
+    public ResponseEntity<ReportResponseDTO> resolveReport(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
 
-        ReportModel resolvedReport = reportService.resolveReport(id);
+        Long moderadorId = jwtUtil.extractUserId(token);
+        log.info("Peticion para resolver el reporte con ID: {} por moderador: {}", id, moderadorId);
+
+        ReportResponseDTO resolvedReport = reportService.resolveReport(id, token);
+
+        auditoriaService.registrarLog(
+                moderadorId,
+                "RESOLVE_REPORT",
+                "El ticket de reporte ID [" + id + "] ha sido marcado como RESOLVED"
+        );
+
         return ResponseEntity.ok(resolvedReport);
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<ReportModel>> getsReportsByStatus(@PathVariable String status) {
-        log.info("Buscando reportes con estado {}", status);
+    public ResponseEntity<List<ReportResponseDTO>> getsReportsByStatus(
+            @PathVariable String status,
+            @RequestHeader("Authorization") String token) {
 
-        List<ReportModel> reports = reportService.getReportsByStatus(status);
+        log.info("Buscando reportes con estado {}", status);
+        List<ReportResponseDTO> reports = reportService.getReportsByStatus(status, token);
         return ResponseEntity.ok(reports);
     }
+
+
 
 }

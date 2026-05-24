@@ -23,9 +23,9 @@ public class NotificationModel {
 
     @NotBlank(message = "El destinatario es obligatorio")
     @Column(nullable = false)
-    private String recipientUsername;
+    private Long recipientId;
 
-    private String senderUsername;
+    private Long senderId;
 
     @NotBlank(message = "El tipo de notificación es obligatorio")
     @Column(nullable = false)

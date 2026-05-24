@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 public class NotificationResponseDTO {
 
     private Long id;
-    private String senderUsername;
+    private Long recipientId;
+    private UserDTO sender;
     private String type;
     private String message;
     private Long relatedId;

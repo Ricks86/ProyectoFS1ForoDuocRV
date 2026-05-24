@@ -24,7 +24,7 @@ public class ReportModel {
 
     @NotBlank(message = "El usuario que reporta es obligatorio")
     @Column(nullable = false)
-    private String reporterUsername;
+    private Long reporterId;
 
     @NotBlank(message = "El tipo de entidad reportada es obligatorio (POST, COMMENT, USER)")
     @Column(nullable = false)
