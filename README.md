@@ -376,7 +376,145 @@ Recupera el chat completo con un usuario específico y marca los mensajes entran
 * **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
 * **Body:** Ninguno.
 
-## ️ 6. Microservicio de Auditoría (`ms-Audit`)
+## 6. Microservicio de Notificaciones (`ms-Notification`)
+
+**Puerto por defecto:** `8086`
+
+Este microservicio gestiona el sistema de alertas del ecosistema. Su responsabilidad es capturar eventos del sistema (como un nuevo "Like" o un comentario) y transformarlos en notificaciones persistentes que el usuario puede consultar. Es un servicio diseñado para ser consumido tanto internamente por otros microservicios como externamente por el frontend.
+
+###  Estructura de Paquetes y Clases Principales
+
+*  **`Client/`**
+   * `UserClient`: Cliente OpenFeign para resolver la identidad del emisor (sender) en tiempo real.
+   * `AuditClient`: Cliente Feign para registrar las acciones críticas de lectura de alertas.
+*  **`Controller/`**
+   * `NotificationController`: Expone endpoints de gestión de alertas.
+*  **`Model/`**
+   * `NotificationModel`: Entidad persistida en la tabla `notifications`
+   * `NotificationCreateDTO`: DTO de entrada. Define la estructura mínima para crear una alerta.
+   * `NotificationResponseDTO`: Estructura de salida enriquecida con los datos del perfil del emisor.
+*  **`Repository/`**
+   * `NotificationRepository`: Métodos de acceso a datos utilizando `recipient_id` (Long) para garantizar la integridad y rendimiento.
+*  **`Security/`**
+   * `SecurityConfig` y `JwtUtil`: Aseguran que el usuario solo pueda acceder a sus propias notificaciones.
+*  **`Service/`**
+   * `NotificationService`: Implementa la lógica de persistencia, la resolución de identidades y el patrón de caché local.
+
+###  Lógica de Funcionamiento (Métodos Clave)
+
+**`createNotification(NotificationCreateDTO, serviceOrigin)`**
+1. Recibe el DTO y el origen (cabecera `X-Service-Origin`) que disparó la alerta.
+2. Construye la entidad `NotificationModel` asignando el estado `is_read = false` por defecto.
+3. Persiste el registro y registra un log de auditoría.
+
+**`getUserNotifications(recipientId, token)`**
+1. Recupera la lista de notificaciones ordenadas por fecha descendente.
+2. **Mitigación N+1:** Utiliza un `HashMap<Long, UserDTO>` como caché local. Si el usuario tiene múltiples notificaciones del mismo remitente, evita realizar consultas HTTP redundantes al `ms-User` reutilizando la información del emisor previamente resuelta.
+
+**`markAsRead(notificationId, idUsuarioLogueado)`**
+1. Busca la notificación por ID.
+2. **Barrera de Seguridad:** Compara el `recipient_id` de la notificación con el `idUsuarioLogueado` (extraído del token). Si no coinciden, lanza una excepción de acceso denegado (403), evitando que un usuario marque notificaciones ajenas como leídas.
+
+---
+
+###  Guía de Endpoints (Pruebas en Postman)
+
+#### 1. Crear Notificación (Uso Interno)
+Endpoint consumido por otros microservicios (Feign).
+
+* **URL:** `POST http://localhost:8086/api/notifications`
+   * `X-Service-Origin: ms-service`
+* **Body (JSON):**
+    ```json
+    {
+      "recipientId": 15,
+      "senderId": 2,
+      "type": "LIKE",
+      "message": "A ejemplo le gustó tu publicación.",
+      "relatedId": 101
+    }
+    ```
+
+#### 2. Obtener Notificaciones Propias
+Devuelve todas las alertas pendientes y leídas del usuario logueado.
+
+* **URL:** `GET http://localhost:8086/api/notifications/mis-notificaciones`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+
+#### 3. Marcar como Leída
+Cambia el estado de una notificación específica.
+
+* **URL:** `PUT http://localhost:8086/api/notifications/{id}/read`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+   
+
+##  8. Microservicio de Reportes (`ms-Report`)
+
+**Puerto por defecto:** `8088`
+
+Este microservicio es el pilar de la moderación dentro del ecosistema. Permite a los usuarios denunciar contenido (Posts, Comentarios o Usuarios) que infrinja las normas de la comunidad. Su arquitectura está blindada para evitar que los reportes sean manipulados, garantizando que la identidad del usuario que reporta sea siempre validada mediante su token JWT y nunca basada en entradas de texto manipulables desde el cliente.
+
+###  Estructura de Paquetes y Clases Principales
+
+*  **`Client/`**
+   * `UserClient`: Interfaz OpenFeign que resuelve los datos del usuario que reporta (`UserDTO`) para presentar una moderación clara.
+   * `AuditClient`: Cliente Feign para dejar constancia inmutable de cada creación de reporte y resolución.
+*  **`Controller/`**
+   * `ReportController`: Gestiona los endpoints de moderación. Extrae el `reporterId` directamente del Token JWT, eliminando la posibilidad de suplantación en el reporte.
+*  **`Model/`**
+   * `ReportModel`: Entidad JPA (`reports`). Almacena el `reporter_id`, el tipo de entidad (POST, COMMENT, USER) y su ID relacionado, junto con el estado del ticket.
+   * `ReportCreateDTO`: DTO de entrada. Valida que el motivo del reporte no sea nulo.
+   * `ReportResponseDTO`: Estructura de salida que unifica el estado del reporte con la información pública del usuario que lo generó.
+*  **`Repository/`**
+   * `ReportRepository`: Interfaz JPA optimizada para filtrar reportes por estado (`PENDING` vs `RESOLVED`).
+*  **`Security/`**
+   * `SecurityConfig` y `JwtUtil`: Aseguran que solo usuarios autenticados puedan levantar reportes, y que los endpoints de gestión estén protegidos.
+*  **`Service/`**
+   * `ReportService`: Orquestador. Implementa el patrón de caché local para evitar saturar al `ms-User` cuando el moderador carga el panel de reportes masivos.
+
+###  Lógica de Funcionamiento
+
+**`createReport(ReportCreateDTO, reporterIdLogueado, token)`**
+1. Recibe el objeto con la entidad reportada y el motivo.
+2. Asigna el usuario mediante el token al momento de crear el report
+3. Asigna por defecto el estado `PENDING`.
+4. Dispara un log hacia `ms-Audit` indicando qué entidad está bajo sospecha.
+
+**`getReportsByStatus(status, token)`**
+1. Consulta todos los tickets según su estado (ej. "PENDING").
+2. Utiliza un `HashMap<Long, UserDTO>` como caché local para resolver los datos de los usuarios reportantes, asegurando que si un usuario ha hecho múltiples reportes, los datos de su perfil solo se consulten una vez vía red.
+
+---
+
+### 🔌 Guía de Endpoints (Pruebas en Postman)
+
+#### 1. Crear un Reporte
+Permite a un usuario denunciar contenido.
+
+* **URL:** `POST http://localhost:8088/api/reports/create`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+* **Body (JSON):**
+    ```json
+    {
+      "reportedEntityType": "POST",
+      "reportedEntityId": 101,
+      "reason": "Contenido ofensivo que rompe las reglas de convivencia."
+    }
+    ```
+
+#### 2. Cambiar Estado del Reporte
+Permite a un moderador marcar un reporte como resuelto.
+
+* **URL:** `PUT http://localhost:8088/api/reports/{id}/resolve`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+
+#### 3. Consultar Reportes por Estado
+Obtiene la lista de reportes según su estado (ej. "PENDING" para moderación).
+
+* **URL:** `GET http://localhost:8088/api/reports/status/{status}`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+
+## ️ 10. Microservicio de Auditoría (`ms-Audit`)
 
 **Puerto por defecto:** `8090`
 
