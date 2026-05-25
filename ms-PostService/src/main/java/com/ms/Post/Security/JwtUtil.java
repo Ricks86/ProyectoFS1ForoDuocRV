@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounafantasiaendondeperuinvadechileychiletienequeexportar";
+    private static final String SECRET_KEY = "ContraseñaSeguraVictorJuanEvaluacionFullstack210microserviciosporelprofeJoseLuis";
 
     public Long extractUserId(String token) {
         if (token.startsWith("Bearer ")) {

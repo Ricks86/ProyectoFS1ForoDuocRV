@@ -3,7 +3,6 @@ package com.ms.Auth.Security;
 import com.ms.Auth.Model.UserAuth;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "Nosoygayperosoyperuanoytengounafantasiaendondeperuinvadechileychiletienequeexportar";
+    private static final String SECRET_KEY = "ContraseñaSeguraVictorJuanEvaluacionFullstack210microserviciosporelprofeJoseLuis";
     private static final long EXPIRATION_TIME = 86400000;
 
     public String generateToken(UserAuth user){
