@@ -1,5 +1,9 @@
-INSERT INTO votes (username, entity_type, entity_id, vote_type) VALUES
-('rick_dev', 'POST', 101, 'UPVOTE'),
-('gamer_master', 'COMMENT', 505, 'DOWNVOTE'),
-('cl_coding', 'POST', 101, 'UPVOTE'),
-('user_test', 'POST', 202, 'UPVOTE');
+INSERT INTO votes (user_id, entity_type, entity_id, vote_type, created_at) VALUES
+(1, 'POST', 1, 'UPVOTE', CURRENT_TIMESTAMP),
+(2, 'POST', 1, 'UPVOTE', CURRENT_TIMESTAMP),
+(3, 'POST', 1, 'DOWNVOTE', CURRENT_TIMESTAMP),
+
+(1, 'COMMENT', 4, 'UPVOTE', CURRENT_TIMESTAMP),
+(2, 'COMMENT', 4, 'UPVOTE', CURRENT_TIMESTAMP),
+
+(4, 'POST', 5, 'UPVOTE', CURRENT_TIMESTAMP);

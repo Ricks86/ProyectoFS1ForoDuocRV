@@ -15,7 +15,7 @@ public class CommunityResponseDTO {
     private Long id;
     private String name;
     private String description;
-    private String creatorUsername;
+    private UserDTO creator;
     private Integer memberCount;
     private LocalDateTime createdAt;
 }

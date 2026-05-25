@@ -1,64 +1,95 @@
 package com.ms.Interaction.Service;
 
-import com.ms.Interaction.Client.AuditClient;
-import com.ms.Interaction.Model.AuditRequestDTO;
-import com.ms.Interaction.Model.InteractionModel;
+import com.ms.Interaction.Client.NotificationClient;
+import com.ms.Interaction.Client.PostClient;
+import com.ms.Interaction.Client.UserClient;
+import com.ms.Interaction.Model.*;
 import com.ms.Interaction.Repository.InteractionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class InteractionService {
 
     private final InteractionRepository interactionRepository;
-    private final AuditClient auditClient;
+    private final UserClient userClient;
+    private final PostClient postClient;
+    private final NotificationClient notificationClient;
 
-    @Autowired
-    public InteractionService(InteractionRepository interactionRepository, AuditClient auditClient) {
-        this.interactionRepository = interactionRepository;
-        this.auditClient = auditClient;
+    @Transactional
+    public InteractionResponseDTO toggleLike(InteractionRequestDTO request, Long userId, String token) {
+
+        Optional<InteractionModel> existingLike = interactionRepository
+                .findByEntityIdAndUserIdAndEntityType((request.getPostId()), userId, "LIKE");
+
+        if (existingLike.isPresent()) {
+            interactionRepository.delete(existingLike.get());
+            return new InteractionResponseDTO("LIKE_REMOVED", request.getPostId(), null);
+        } else {
+            InteractionModel newLike = InteractionModel.builder()
+                    .entityId(request.getPostId())
+                    .userId(userId)
+                    .entityType("LIKE")
+                    .build();
+            interactionRepository.save(newLike);
+
+            dispararNotificacion(request.getPostId(), userId, token);
+
+            UserDTO userDto = obtenerUsuario(userId, token);
+            return new InteractionResponseDTO("LIKE_ADDED", request.getPostId(), userDto);
+        }
     }
 
-    public InteractionModel createInteraction(Long userId, String username, String entityType, Long entityId,
-                                              String voteType) {
+    @Transactional(readOnly = true)
+    public List<InteractionResponseDTO> getLikesForPost(Long postId, String token) {
+        List<InteractionModel> likes = interactionRepository.findByEntityIdAndEntityType(postId, "LIKE");
 
-        String typeUpper = entityType.toUpperCase();
+        Map<Long, UserDTO> userCache = new HashMap<>();
 
-        if (!typeUpper.equals("POST") && !typeUpper.equals("COMMENT")) {
-            throw new IllegalArgumentException("El tipo de entidad debe ser POST o COMMENT");
-        }
-
-        if (interactionRepository.findByUsernameAndEntityTypeAndEntityId(username, typeUpper, entityId).isPresent()) {
-            throw new RuntimeException("Voto único: este usuario ya interactuó con esta publicación o comentario");
-        }
-
-        InteractionModel interaction = InteractionModel.builder()
-                .username(username)
-                .entityType(entityType)
-                .entityId(entityId)
-                .voteType(voteType)
-                .build();
-
-        InteractionModel savedInteraction = interactionRepository.save(interaction);
-
-        enviarAuditoria(userId, "CREATE_INTERACTION", "El usuario" + username + "votó" +
-                voteType + "en" + typeUpper + "ID:" + entityId);
-
-        return savedInteraction;
+        return likes.stream().map(like -> {
+            UserDTO userDto = userCache.computeIfAbsent(like.getUserId(),
+                    id -> obtenerUsuario(id, token));
+            return new InteractionResponseDTO("LIKE_DATA", postId, userDto);
+        }).toList();
     }
 
-    private void enviarAuditoria(Long usuarioId, String accion, String detalles) {
+
+    private void dispararNotificacion(Long postId, Long userIdLogueado, String token) {
         try {
-            AuditRequestDTO auditoria = new AuditRequestDTO();
-            auditoria.setUsuarioId(usuarioId);
-            auditoria.setAccion(accion);
-            auditoria.setRecurso("ms-Interaction");
-            auditoria.setDetalles(detalles);
+            Long postAuthorId = postClient.getAuthorIdByPostId(postId, token);
 
-            auditClient.registrarAccion(auditoria);
+            if (!userIdLogueado.equals(postAuthorId)) {
+                NotificationCreateDTO notif = NotificationCreateDTO.builder()
+                        .recipientId(postAuthorId)
+                        .senderId(userIdLogueado)
+                        .type("LIKE")
+                        .message("A un usuario le ha gustado tu publicación.")
+                        .relatedId(postId)
+                        .build();
+
+                notificationClient.enviarNotificacion(notif, "ms-Interaction");
+                log.info("Notificación de LIKE enviada al usuario ID [{}]", postAuthorId);
+            }
         } catch (Exception e) {
-            System.err.println("Aviso: No se pudo conectar con ms-Audit - " + e.getMessage());
+            log.error("Fallo al enviar notificación de LIKE: {}", e.getMessage());
+        }
+    }
+
+    private UserDTO obtenerUsuario(Long userId, String token) {
+        try {
+            return userClient.obtenerUsuarioPorId(userId, token);
+        } catch (Exception e) {
+            log.warn("Error resolviendo UserDTO para ID {}: {}", userId, e.getMessage());
+            return new UserDTO(userId, "Usuario Desconocido", "N/A");
         }
     }
 }

@@ -121,4 +121,12 @@ public class PostService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public Long getAuthorIdByPostId(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post no encontrado con ID: " + postId));
+
+        return post.getIdUsuario();
+    }
+
 }

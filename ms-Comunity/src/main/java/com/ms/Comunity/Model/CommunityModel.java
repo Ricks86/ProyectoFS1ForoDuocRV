@@ -2,6 +2,7 @@ package com.ms.Comunity.Model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,12 +35,12 @@ public class CommunityModel {
     @Column(nullable = false, length = 500)
     private String description;
 
-    @NotBlank(message = "El creador es obligatorio")
+    @NotNull(message = "El creador es obligatorio")
     @Column(nullable = false)
-    private String creatorUsername;
+    private Long creatorId;
 
     @NotBlank(message = "El codigo de acceso es obligatorio")
-    private String accessCode;
+    private String communityAccess;
 
     @ElementCollection
     @CollectionTable(name = "community_members", joinColumns = @JoinColumn(name = "community_id"))

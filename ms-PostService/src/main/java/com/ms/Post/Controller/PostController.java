@@ -82,4 +82,10 @@ public class PostController {
 
         return ResponseEntity.ok(feed);
     }
+
+    @GetMapping("/{postId}/author-id")
+    public ResponseEntity<Long> getAuthorIdByPostId(@PathVariable Long postId) {
+        Long authorId = postService.getAuthorIdByPostId(postId);
+        return ResponseEntity.ok(authorId);
+    }
 }

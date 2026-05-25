@@ -1,16 +1,17 @@
 package com.ms.Interaction.Controller;
 
-import com.ms.Interaction.Model.InteractionModel;
 import com.ms.Interaction.Model.InteractionRequestDTO;
+import com.ms.Interaction.Model.InteractionResponseDTO;
 import com.ms.Interaction.Security.JwtUtil;
+import com.ms.Interaction.Service.AuditService;
 import com.ms.Interaction.Service.InteractionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/interactions")
@@ -20,31 +21,32 @@ public class InteractionController {
 
     private final InteractionService interactionService;
     private final JwtUtil jwtUtil;
+    private final AuditService auditoriaService;
 
-    @Autowired
-    public InteractionController(InteractionService interactionService, JwtUtil jwtUtil) {
-        this.interactionService = interactionService;
-        this.jwtUtil = jwtUtil;
-    }
+    @PostMapping("/like")
+    public ResponseEntity<InteractionResponseDTO> toggleLike(
+            @Valid @RequestBody InteractionRequestDTO request,
+            @RequestHeader("Authorization") String token) {
 
-    @PostMapping("/vote")
-    public ResponseEntity<InteractionModel> createInteraction(
-        @RequestHeader("Authorization") String token,
-        @Valid @RequestBody InteractionRequestDTO request) {
+        Long userId = jwtUtil.extractUserId(token);
+        log.info("Petición de LIKE procesada para AuthID: {}", userId);
 
-        String jwt = token.substring(7);
+        InteractionResponseDTO response = interactionService.toggleLike(request, userId, token);
 
-        Long userId = jwtUtil.extractUserId(jwt);
-        String secureUsername = jwtUtil.extractUsername(jwt);
-
-        InteractionModel newInteraction = interactionService.createInteraction(
+        auditoriaService.registrarLog(
                 userId,
-                secureUsername,
-                request.getEntityType(),
-                request.getEntityId(),
-                request.getVoteType()
+                response.getStatus(),
+                "El usuario interactuó con el Post ID [" + request.getPostId() + "]"
         );
 
-        return new ResponseEntity<>(newInteraction, HttpStatus.CREATED);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/post/{postId}/likes")
+    public ResponseEntity<List<InteractionResponseDTO>> getLikesByPost(
+            @PathVariable Long postId,
+            @RequestHeader("Authorization") String token) {
+
+        return ResponseEntity.ok(interactionService.getLikesForPost(postId, token));
     }
 }

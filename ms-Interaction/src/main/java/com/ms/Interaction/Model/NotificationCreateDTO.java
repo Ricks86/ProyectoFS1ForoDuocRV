@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InteractionResponseDTO {
-    private String status;
-    private Long postId;
-    private UserDTO user;
+public class NotificationCreateDTO {
+    private Long recipientId;
+    private Long senderId;
+    private String type;
+    private String message;
+    private Long relatedId;
 }

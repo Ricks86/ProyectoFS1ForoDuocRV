@@ -23,4 +23,7 @@ public class CommunityCreateDTO {
 
     @NotBlank(message = "El nombre del creador es obligatorio")
     private String creatorUsername;
+
+    @NotBlank(message = "El codigo de acceso es obligatorio")
+    private String comunityAccess;
 }

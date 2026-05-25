@@ -51,7 +51,7 @@ public class NotificationService {
                 .map(notif -> {
                     UserDTO sender = null;
                     if (notif.getSenderId() != null) {
-                        sender = userCache.computeIfAbsent(notif.getSenderId(), id -> obtenerUsuarioSeguro(id, token));
+                        sender = userCache.computeIfAbsent(notif.getSenderId(), id -> obtenerUsuario(id, token));
                     }
                     return mapToResponseDTO(notif, sender);
                 })

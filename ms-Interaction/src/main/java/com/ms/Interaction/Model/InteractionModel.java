@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "votes", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username", "entityType", "entityId"})
+        @UniqueConstraint(columnNames = {"user_id", "entity_type", "entity_id"})
 })
 @Data
 @NoArgsConstructor
@@ -24,9 +24,9 @@ public class InteractionModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El usuario es obligatorio")
+    @NotNull(message = "El usuario es obligatorio")
     @Column(nullable = false)
-    private String username;
+    private Long userId;
 
     @NotBlank(message = "El tipo de entidad es obligatorio (POST o COMMENT)")
     @Column(nullable = false)

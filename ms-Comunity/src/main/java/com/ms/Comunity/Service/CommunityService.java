@@ -1,84 +1,100 @@
 package com.ms.Comunity.Service;
 
-import com.ms.Comunity.Client.AuditClient;
-import com.ms.Comunity.Model.AuditRequestDTO;
-import com.ms.Comunity.Model.CommunityModel;
+import com.ms.Comunity.Client.UserClient;
+import com.ms.Comunity.Model.*;
 import com.ms.Comunity.Repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
-    private final AuditClient auditClient;
+    private final UserClient userClient;
 
-    @Autowired
-    public CommunityService(CommunityRepository communityRepository, AuditClient auditClient) {
-        this.communityRepository = communityRepository;
-        this.auditClient = auditClient;
-    }
-
-    public CommunityModel createCommunity(String name, String description, String creatorUsername, Long creatorId) {
-
-        if (communityRepository.findByName(name).isPresent()) {
-            throw new RuntimeException("Ya existe una comunidad con ese nombre");
+    @Transactional
+    public CommunityResponseDTO createCommunity(CommunityCreateDTO dto, Long creatorId, String token) {
+        if (communityRepository.existsByName(dto.getName())) {
+            throw new IllegalArgumentException("La comunidad ya existe.");
         }
 
-        String generatedAccessCode = UUID.randomUUID().toString().substring(0, 8);
-
         CommunityModel community = CommunityModel.builder()
-                .name(name)
-                .description(description)
-                .creatorUsername(creatorUsername)
-                .accessCode(generatedAccessCode)
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .creatorId(creatorId)
+                .communityAccess(dto.getComunityAccess())
                 .memberCount(1)
                 .build();
 
-        if (community.getMemberIds() != null) {
-            community.getMemberIds().add(creatorId);
-        }
+        community.getMemberIds().add(creatorId);
 
-        CommunityModel savedCommunity = communityRepository.save(community);
+        CommunityModel saved = communityRepository.save(community);
+        UserDTO creatorDto = obtenerUsuario(creatorId, token);
 
-        enviarAuditoria(creatorId, "CREATE_COMMUNITY", "Comunidad '" + name + "' creada exitosamente por: " + creatorUsername);
-
-        return savedCommunity;
+        return construirResponseDTO(saved, creatorDto);
     }
 
-    public CommunityModel joinCommunity(Long userId, String accessCode) {
+    @Transactional
+    public CommunityResponseDTO joinCommunity(Long communityId, CommunityJoinDTO joinDto, Long userId, String token) {
+        CommunityModel community = communityRepository.findById(communityId)
+                .orElseThrow(() -> new RuntimeException("La comunidad no existe"));
 
-        CommunityModel community = communityRepository.findByAccessCode(accessCode)
-                .orElseThrow(() -> new RuntimeException("Código de acceso inválido o comunidad no encontrada"));
-
-        if (!community.getMemberIds().contains(userId)) {
-            community.getMemberIds().add(userId);
-            community.setMemberCount(community.getMemberCount() + 1);
-
-            CommunityModel updatedCommunity = communityRepository.save(community);
-
-            enviarAuditoria(userId, "JOIN_COMMUNITY", "Usuario ID [" + userId + "] se unió a la comunidad: " + community.getName());
-
-            return updatedCommunity;
-        } else {
-            throw new RuntimeException("El usuario ya pertenece a esta comunidad");
+        if (!community.getCommunityAccess().equals(joinDto.getAccessCode())) {
+            throw new RuntimeException("Código de acceso incorrecto");
         }
+
+        if (community.getMemberIds().contains(userId)) {
+            throw new RuntimeException("Ya eres miembro de esta comunidad");
+        }
+
+        community.getMemberIds().add(userId);
+        community.setMemberCount(community.getMemberCount() + 1);
+
+        CommunityModel updated = communityRepository.save(community);
+
+        UserDTO creatorDto = obtenerUsuario(community.getCreatorId(), token);
+
+        return construirResponseDTO(updated, creatorDto);
+    }
+    @Transactional(readOnly = true)
+    public List<CommunityResponseDTO> getAllCommunities(String token) {
+        List<CommunityModel> communities = communityRepository.findAll();
+
+        Map<Long, UserDTO> userCache = new HashMap<>();
+
+        return communities.stream()
+                .map(c -> {
+                    UserDTO creatorDto = userCache.computeIfAbsent(c.getCreatorId(),
+                            id -> obtenerUsuario(id, token));
+                    return construirResponseDTO(c, creatorDto);
+                })
+                .toList();
     }
 
-    private void enviarAuditoria(Long usuarioId, String accion, String detalles) {
+    private UserDTO obtenerUsuario(Long userId, String token) {
         try {
-            AuditRequestDTO auditoria = new AuditRequestDTO();
-            auditoria.setUsuarioId(usuarioId);
-            auditoria.setAccion(accion);
-            auditoria.setRecurso("ms-Comunity");
-            auditoria.setDetalles(detalles);
-
-            auditClient.registrarAccion(auditoria);
+            return userClient.obtenerUsuarioPorId(userId, token);
         } catch (Exception e) {
-            System.err.println("Aviso: No se pudo conectar con ms-Audit - " + e.getMessage());
+            log.warn("Fallo al resolver identidad del creador ID {} en ms-User: {}", userId, e.getMessage());
+            return new UserDTO(userId, "Usuario Desconocido", "Alias No Disponible");
         }
     }
+
+    private CommunityResponseDTO construirResponseDTO(CommunityModel model, UserDTO creator) {
+        return CommunityResponseDTO.builder()
+                .id(model.getId())
+                .name(model.getName())
+                .description(model.getDescription())
+                .creator(creator)
+                .build();
+    }
+
 }
