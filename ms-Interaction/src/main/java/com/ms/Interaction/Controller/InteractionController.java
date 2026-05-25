@@ -23,30 +23,31 @@ public class InteractionController {
     private final JwtUtil jwtUtil;
     private final AuditService auditoriaService;
 
-    @PostMapping("/like")
-    public ResponseEntity<InteractionResponseDTO> toggleLike(
+    @PostMapping("/vote")
+    public ResponseEntity<InteractionResponseDTO> toggleVote(
             @Valid @RequestBody InteractionRequestDTO request,
             @RequestHeader("Authorization") String token) {
 
         Long userId = jwtUtil.extractUserId(token);
-        log.info("Petición de LIKE procesada para AuthID: {}", userId);
+        log.info("Petición de VOTO procesada para AuthID: {}", userId);
 
-        InteractionResponseDTO response = interactionService.toggleLike(request, userId, token);
+        InteractionResponseDTO response = interactionService.toggleVote(request, userId, token);
 
         auditoriaService.registrarLog(
                 userId,
                 response.getStatus(),
-                "El usuario interactuó con el Post ID [" + request.getPostId() + "]"
+                "El usuario interactuó con la entidad [" + request.getEntityType() + "] ID [" + request.getEntityId() + "]"
         );
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/post/{postId}/likes")
-    public ResponseEntity<List<InteractionResponseDTO>> getLikesByPost(
-            @PathVariable Long postId,
+    @GetMapping("/entity/{entityType}/{entityId}")
+    public ResponseEntity<List<InteractionResponseDTO>> getVotesByEntity(
+            @PathVariable String entityType,
+            @PathVariable Long entityId,
             @RequestHeader("Authorization") String token) {
 
-        return ResponseEntity.ok(interactionService.getLikesForPost(postId, token));
+        return ResponseEntity.ok(interactionService.getVotesForEntity(entityType, entityId, token));
     }
 }

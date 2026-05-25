@@ -96,4 +96,12 @@ public class CommentService {
                 .autor(autor)
                 .build();
     }
+
+    @Transactional(readOnly = true)
+    public Long getAuthorIdByCommentId(Long commentId) {
+        Comment comentario = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comentario no encontrado con ID: " + commentId));
+
+        return comentario.getUserId();
+    }
 }

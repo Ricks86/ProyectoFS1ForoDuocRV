@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface InteractionRepository extends JpaRepository<InteractionModel, Long> {
+
     Optional<InteractionModel> findByEntityIdAndUserIdAndEntityType(Long entityId, Long userId, String entityType);
 
     List<InteractionModel> findByEntityIdAndEntityType(Long entityId, String entityType);
 }
+

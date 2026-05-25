@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InteractionResponseDTO {
     private String status;
-    private Long postId;
+    private String entityType;
+    private Long entityId;
+    private String voteType;
     private UserDTO user;
 }

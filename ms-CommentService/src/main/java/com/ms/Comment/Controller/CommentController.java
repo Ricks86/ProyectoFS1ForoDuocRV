@@ -51,4 +51,11 @@ public class CommentController {
 
         return ResponseEntity.ok(comentarios);
     }
+
+    @GetMapping("/{commentId}/author-id")
+    public ResponseEntity<Long> getAuthorIdByCommentId(@PathVariable Long commentId) {
+        log.info("Resolviendo autor para el Comentario ID: {}", commentId);
+        Long authorId = commentService.getAuthorIdByCommentId(commentId);
+        return ResponseEntity.ok(authorId);
+    }
 }
