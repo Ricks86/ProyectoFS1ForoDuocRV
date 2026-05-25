@@ -446,7 +446,70 @@ Cambia el estado de una notificación específica.
 
 * **URL:** `PUT http://localhost:8086/api/notifications/{id}/read`
 * **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
-   
+
+## 7. Microservicio de Comunidades (`ms-Community`)
+
+**Puerto por defecto:** `8087` 
+
+Este microservicio gestiona la creación, listado y membresía de espacios temáticos (comunidades) dentro del foro e implementa un modelo de privacidad mediante códigos de acceso (`communityAccess`).
+
+###  Estructura de Paquetes y Clases Principales
+
+*  **`Client/`**
+   * `UserClient`: Cliente OpenFeign para validar y enriquecer los datos públicos de los creadores de cada comunidad.
+   * `AuditClient`: Cliente Feign para registrar de manera inmutable la creación de comunidades y la unión de nuevos miembros.
+*  **`Controller/`**
+   * `CommunityController`: Punto de entrada protegido. Extrae el AuthID numérico (`Long`) desde el JWT, bloqueando cualquier intento de suplantación de identidad mediante inyección en el JSON.
+*  **`Model/`**
+   * `CommunityModel`: Entidad principal persistida en la tabla `communities`. Incluye una colección secundaria `community_members` (`@ElementCollection`) para gestionar la lista de usuarios unidos.
+   * `CommunityCreateDTO` / `CommunityJoinDTO`: Objetos de transferencia que validan estrictamente las entradas del usuario (nombres, descripciones, y códigos de acceso).
+   * `CommunityResponseDTO`: DTO de salida que excluye datos sensibles (como el código de acceso) e incluye el perfil renderizado del usuario creador.
+*  **`Repository/`**
+   * `CommunityRepository`: Interfaz JPA estándar conectada a la base de datos provisionada por Flyway.
+*  **`Service/`**
+   * `CommunityService`: Lógica de negocio.
+
+###  Lógica de Funcionamiento 
+
+1. **Auto-Membresía:** Al crear una comunidad, el sistema inyecta automáticamente el ID del creador en la tabla `community_members` y establece el contador en 1.
+2. **Control de Acceso Cerrado:** Para que un nuevo usuario ingrese a una comunidad mediante el endpoint `/join`, debe proporcionar un código de acceso exacto. El servicio verifica que el código coincida y que el usuario no sea ya miembro para evitar duplicidad.
+3. **Lectura rápida:** Al consultar todas las comunidades disponibles (`getAllCommunities`), el servicio utiliza un mapa (`HashMap`) para almacenar en memoria RAM los perfiles de creadores ya consultados. Esto asegura que, si un mismo administrador creó 10 comunidades, solo se ejecute 1 llamada HTTP hacia `ms-User`.
+
+---
+
+###  Guía de Endpoints (Pruebas en Postman)
+
+#### 1. Crear una Comunidad Privada
+Establece un nuevo espacio. El ID del creador se extrae de forma transparente desde el Token.
+
+* **URL:** `POST http://localhost:8087/api/communities`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+* **Body (JSON):**
+    ```json
+    {
+      "name": "Desarrolladores Spring Boot",
+      "description": "Comunidad exclusiva para discutir arquitectura y microservicios.",
+      "communityAccess": "SPRING2026"
+    }
+    ```
+
+#### 2. Unirse a una Comunidad
+Permite a un usuario autenticado ingresar a una comunidad utilizando su código secreto.
+
+* **URL:** `POST http://localhost:8087/api/communities/{communityId}/join`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+* **Body (JSON):**
+    ```json
+    {
+      "communityAccess": "SPRING2026"
+    }
+    ```
+
+#### 3. Listar Todas las Comunidades
+Devuelve el catálogo de comunidades.
+
+* **URL:** `GET http://localhost:8087/api/communities`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
 
 ##  8. Microservicio de Reportes (`ms-Report`)
 
@@ -486,7 +549,7 @@ Este microservicio es el pilar de la moderación dentro del ecosistema. Permite 
 
 ---
 
-### 🔌 Guía de Endpoints (Pruebas en Postman)
+###  Guía de Endpoints (Pruebas en Postman)
 
 #### 1. Crear un Reporte
 Permite a un usuario denunciar contenido.
@@ -512,6 +575,60 @@ Permite a un moderador marcar un reporte como resuelto.
 Obtiene la lista de reportes según su estado (ej. "PENDING" para moderación).
 
 * **URL:** `GET http://localhost:8088/api/reports/status/{status}`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+
+## 9. Microservicio de Interacciones (`ms-Interaction`)
+
+**Puerto por defecto:** `8089` (o el asignado en tu configuración)
+
+Este microservicio gestiona el sistema de votos, especialmente optimizado
+
+###  Estructura de Paquetes y Clases Principales
+
+*  **`Client/`**
+   * `UserClient`: Resuelve la información pública de los usuarios que interactúan.
+   * `PostClient`: Recupera el autor de un Post para saber a quién notificar.
+   * `NotificationClient`: Dispara alertas al sistema central de notificaciones de forma asíncrona.
+   * `AuditClient`: Registra los votos en el libro mayor de auditoría.
+*  **`Controller/`**
+   * `InteractionController`: Punto de entrada que extrae el AuthID directamente del Token JWT, garantizando que nadie pueda emitir un voto en nombre de otro usuario.
+*  **`Model/`**
+   * `InteractionModel`: Entidad polimórfica mapeada a la tabla `votes`. Utiliza una restricción única (`user_id`, `entity_type`, `entity_id`) para evitar votos duplicados.
+   * `InteractionRequestDTO`: Recibe el tipo de entidad (ej. "POST") y su ID.
+   * `InteractionResponseDTO`: Devuelve el estado de la acción ("VOTE_ADDED" o "VOTE_REMOVED") y los datos del usuario enriquecidos.
+*  **`Repository/`**
+   * `InteractionRepository`: Ejecuta búsquedas compuestas utilizando índices optimizados en base de datos.
+*  **`Service/`**
+   * `InteractionService`: Contiene la lógica central. Implementa el patrón "Toggle" (agregar/quitar voto en un solo endpoint), mitigación del problema N+1 mediante caché local, y aislamiento de fallos para las notificaciones.
+
+###  Lógica de Funcionamiento
+
+1. **Patrón Toggle:** Cuando un usuario envía una interacción, el servicio verifica si ya existe. Si no existe, la crea; si ya existe, la elimina. Esto reduce la cantidad de endpoints necesarios en el backend.
+2. **Resiliencia:** La emisión de la notificación está encapsulada en un bloque `try-catch`. Si `ms-Notification` está caído, el voto se guarda exitosamente de todos modos y el usuario final no percibe ningún error, protegiendo la experiencia de usuario.
+3. **Optimización de Red:** Al listar los likes de un post viral, el servicio almacena temporalmente los perfiles (`UserDTO`) ya consultados en un `HashMap`. Esto evita saturar al `ms-User` con peticiones HTTP repetidas.
+
+---
+
+### Guía de Endpoints (Pruebas en Postman)
+
+#### 1. Emitir o Retirar Voto (Toggle)
+Alterna el estado de una interacción sobre una entidad específica.
+
+* **URL:** `POST http://localhost:8089/api/interactions/vote`
+* **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
+* **Body (JSON):**
+    ```json
+    {
+      "entityType": "POST",
+      "entityId": 1,
+      "voteType": "UPVOTE"
+    }
+    ```
+
+#### 2. Obtener Votos de una Entidad
+Recupera la lista completa de interacciones para un Post o Comentario específico.
+
+* **URL:** `GET http://localhost:8089/api/interactions/entity/{entityType}/{entityId}`
 * **Autorización:** `Authorization: Bearer <Tu_Token_JWT>`
 
 ## ️ 10. Microservicio de Auditoría (`ms-Audit`)
