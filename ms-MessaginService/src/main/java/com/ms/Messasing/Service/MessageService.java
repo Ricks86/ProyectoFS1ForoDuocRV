@@ -1,5 +1,6 @@
 package com.ms.Messasing.Service;
 
+import com.ms.Messasing.Client.NotificationClient;
 import com.ms.Messasing.Client.UserClient;
 import com.ms.Messasing.Model.*;
 import com.ms.Messasing.Repository.MessageRepository;
@@ -20,12 +21,13 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final UserClient userClient;
+    private final NotificationClient notificationClient;
 
     @Transactional
     public MessageResponseDTO enviarMensajePorUsername(String usernameReceptor, MessageCreatetDTO request, Long idEmisorLogueado, String token) {
 
-        UserDTO receptorDto = obtenerUsuarioPorUsernameSeguro(usernameReceptor, token);
-        UserDTO emisorDto = obtenerUsuarioPorIdSeguro(idEmisorLogueado, token);
+        UserDTO receptorDto = obtenerUsuarioPorUsername(usernameReceptor, token);
+        UserDTO emisorDto = obtenerUsuarioPorId(idEmisorLogueado, token);
 
         Message nuevoMensaje = Message.builder()
                 .contenido(request.getContenido())
@@ -34,6 +36,8 @@ public class MessageService {
                 .build();
 
         Message mensajeGuardado = messageRepository.save(nuevoMensaje);
+
+        dispararNotificacion(receptorDto.getId(), emisorDto.getId(), request.getContenido(), mensajeGuardado.getId());
 
         return construirMessageResponse(mensajeGuardado, emisorDto, receptorDto);
     }
@@ -51,7 +55,7 @@ public class MessageService {
             LocalDateTime ultimaFecha = (LocalDateTime) fila[2];
 
             UserDTO emisorDto = userCache.computeIfAbsent(idEmisor,
-                    id -> obtenerUsuarioPorIdSeguro(id, token));
+                    id -> obtenerUsuarioPorId(id, token));
 
             return new BandejaItemDTO(emisorDto, sinLeer, ultimaFecha);
         }).toList();
@@ -60,8 +64,8 @@ public class MessageService {
     @Transactional
     public List<MessageResponseDTO> obtenerConversacion(Long idLogueado, String otroUsuario, String token) {
 
-        UserDTO otroUsuarioDto = obtenerUsuarioPorUsernameSeguro(otroUsuario, token);
-        UserDTO usuarioLog = obtenerUsuarioPorIdSeguro(idLogueado, token);
+        UserDTO otroUsuarioDto = obtenerUsuarioPorUsername(otroUsuario, token);
+        UserDTO usuarioLog = obtenerUsuarioPorId(idLogueado, token);
 
         messageRepository.marcarMensajesComoLeidos(otroUsuarioDto.getId(), usuarioLog.getId());
 
@@ -77,7 +81,7 @@ public class MessageService {
                 .toList();
     }
 
-    private UserDTO obtenerUsuarioPorIdSeguro(Long userId, String token) {
+    private UserDTO obtenerUsuarioPorId(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);
         } catch (Exception e) {
@@ -86,7 +90,7 @@ public class MessageService {
         }
     }
 
-    private UserDTO obtenerUsuarioPorUsernameSeguro(String username, String token) {
+    private UserDTO obtenerUsuarioPorUsername(String username, String token) {
         try {
             return userClient.obtenerUsuarioPorUsername(username, token);
         } catch (Exception e) {
@@ -104,5 +108,24 @@ public class MessageService {
                 .emisor(emisor)
                 .receptor(receptor)
                 .build();
+    }
+
+    private void dispararNotificacion(Long senderId, Long recipientId, String content, Long messageId) {
+        try {
+            if (!senderId.equals(recipientId)) {
+                NotificationCreateDTO notif = NotificationCreateDTO.builder()
+                        .recipientId(recipientId)
+                        .senderId(senderId)
+                        .type("MESSAGE")
+                        .message("Nuevo mensaje privado: " + content)
+                        .relatedId(messageId)
+                        .build();
+
+                notificationClient.enviarNotificacion(notif, "ms-MessaginService");
+                log.info("Notificación de mensaje enviada al receptor ID [{}]", recipientId);
+            }
+        } catch (Exception e) {
+            log.error("Fallo al enviar notificación de mensaje privado: {}", e.getMessage());
+        }
     }
 }

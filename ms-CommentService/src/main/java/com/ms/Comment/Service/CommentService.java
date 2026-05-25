@@ -1,10 +1,8 @@
 package com.ms.Comment.Service;
 
+import com.ms.Comment.Client.NotificationClient;
 import com.ms.Comment.Client.UserClient;
-import com.ms.Comment.Model.Comment;
-import com.ms.Comment.Model.CommentCreateDTO;
-import com.ms.Comment.Model.CommentResponseDTO;
-import com.ms.Comment.Model.UserDTO;
+import com.ms.Comment.Model.*;
 import com.ms.Comment.Repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +20,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserClient userClient;
+    private final NotificationClient notificationClient;
 
     @Transactional
     public CommentResponseDTO crearComentario(CommentCreateDTO request, Long userIdLogueado, String token) {
@@ -33,6 +32,8 @@ public class CommentService {
                 .build();
 
         Comment comentarioGuardado = commentRepository.save(nuevoComentario);
+
+        dispararNotificacion(request, userIdLogueado);
 
         UserDTO autorDto = obtenerAutorSeguro(userIdLogueado, token);
 
@@ -53,6 +54,27 @@ public class CommentService {
                     return construirResponseDTO(comentario, autorDto);
                 })
                 .toList();
+    }
+
+    private void dispararNotificacion(CommentCreateDTO request, Long userIdLogueado) {
+        try {
+            Long postAuthorId = request.getPostId() ;
+
+            if (!userIdLogueado.equals(postAuthorId)) {
+                NotificationCreateDTO notif = NotificationCreateDTO.builder()
+                        .recipientId(postAuthorId)
+                        .senderId(userIdLogueado)
+                        .type("COMMENT")
+                        .message("Nuevo comentario en tu publicación: " + request.getContent())
+                        .relatedId(request.getPostId())
+                        .build();
+
+                notificationClient.enviarNotificacion(notif, "ms-CommentService");
+                log.info("Notificación enviada al autor del post: {}", postAuthorId);
+            }
+        } catch (Exception e) {
+            log.error("Fallo al enviar notificación de comentario: {}", e.getMessage());
+        }
     }
 
     private UserDTO obtenerAutorSeguro(Long userId, String token) {
