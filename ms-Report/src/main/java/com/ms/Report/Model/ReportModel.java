@@ -22,7 +22,7 @@ public class ReportModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El usuario que reporta es obligatorio")
+    @NotNull(message = "El usuario que reporta es obligatorio")
     @Column(nullable = false)
     private Long reporterId;
 

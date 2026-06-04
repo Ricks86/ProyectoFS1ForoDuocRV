@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportCreateDTO {
-    @NotBlank(message = "El id del usuario que reporta es obligatorio")
-    private String reporterId;
 
     @NotBlank(message = "Debe especificar qué está reportando (POST, COMMENT, USER)")
     private String reportedEntityType;
