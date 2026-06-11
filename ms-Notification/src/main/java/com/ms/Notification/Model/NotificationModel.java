@@ -2,6 +2,7 @@ package com.ms.Notification.Model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class NotificationModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El destinatario es obligatorio")
+    @NotNull(message = "El destinatario es obligatorio")
     @Column(nullable = false)
     private Long recipientId;
 

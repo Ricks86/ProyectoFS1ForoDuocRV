@@ -30,7 +30,7 @@ public class CommunityService {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .creatorId(creatorId)
-                .communityAccess(dto.getComunityAccess())
+                .communityAccess(dto.getCommunityAccess())
                 .memberCount(1)
                 .build();
 
