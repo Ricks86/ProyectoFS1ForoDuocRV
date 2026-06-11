@@ -78,7 +78,7 @@ public class PostController {
             @RequestHeader("Authorization") String token) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<PostFeedDTO> feed = postService.getFeedPaginado(pageable, token);
+        Page<PostFeedDTO> feed = postService.obtenerFeedPaginado(pageable, token);
 
         return ResponseEntity.ok(feed);
     }

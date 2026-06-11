@@ -1,19 +1,15 @@
 package com.ms.Auth.Service;
 
 
-import com.ms.Auth.Client.AuditClient;
 import com.ms.Auth.Client.UserClient;
 import com.ms.Auth.Model.*;
 import com.ms.Auth.Repository.UserAuthRepository;
 import com.ms.Auth.Security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +28,12 @@ public class AuthService {
     public RegisterResponseDTO register( RegisterRequestDTO userAuth) {
 
         if (userAuthRepository.existsByNombreUser(userAuth.getNombreUser())) {
+            log.info("Error: nombre de usuario existente");
             throw new RuntimeException("El nombre de usuario ya existe");
         }
 
         if (userAuthRepository.existsByEmail(userAuth.getEmail())) {
+            log.info("el email ya está en uso");
             throw new RuntimeException("El email ya está en uso");
         }
 
