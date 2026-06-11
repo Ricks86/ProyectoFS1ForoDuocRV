@@ -2,4 +2,4 @@ INSERT INTO users (auth_id, username, email, bio, alias, birthday, avatar_url, r
     (101, 'DuckyProtocol', 'juan.fernandez@ducky.cl', 'Estudiante de Ingeniería en Informática. Amante de Nobara Linux y Spring Boot.', 'Juan Ricardo', '2004-05-15', NULL, 150, 24, 12),
     (102, 'LinusFan', 'nico.linux@outlook.com', 'Entusiasta del desarrollo de kernels y sistemas operativos distribuidos.', 'Nico Linux', '2002-11-20', NULL, 85, 5, 14),
     (103, 'SpringMaster', 'andres.java@gmail.com', 'Desarrollador Backend. Si tienes dudas de WebClient o Docker, déjame un mensaje.', 'Andrés Java', '1999-03-08', NULL, 210, 45, 32),
-    (104, 'CoderGirl', 'vale.coder@gmail.com', 'Apasionada por el diseño de microservicios y bases de datos relacionales.', 'Vale Coder', '2003-07-19', NULL, 95, 30, 22)
+    (104, 'CoderGirl', 'vale.coder@gmail.com', 'Apasionada por el diseño de microservicios y bases de datos relacionales.', 'Vale Coder', '2003-07-19', NULL, 95, 30, 22);

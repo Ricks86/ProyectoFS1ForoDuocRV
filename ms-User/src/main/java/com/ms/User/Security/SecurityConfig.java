@@ -23,10 +23,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/api/users/init").permitAll()
+                        .requestMatchers("/api/users/init", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/username/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/{id}").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         return http.build();

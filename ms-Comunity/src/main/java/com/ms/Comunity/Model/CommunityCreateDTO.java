@@ -21,9 +21,6 @@ public class CommunityCreateDTO {
     @Size(max = 500)
     private String description;
 
-    @NotBlank(message = "El nombre del creador es obligatorio")
-    private String creatorUsername;
-
     @NotBlank(message = "El codigo de acceso es obligatorio")
-    private String comunityAccess;
+    private String communityAccess;
 }

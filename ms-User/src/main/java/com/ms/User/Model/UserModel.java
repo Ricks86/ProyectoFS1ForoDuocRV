@@ -25,7 +25,7 @@ public class UserModel {
     private Long authId;
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Column(unique = true, nullable = false)
+    @Column(length = 64, unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -34,8 +34,10 @@ public class UserModel {
     @Column(length = 500)
     private String bio;
 
+    @Column(length = 100)
     private String alias;
 
+    @Column(length = 50)
     private String birthday;
 
     private String avatarUrl;
