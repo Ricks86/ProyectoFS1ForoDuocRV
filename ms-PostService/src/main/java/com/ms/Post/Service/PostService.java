@@ -35,7 +35,7 @@ public class PostService {
                 .build();
 
         Post postGuardado = postRepository.save(nuevoPost);
-        UserDTO autorDto = obtenerAutorSeguro(idUsuarioLogueado, token);
+        UserDTO autorDto = obtenerAutor(idUsuarioLogueado, token);
 
         return construirPostResponse(postGuardado, autorDto);
     }
@@ -45,7 +45,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("El post con ID " + id + " no existe."));
 
-        UserDTO autorDto = obtenerAutorSeguro(post.getIdUsuario(), token);
+        UserDTO autorDto = obtenerAutor(post.getIdUsuario(), token);
         return construirPostResponse(post, autorDto);
     }
 
@@ -58,7 +58,7 @@ public class PostService {
         return posts.stream()
                 .map(post -> {
                     UserDTO autorDto = userCache.computeIfAbsent(post.getIdUsuario(),
-                            id -> obtenerAutorSeguro(id, token));
+                            id -> obtenerAutor(id, token));
                     return construirPostResponse(post, autorDto);
                 })
                 .toList();
@@ -82,14 +82,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostFeedDTO> getFeedPaginado(Pageable pageable, String token) {
+    public Page<PostFeedDTO> obtenerFeedPaginado(Pageable pageable, String token) {
         Page<Post> postsPage = postRepository.findAllByOrderByFechaCreacionAsc(pageable);
 
         Map<Long, UserDTO> userCache = new HashMap<>();
 
         return postsPage.map(post -> {
             UserDTO autorDto = userCache.computeIfAbsent(post.getIdUsuario(),
-                    id -> obtenerAutorSeguro(id, token));
+                    id -> obtenerAutor(id, token));
 
             return new PostFeedDTO(
                     post.getId(),
@@ -101,7 +101,7 @@ public class PostService {
         });
     }
 
-    private UserDTO obtenerAutorSeguro(Long userId, String token) {
+    private UserDTO obtenerAutor(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);
         } catch (Exception e) {

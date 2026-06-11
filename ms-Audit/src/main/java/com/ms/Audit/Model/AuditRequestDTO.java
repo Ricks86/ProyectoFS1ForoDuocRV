@@ -1,5 +1,6 @@
 package com.ms.Audit.Model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Schema(
+        name= "AuditRequestDTO",
+        description = "Son los datos necesarios que debe recibir de cada microservicio que dispare un petición para guardar un registro"
+)
 public class AuditRequestDTO {
 
     @NotNull(message = "El ID del usuario es obligatorio")
