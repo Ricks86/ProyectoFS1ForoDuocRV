@@ -27,6 +27,7 @@
         <module>ms-User</module>
         <module>ms-Report</module>
         <module>ms-Notification</module>
+        <module>Gateway</module>
     </modules>
 
     <properties>
