@@ -94,6 +94,8 @@ public class CommunityService {
                 .name(model.getName())
                 .description(model.getDescription())
                 .creator(creator)
+                .memberCount(model.getMemberCount())
+                .createdAt(model.getCreatedAt())
                 .build();
     }
 
