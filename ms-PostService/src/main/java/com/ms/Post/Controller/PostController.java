@@ -7,6 +7,10 @@ import com.ms.Post.Model.PostResponseDTO;
 import com.ms.Post.Security.JwtUtil;
 import com.ms.Post.Service.AuditService;
 import com.ms.Post.Service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +28,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
+
+@Tag(   name = "Publicaciones",
+        description = "Controlador principal para la creación, consulta y filtrado de hilos de discusión (Posts)")
+
 public class PostController {
 
     private final PostService postService;
@@ -31,6 +39,14 @@ public class PostController {
     private final AuditService auditoriaService;
 
     @PostMapping
+    @Operation(
+            summary = "Crear una nueva publicación",
+            description = "Registra un nuevo Post en la base de datos. Extrae el ID del autor criptográficamente desde el token JWT e impacta asíncronamente al servicio de Auditoría."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Publicación forjada y guardada con éxito."),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Token JWT ausente, alterado o expirado.")
+    })
     public ResponseEntity<PostResponseDTO> crearPost(
             @Valid @RequestBody PostCreateDTO request,
             @RequestHeader("Authorization") String token) {
@@ -49,6 +65,15 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Buscar una publicación por su ID",
+            description = "Recupera los datos detallados de un Post específico y orquesta una consulta interna vía Feign hacia ms-User para adjuntar el perfil del autor."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Publicación encontrada y mapeada."),
+            @ApiResponse(responseCode = "404", description = "El ID de la publicación no existe en el sistema."),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Token JWT ausente, alterado o expirado.")
+    })
     public ResponseEntity<PostResponseDTO> obtenerPorId(
             @PathVariable Long id,
             @RequestHeader("Authorization") String token) {
@@ -56,6 +81,14 @@ public class PostController {
     }
 
     @GetMapping("/filtrar/antes-de")
+    @Operation(
+            summary = "Filtrar publicaciones antiguas",
+            description = "Retorna una lista de publicaciones cuya fecha de creación sea estrictamente anterior a la fecha provista."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de publicaciones recuperada (puede retornar un array vacío)."),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Token JWT ausente, alterado o expirado.")
+    })
     public ResponseEntity<List<PostResponseDTO>> obtenerAntesDe(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
             @RequestHeader("Authorization") String token) {
@@ -65,6 +98,16 @@ public class PostController {
     }
 
     @GetMapping("/usuario/{username}")
+    @Operation(
+            summary = "Obtener publicaciones de un usuario específico",
+            description = "Recupera la lista histórica de publicaciones creadas por un nombre de usuario (username) en particular."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista histórica devuelta con éxito."),
+            @ApiResponse(responseCode = "404", description = "El username especificado no existe."),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Token JWT ausente, alterado o expirado.")
+
+    })
     public ResponseEntity<List<PostResponseDTO>> obtenerPorUsername(
             @PathVariable String username,
             @RequestHeader("Authorization") String token) {
@@ -72,6 +115,14 @@ public class PostController {
     }
 
     @GetMapping("/feed")
+    @Operation(
+            summary = "Obtener el Feed global paginado",
+            description = "Retorna una página de publicaciones diseñada para el consumo de la vista principal del foro."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Página de contenido devuelta con metadatos de paginación."),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado. Token JWT ausente, alterado o expirado.")
+    })
     public ResponseEntity<Page<PostFeedDTO>> obtenerFeed(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -84,6 +135,14 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/author-id")
+    @Operation(
+            summary = "Endpoint de Comunicación Interna: Obtener ID del Autor",
+            description = "Ruta interna de alta velocidad **(Uso exclusivo para OpenFeign)**. Permite a microservicios como `ms-Interaction` o `ms-Comment` saber instantáneamente quién es el dueño de un post para detonar sus lógicas de negocio o notificaciones."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "ID del autor devuelto exitosamente."),
+            @ApiResponse(responseCode = "404", description = "Publicación no encontrada.")
+    })
     public ResponseEntity<Long> getAuthorIdByPostId(@PathVariable Long postId) {
         Long authorId = postService.getAuthorIdByPostId(postId);
         return ResponseEntity.ok(authorId);

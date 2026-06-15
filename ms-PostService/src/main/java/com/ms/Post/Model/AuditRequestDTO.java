@@ -1,5 +1,6 @@
 package com.ms.Post.Model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Schema(title = "Datos para enviar al Audit Service")
 public class AuditRequestDTO {
 
     @NotNull(message = "El ID del usuario es obligatorio")
