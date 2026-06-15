@@ -35,7 +35,7 @@ public class CommentService {
 
         dispararNotificacion(request, userIdLogueado);
 
-        UserDTO autorDto = obtenerAutorSeguro(userIdLogueado, token);
+        UserDTO autorDto = obtenerAutor(userIdLogueado, token);
 
         return construirResponseDTO(comentarioGuardado, autorDto);
     }
@@ -50,7 +50,7 @@ public class CommentService {
         return comentarios.stream()
                 .map(comentario -> {
                     UserDTO autorDto = userCache.computeIfAbsent(comentario.getUserId(),
-                            id -> obtenerAutorSeguro(id, token));
+                            id -> obtenerAutor(id, token));
                     return construirResponseDTO(comentario, autorDto);
                 })
                 .toList();
@@ -77,7 +77,7 @@ public class CommentService {
         }
     }
 
-    private UserDTO obtenerAutorSeguro(Long userId, String token) {
+    private UserDTO obtenerAutor(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public Long getAuthorIdByCommentId(Long commentId) {
+    public Long obtenerAutorPorId(Long commentId) {
         Comment comentario = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comentario no encontrado con ID: " + commentId));
 
