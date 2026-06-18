@@ -24,7 +24,7 @@ public class MessageService {
     private final NotificationClient notificationClient;
 
     @Transactional
-    public MessageResponseDTO enviarMensajePorUsername(String usernameReceptor, MessageCreatetDTO request, Long idEmisorLogueado, String token) {
+    public MessageResponseDTO enviarMensajePorUsername(String usernameReceptor, MessageCreateDTO request, Long idEmisorLogueado, String token) {
 
         UserDTO receptorDto = obtenerUsuarioPorUsername(usernameReceptor, token);
         UserDTO emisorDto = obtenerUsuarioPorId(idEmisorLogueado, token);

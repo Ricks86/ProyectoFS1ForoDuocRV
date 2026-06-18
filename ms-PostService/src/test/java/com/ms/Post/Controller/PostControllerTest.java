@@ -1,6 +1,7 @@
 package com.ms.Post.Controller;
 
 import com.ms.Post.Model.PostCreateDTO;
+import com.ms.Post.Model.PostFeedDTO;
 import com.ms.Post.Model.PostResponseDTO;
 import com.ms.Post.Security.JwtUtil;
 import com.ms.Post.Service.AuditService;
@@ -11,10 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,7 +60,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void crearPost_DeberiaRetornarCreatedYRegistrarAuditoria_CuandoDatosSonValidos() {
+    void crearPost_OK() {
         when(jwtUtil.extractUserId(falsoToken)).thenReturn(idUsuarioLogueado);
 
         when(postService.crearPost(request, idUsuarioLogueado, falsoToken)).thenReturn(responseDTO);
@@ -72,5 +78,24 @@ public class PostControllerTest {
                 "CREATE_POST",
                 "Post publicado exitosamente con ID [101] y título: '¿Cómo compilar el Kernel?'"
         );
+    }
+
+    @Test
+    void obtenerFeed_OK() {
+        int page = 0;
+        int size = 5;
+        Pageable pageable = PageRequest.of(page, size);
+        List<PostFeedDTO> listaPosts = List.of(new PostFeedDTO(), new PostFeedDTO());
+        Page<PostFeedDTO> paginaSimulada = new PageImpl<>(listaPosts, pageable, listaPosts.size());
+
+        when(postService.obtenerFeedPaginado(any(Pageable.class), eq(falsoToken))).thenReturn(paginaSimulada);
+
+        ResponseEntity<Page<PostFeedDTO>> response = postController.obtenerFeed(page, size, falsoToken);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().getTotalElements());
+
+        verify(postService, times(1)).obtenerFeedPaginado(any(Pageable.class), eq(falsoToken));
     }
 }

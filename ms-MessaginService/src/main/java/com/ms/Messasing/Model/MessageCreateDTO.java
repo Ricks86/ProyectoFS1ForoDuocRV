@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageCreatetDTO {
+public class MessageCreateDTO {
 
     @NotBlank(message = "El contenido no puede estar vacío")
     @Size(max = 500)
