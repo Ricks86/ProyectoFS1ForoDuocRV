@@ -3,7 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY ms-AuthService ./ms-AuthService
 
-RUN mvn clean package -pl ms-Auth -am -DskipTests
+RUN mvn clean package -pl ms-AuthService -am -DskipTests
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
