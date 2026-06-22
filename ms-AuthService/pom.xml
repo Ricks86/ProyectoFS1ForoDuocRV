@@ -13,7 +13,6 @@
 	<artifactId>ms-AuthService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-AuthService</name>
-	<description>Microservicio de Autenticación para DuckyProtocol</description>
 
 	<dependencies>
 		<dependency>
