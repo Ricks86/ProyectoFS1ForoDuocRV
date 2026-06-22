@@ -108,6 +108,14 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>com/ms/Post/Model/**</exclude>
+						<exclude>com/ms/Post/Config/**</exclude>
+						<exclude>com/ms/Post/Security/**</exclude>
+						<exclude>com/ms/Post/*Application.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

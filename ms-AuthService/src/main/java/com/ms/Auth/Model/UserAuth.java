@@ -47,7 +47,7 @@ public class UserAuth {
 
     @Schema(
             title = "Correo electrónico único",
-            description = "Dirección de correo electrónico validada del usuario, utilizada para recuperar credenciales o recibir alertas del foro.",
+            description = "Dirección de correo electrónico validada del usuario",
             example = "ducky.protocol@duocuc.cl"
     )
 
@@ -58,7 +58,7 @@ public class UserAuth {
 
     @Schema(
             title = "Contraseña de acceso",
-            description = "Clave secreta cifrada mediante un algoritmo hash seguro (BCrypt/Argon2). En la base de datos nunca se guarda en texto plano.",
+            description = "Clave secreta cifrada mediante un algoritmo hash seguro (BCrypt). En la base de datos nunca se guarda en texto plano.",
             accessMode = Schema.AccessMode.WRITE_ONLY
     )
 

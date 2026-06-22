@@ -36,5 +36,4 @@ public class AuditService {
             throw new RuntimeException("Fallo al guardar el registro de auditoría", e);
         }
     }
-
 }
