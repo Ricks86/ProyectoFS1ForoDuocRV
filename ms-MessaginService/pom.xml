@@ -101,6 +101,14 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>com/ms/Messasing/Model/**</exclude>
+						<exclude>com/ms/Messasing/Config/**</exclude>
+						<exclude>com/ms/Messasing/Security/**</exclude>
+						<exclude>com/ms/Messasing/*Application.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

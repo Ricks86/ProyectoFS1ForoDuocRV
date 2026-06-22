@@ -29,7 +29,4 @@ public class AuditController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
-
-
-
  }
