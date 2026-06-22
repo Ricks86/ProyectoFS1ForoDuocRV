@@ -1,4 +1,4 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS buildw
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /APP
 COPY pom.xml .
 COPY src ./src
