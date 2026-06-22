@@ -17,17 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>ms-PostService</module>
         <module>ms-AuthService</module>
-        <module>ms-CommentService</module>
-        <module>ms-MessaginService</module>
-        <module>ms-Audit</module>
-        <module>ms-Interaction</module>
-        <module>ms-Comunity</module>
-        <module>ms-User</module>
-        <module>ms-Report</module>
-        <module>ms-Notification</module>
-        <module>Gateway</module>
     </modules>
 
     <properties>
