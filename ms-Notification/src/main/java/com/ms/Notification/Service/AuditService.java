@@ -1,7 +1,7 @@
 package com.ms.Notification.Service;
 
 import com.ms.Notification.Client.AuditClient;
-import com.ms.Notification.Model.AuditRequestDTO;
+import com.ms.Notification.DTOs.AuditRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

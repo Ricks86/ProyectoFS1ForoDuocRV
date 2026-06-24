@@ -1,6 +1,10 @@
 package com.ms.Auth.Service;
 
 import com.ms.Auth.Client.UserClient;
+import com.ms.Auth.DTOs.LoginRequestDTO;
+import com.ms.Auth.DTOs.RegisterRequestDTO;
+import com.ms.Auth.DTOs.RegisterResponseDTO;
+import com.ms.Auth.DTOs.TokenResponseDTO;
 import com.ms.Auth.Model.*;
 import com.ms.Auth.Repository.UserAuthRepository;
 import com.ms.Auth.Security.JwtService;

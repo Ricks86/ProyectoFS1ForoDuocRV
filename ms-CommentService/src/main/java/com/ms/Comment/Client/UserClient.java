@@ -1,6 +1,6 @@
 package com.ms.Comment.Client;
 
-import com.ms.Comment.Model.UserDTO;
+import com.ms.Comment.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,8 +1,7 @@
 package com.ms.Report.Controller;
 
-import com.ms.Report.Model.ReportCreateDTO;
-import com.ms.Report.Model.ReportModel;
-import com.ms.Report.Model.ReportResponseDTO;
+import com.ms.Report.DTOs.ReportCreateDTO;
+import com.ms.Report.DTOs.ReportResponseDTO;
 import com.ms.Report.Security.JwtUtil;
 import com.ms.Report.Service.AuditService;
 import com.ms.Report.Service.ReportService;

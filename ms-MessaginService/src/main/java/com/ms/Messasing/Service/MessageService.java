@@ -2,6 +2,7 @@ package com.ms.Messasing.Service;
 
 import com.ms.Messasing.Client.NotificationClient;
 import com.ms.Messasing.Client.UserClient;
+import com.ms.Messasing.DTOs.*;
 import com.ms.Messasing.Model.*;
 import com.ms.Messasing.Repository.MessageRepository;
 import lombok.RequiredArgsConstructor;

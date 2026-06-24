@@ -1,6 +1,6 @@
 package com.ms.Messasing.Client;
 
-import com.ms.Messasing.Model.UserDTO;
+import com.ms.Messasing.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

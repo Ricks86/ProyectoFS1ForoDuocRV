@@ -1,7 +1,7 @@
 package com.ms.Comunity.Service;
 
 import com.ms.Comunity.Client.AuditClient;
-import com.ms.Comunity.Model.AuditRequestDTO;
+import com.ms.Comunity.DTOs.AuditRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

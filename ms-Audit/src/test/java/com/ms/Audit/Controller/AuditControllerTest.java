@@ -1,7 +1,7 @@
 package com.ms.Audit.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ms.Audit.Model.AuditRequestDTO;
+import com.ms.Audit.DTOs.AuditRequestDTO;
 import com.ms.Audit.Service.AuditService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

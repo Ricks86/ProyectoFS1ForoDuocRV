@@ -2,6 +2,10 @@ package com.ms.Comment.Service;
 
 import com.ms.Comment.Client.NotificationClient;
 import com.ms.Comment.Client.UserClient;
+import com.ms.Comment.DTOs.CommentCreateDTO;
+import com.ms.Comment.DTOs.CommentResponseDTO;
+import com.ms.Comment.DTOs.NotificationCreateDTO;
+import com.ms.Comment.DTOs.UserDTO;
 import com.ms.Comment.Model.*;
 import com.ms.Comment.Repository.CommentRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.ms.Post.Client;
 
-import com.ms.Post.Model.UserDTO;
+import com.ms.Post.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

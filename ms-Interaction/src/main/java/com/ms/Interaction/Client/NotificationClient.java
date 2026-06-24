@@ -1,6 +1,6 @@
 package com.ms.Interaction.Client;
 
-import com.ms.Interaction.Model.NotificationCreateDTO;
+import com.ms.Interaction.DTOs.NotificationCreateDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

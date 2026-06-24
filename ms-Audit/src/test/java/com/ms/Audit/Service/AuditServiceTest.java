@@ -1,7 +1,7 @@
 package com.ms.Audit.Service;
 
 import com.ms.Audit.Model.AuditModel;
-import com.ms.Audit.Model.AuditRequestDTO;
+import com.ms.Audit.DTOs.AuditRequestDTO;
 import com.ms.Audit.Repository.AuditRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.ms.Audit.Controller;
 
-import com.ms.Audit.Model.AuditRequestDTO;
+import com.ms.Audit.DTOs.AuditRequestDTO;
 import com.ms.Audit.Service.AuditService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

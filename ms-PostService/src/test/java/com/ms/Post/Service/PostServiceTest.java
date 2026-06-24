@@ -2,10 +2,10 @@ package com.ms.Post.Service;
 
 import com.ms.Post.Client.UserClient;
 import com.ms.Post.Model.Post;
-import com.ms.Post.Model.PostCreateDTO;
-import com.ms.Post.Model.PostFeedDTO;
-import com.ms.Post.Model.PostResponseDTO;
-import com.ms.Post.Model.UserDTO;
+import com.ms.Post.DTOs.PostCreateDTO;
+import com.ms.Post.DTOs.PostFeedDTO;
+import com.ms.Post.DTOs.PostResponseDTO;
+import com.ms.Post.DTOs.UserDTO;
 import com.ms.Post.Repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

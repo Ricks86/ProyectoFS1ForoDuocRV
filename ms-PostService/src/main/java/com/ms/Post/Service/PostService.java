@@ -2,6 +2,10 @@ package com.ms.Post.Service;
 
 
 import com.ms.Post.Client.UserClient;
+import com.ms.Post.DTOs.PostCreateDTO;
+import com.ms.Post.DTOs.PostFeedDTO;
+import com.ms.Post.DTOs.PostResponseDTO;
+import com.ms.Post.DTOs.UserDTO;
 import com.ms.Post.Model.*;
 import com.ms.Post.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;

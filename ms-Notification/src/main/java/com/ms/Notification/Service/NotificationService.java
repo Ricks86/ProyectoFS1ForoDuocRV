@@ -1,10 +1,10 @@
 package com.ms.Notification.Service;
 
 import com.ms.Notification.Client.UserClient;
-import com.ms.Notification.Model.NotificationCreateDTO;
+import com.ms.Notification.DTOs.NotificationCreateDTO;
 import com.ms.Notification.Model.NotificationModel;
-import com.ms.Notification.Model.NotificationResponseDTO;
-import com.ms.Notification.Model.UserDTO;
+import com.ms.Notification.DTOs.NotificationResponseDTO;
+import com.ms.Notification.DTOs.UserDTO;
 import com.ms.Notification.Repository.NotificationRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;

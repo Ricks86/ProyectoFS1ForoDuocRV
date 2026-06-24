@@ -1,6 +1,6 @@
 package com.ms.Report.Client;
 
-import com.ms.Report.Model.UserDTO;
+import com.ms.Report.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

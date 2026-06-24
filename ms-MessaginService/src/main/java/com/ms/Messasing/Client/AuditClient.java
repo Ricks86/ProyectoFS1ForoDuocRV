@@ -1,6 +1,6 @@
 package com.ms.Messasing.Client;
 
-import com.ms.Messasing.Model.AuditRequestDTO;
+import com.ms.Messasing.DTOs.AuditRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

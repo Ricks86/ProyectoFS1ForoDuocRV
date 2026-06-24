@@ -1,9 +1,9 @@
 package com.ms.User.Service;
 
-import com.ms.User.Model.UserDTO;
+import com.ms.User.DTOs.UserDTO;
 import com.ms.User.Model.UserModel;
-import com.ms.User.Model.UserProfileDTO;
-import com.ms.User.Model.UserUpdateDTO;
+import com.ms.User.DTOs.UserProfileDTO;
+import com.ms.User.DTOs.UserUpdateDTO;
 import com.ms.User.Repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;

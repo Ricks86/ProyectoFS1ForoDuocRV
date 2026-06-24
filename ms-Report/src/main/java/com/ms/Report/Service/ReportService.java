@@ -1,10 +1,10 @@
 package com.ms.Report.Service;
 
 import com.ms.Report.Client.UserClient;
-import com.ms.Report.Model.ReportCreateDTO;
+import com.ms.Report.DTOs.ReportCreateDTO;
 import com.ms.Report.Model.ReportModel;
-import com.ms.Report.Model.ReportResponseDTO;
-import com.ms.Report.Model.UserDTO;
+import com.ms.Report.DTOs.ReportResponseDTO;
+import com.ms.Report.DTOs.UserDTO;
 import com.ms.Report.Repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

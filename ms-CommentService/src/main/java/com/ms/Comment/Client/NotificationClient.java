@@ -1,6 +1,6 @@
 package com.ms.Comment.Client;
 
-import com.ms.Comment.Model.NotificationCreateDTO;
+import com.ms.Comment.DTOs.NotificationCreateDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

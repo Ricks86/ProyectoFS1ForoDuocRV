@@ -1,8 +1,8 @@
 package com.ms.Messasing.Controller;
 
-import com.ms.Messasing.Model.MessageCreateDTO;
-import com.ms.Messasing.Model.MessageResponseDTO;
-import com.ms.Messasing.Model.UserDTO;
+import com.ms.Messasing.DTOs.MessageCreateDTO;
+import com.ms.Messasing.DTOs.MessageResponseDTO;
+import com.ms.Messasing.DTOs.UserDTO;
 import com.ms.Messasing.Security.JwtUtil;
 import com.ms.Messasing.Service.AuditService;
 import com.ms.Messasing.Service.MessageService;

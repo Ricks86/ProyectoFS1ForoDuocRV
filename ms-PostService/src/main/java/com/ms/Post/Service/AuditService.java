@@ -1,7 +1,7 @@
 package com.ms.Post.Service;
 
 import com.ms.Post.Client.AuditClient;
-import com.ms.Post.Model.AuditRequestDTO;
+import com.ms.Post.DTOs.AuditRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

@@ -1,6 +1,6 @@
 package com.ms.Notification.Client;
 
-import com.ms.Notification.Model.UserDTO;
+import com.ms.Notification.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,6 +1,6 @@
 package com.ms.Interaction.Client;
 
-import com.ms.Interaction.Model.UserDTO;
+import com.ms.Interaction.DTOs.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

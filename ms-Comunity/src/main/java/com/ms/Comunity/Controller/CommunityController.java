@@ -1,8 +1,8 @@
 package com.ms.Comunity.Controller;
 
-import com.ms.Comunity.Model.CommunityCreateDTO;
-import com.ms.Comunity.Model.CommunityJoinDTO;
-import com.ms.Comunity.Model.CommunityResponseDTO;
+import com.ms.Comunity.DTOs.CommunityCreateDTO;
+import com.ms.Comunity.DTOs.CommunityJoinDTO;
+import com.ms.Comunity.DTOs.CommunityResponseDTO;
 import com.ms.Comunity.Security.JwtUtil;
 import com.ms.Comunity.Service.AuditService;
 import com.ms.Comunity.Service.CommunityService;

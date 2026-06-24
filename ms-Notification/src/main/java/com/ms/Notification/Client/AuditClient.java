@@ -1,6 +1,6 @@
 package com.ms.Notification.Client;
 
-import com.ms.Notification.Model.AuditRequestDTO;
+import com.ms.Notification.DTOs.AuditRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

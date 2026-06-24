@@ -1,0 +1,21 @@
+package com.ms.Comunity.DTOs;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CommunityResponseDTO {
+    private Long id;
+    private String name;
+    private String description;
+    private UserDTO creator;
+    private Integer memberCount;
+    private LocalDateTime createdAt;
+}

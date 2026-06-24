@@ -1,7 +1,7 @@
 package com.ms.Notification.Controller;
 
-import com.ms.Notification.Model.NotificationCreateDTO;
-import com.ms.Notification.Model.NotificationResponseDTO;
+import com.ms.Notification.DTOs.NotificationCreateDTO;
+import com.ms.Notification.DTOs.NotificationResponseDTO;
 import com.ms.Notification.Security.JwtUtil;
 import com.ms.Notification.Service.AuditService;
 import com.ms.Notification.Service.NotificationService;

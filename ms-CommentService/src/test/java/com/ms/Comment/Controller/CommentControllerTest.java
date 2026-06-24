@@ -1,8 +1,8 @@
 package com.ms.Comment.Controller;
 
-import com.ms.Comment.Model.CommentCreateDTO;
-import com.ms.Comment.Model.CommentResponseDTO;
-import com.ms.Comment.Model.UserDTO;
+import com.ms.Comment.DTOs.CommentCreateDTO;
+import com.ms.Comment.DTOs.CommentResponseDTO;
+import com.ms.Comment.DTOs.UserDTO;
 import com.ms.Comment.Security.JwtUtil;
 import com.ms.Comment.Service.AuditService;
 import com.ms.Comment.Service.CommentService;

@@ -1,5 +1,9 @@
 package com.ms.User.Controller;
 
+import com.ms.User.DTOs.UserDTO;
+import com.ms.User.DTOs.UserInitDTO;
+import com.ms.User.DTOs.UserProfileDTO;
+import com.ms.User.DTOs.UserUpdateDTO;
 import com.ms.User.Model.*;
 import com.ms.User.Security.JwtUtil;
 import com.ms.User.Service.AuditService;

@@ -1,7 +1,7 @@
 package com.ms.Interaction.Controller;
 
-import com.ms.Interaction.Model.InteractionRequestDTO;
-import com.ms.Interaction.Model.InteractionResponseDTO;
+import com.ms.Interaction.DTOs.InteractionRequestDTO;
+import com.ms.Interaction.DTOs.InteractionResponseDTO;
 import com.ms.Interaction.Security.JwtUtil;
 import com.ms.Interaction.Service.AuditService;
 import com.ms.Interaction.Service.InteractionService;

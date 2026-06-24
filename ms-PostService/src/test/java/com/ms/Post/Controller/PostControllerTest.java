@@ -1,8 +1,8 @@
 package com.ms.Post.Controller;
 
-import com.ms.Post.Model.PostCreateDTO;
-import com.ms.Post.Model.PostFeedDTO;
-import com.ms.Post.Model.PostResponseDTO;
+import com.ms.Post.DTOs.PostCreateDTO;
+import com.ms.Post.DTOs.PostFeedDTO;
+import com.ms.Post.DTOs.PostResponseDTO;
 import com.ms.Post.Security.JwtUtil;
 import com.ms.Post.Service.AuditService;
 import com.ms.Post.Service.PostService;

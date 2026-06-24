@@ -1,6 +1,9 @@
 package com.ms.Auth.Controller;
 
-import com.ms.Auth.Model.*;
+import com.ms.Auth.DTOs.LoginRequestDTO;
+import com.ms.Auth.DTOs.RegisterRequestDTO;
+import com.ms.Auth.DTOs.RegisterResponseDTO;
+import com.ms.Auth.DTOs.TokenResponseDTO;
 import com.ms.Auth.Service.AuditService;
 import com.ms.Auth.Service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;

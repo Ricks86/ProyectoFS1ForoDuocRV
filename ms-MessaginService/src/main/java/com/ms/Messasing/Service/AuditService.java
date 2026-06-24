@@ -1,7 +1,7 @@
 package com.ms.Messasing.Service;
 
 import com.ms.Messasing.Client.AuditClient;
-import com.ms.Messasing.Model.AuditRequestDTO;
+import com.ms.Messasing.DTOs.AuditRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

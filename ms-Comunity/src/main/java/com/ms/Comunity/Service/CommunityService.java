@@ -1,7 +1,8 @@
 package com.ms.Comunity.Service;
 
 import com.ms.Comunity.Client.UserClient;
-import com.ms.Comunity.Model.*;
+import com.ms.Comunity.DTOs.*;
+import com.ms.Comunity.Model.CommunityModel;
 import com.ms.Comunity.Repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
