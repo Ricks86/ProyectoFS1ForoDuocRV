@@ -5,6 +5,9 @@ import com.ms.Notification.DTOs.NotificationResponseDTO;
 import com.ms.Notification.Security.JwtUtil;
 import com.ms.Notification.Service.AuditService;
 import com.ms.Notification.Service.NotificationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import java.util.Map;
 @RestController
     @RequestMapping("/api/notifications")
 @RequiredArgsConstructor
+@Tag(name = "Notificaciones", description = "Generación y consulta de alertas del sistema para los usuarios")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -24,6 +28,8 @@ public class NotificationController {
     private final AuditService auditoriaService;
 
     @PostMapping
+    @Operation(summary = "Crear notificación", description = "Genera una alerta interna dirigida a un usuario")
+    @ApiResponse(responseCode = "201", description = "Notificación enviada")
     public ResponseEntity<NotificationResponseDTO> createNotification(
             @Valid @RequestBody NotificationCreateDTO request,
             @RequestHeader(value = "X-Service-Origin", defaultValue = "SYSTEM") String serviceOrigin) {
@@ -33,12 +39,16 @@ public class NotificationController {
     }
 
     @GetMapping("/mis-notificaciones")
+    @Operation(summary = "Ver mis notificaciones", description = "Obtiene el historial de notificaciones del usuario")
+    @ApiResponse(responseCode = "200", description = "Historial obtenido")
     public ResponseEntity<List<NotificationResponseDTO>> getMyNotifications(@RequestHeader("Authorization") String token) {
         Long myId = jwtUtil.extractUserId(token);
         return ResponseEntity.ok(notificationService.getUserNotifications(myId, token));
     }
 
     @GetMapping("/no-leidas")
+    @Operation(summary = "Contador de no leídas", description = "Retorna el número exacto de notificaciones pendientes por leer")
+    @ApiResponse(responseCode = "200", description = "Conteo calculado")
     public ResponseEntity<Map<String, Long>> getMyUnreadCount(@RequestHeader("Authorization") String token) {
         Long myId = jwtUtil.extractUserId(token);
         Long count = notificationService.getUnreadCount(myId);
@@ -46,6 +56,8 @@ public class NotificationController {
     }
 
     @PutMapping("/{id}/read")
+    @Operation(summary = "Marcar como leída", description = "Cambia el estado de una notificación específica a leída.")
+    @ApiResponse(responseCode = "200", description = "Notificación actualizada")
     public ResponseEntity<Map<String, String>> markAsRead(
             @PathVariable Long id,
             @RequestHeader("Authorization") String token) {
