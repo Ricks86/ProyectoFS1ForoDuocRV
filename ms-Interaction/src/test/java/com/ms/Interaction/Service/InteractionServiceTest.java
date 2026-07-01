@@ -62,7 +62,7 @@ public class InteractionServiceTest {
 
         Mockito.when(interactionRepository.findByEntityIdAndUserIdAndEntityType(10L, 1L, "POST")).thenReturn(Optional.empty());
         Mockito.when(userClient.obtenerUsuarioPorId(eq(1L), anyString())).thenReturn(mockUserDTO);
-        Mockito.when(postClient.getAuthorIdByPostId(10L, "token")).thenReturn(2L); // Autor distinto para simular notificación
+        Mockito.when(postClient.getAuthorIdByPostId(10L, "token")).thenReturn(2L);
 
         InteractionResponseDTO res = interactionService.toggleVote(req, 1L, "token");
 

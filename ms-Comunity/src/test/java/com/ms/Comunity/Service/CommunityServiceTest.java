@@ -110,7 +110,7 @@ public class CommunityServiceTest {
         Mockito.when(communityRepository.findById(1L)).thenReturn(Optional.of(mockComm));
 
         assertThrows(RuntimeException.class, () -> {
-            communityService.joinCommunity(1L, req, 10L, "token"); // El 10L ya fue seteado como miembro al crear
+            communityService.joinCommunity(1L, req, 10L, "token");
         });
     }
 
