@@ -77,7 +77,9 @@ public class CommunityServiceTest {
 
     @Test
     void testJoinCommunity_Success() {
-        CommunityJoinDTO req = new CommunityJoinDTO("1234");
+        CommunityJoinDTO req = new CommunityJoinDTO();
+        req.setAccessCode("1234");
+
         Mockito.when(communityRepository.findById(1L)).thenReturn(Optional.of(mockComm));
         Mockito.when(communityRepository.save(any(CommunityModel.class))).thenReturn(mockComm);
         Mockito.when(userClient.obtenerUsuarioPorId(eq(10L), anyString())).thenReturn(mockUser);
@@ -90,7 +92,9 @@ public class CommunityServiceTest {
 
     @Test
     void testJoinCommunity_WrongAccessCode() {
-        CommunityJoinDTO req = new CommunityJoinDTO("wrong");
+        CommunityJoinDTO req = new CommunityJoinDTO();
+        req.setAccessCode("wrong");
+
         Mockito.when(communityRepository.findById(1L)).thenReturn(Optional.of(mockComm));
 
         Exception ex = assertThrows(RuntimeException.class, () -> {
@@ -101,7 +105,8 @@ public class CommunityServiceTest {
 
     @Test
     void testJoinCommunity_AlreadyMember() {
-        CommunityJoinDTO req = new CommunityJoinDTO("1234");
+        CommunityJoinDTO req = new CommunityJoinDTO();
+        req.setAccessCode("1234");
         Mockito.when(communityRepository.findById(1L)).thenReturn(Optional.of(mockComm));
 
         assertThrows(RuntimeException.class, () -> {
