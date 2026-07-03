@@ -25,6 +25,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Controlador REST el MS Posts.
+ * <p>
+ * Orquesta las peticiones HTTP relacionadas con los post,
+ * desde su creación hasta la consulta del feed el filtrado por fecha.
+ * Su responsabilidad incluye extraer de forma segura la identidad del emisor mediante el token JWT,
+ * delegar las reglas de negocio y consistencia a la capa de Servicio, y emitir
+ * trazabilidad asíncrona hacia el microservicio de Auditoría.
+ * <p>
+ * NOTA: La especificación técnica detallada de los endpoints, payloads,
+ * parámetros de paginación y códigos de estado HTTP se encuentra documentada
+ * y expuesta de forma automatizada mediante Swagger UI.
+ */
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
