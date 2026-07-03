@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador que maneja el sistema de interacciones (likes y dislikes).
+ * Centraliza los votos tanto en publicaciones como en comentarios y
+ * registra los movimientos en el servicio de auditoría.
+ */
+
 @RestController
 @RequestMapping("/api/interactions")
 @Slf4j

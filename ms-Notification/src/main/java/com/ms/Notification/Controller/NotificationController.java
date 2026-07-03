@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para gestionar la bandeja de notificaciones.
+ * Soporta la emisión de nuevas alertas internas, la lectura del buzón
+ * y el reseteo del contador de mensajes no leídos del usuario logueado.
+ */
+
 @RestController
     @RequestMapping("/api/notifications")
 @RequiredArgsConstructor

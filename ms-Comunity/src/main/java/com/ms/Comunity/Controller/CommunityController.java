@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador para la administración de las comunidades o foros.
+ * Permite crear nuevos espacios protegidos con código de acceso y
+ * validar el ingreso de los usuarios que desean unirse.
+ */
 
 @RestController
 @RequestMapping("/api/communities")

@@ -15,6 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Servicio central para la gestión de notificaciones.
+ * <p>
+ * Se encarga de la persistencia de las alertas, el cálculo de métricas (no leídas)
+ * y la integración síncrona con el microservicio ms-User para componer
+ * la información del remitente en tiempo real mediante el patrón API Composition.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,6 +31,13 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserClient userClient;
 
+    /**
+     * Persiste una nueva alerta en el sistema con el origen del servicio generador.
+     *
+     * @param dto Objeto con la data esencial de la notificación (mensaje, destinatario, remitente).
+     * @param serviceOrigin Nombre del microservicio que disparó la alerta.
+     * @return NotificationResponseDTO confirmando la creación.
+     */
     @Transactional
     public NotificationResponseDTO createNotification(NotificationCreateDTO dto, String serviceOrigin) {
 
@@ -41,6 +56,13 @@ public class NotificationService {
         return mapToResponseDTO(saved, null);
     }
 
+    /**
+     * Consulta las notificaciones de un usuario y compone al emisor.
+     *
+     * @param recipientId Identificador del usuario que consulta su bandeja.
+     * @param token Token JWT para su propagación.
+     * @return Lista de NotificationResponseDTO mapeada.
+     */
     @Transactional(readOnly = true)
     public List<NotificationResponseDTO> getUserNotifications(Long recipientId, String token) {
         List<NotificationModel> notifications = notificationRepository.findByRecipientIdOrderByCreatedAtDesc(recipientId);
@@ -58,11 +80,23 @@ public class NotificationService {
                 .toList();
     }
 
+    /**
+     * Realiza un conteo rápido de las alertas pendientes.
+     *
+     * @param recipientId Identificador del usuario.
+     * @return Cantidad entera de notificaciones no leídas.
+     */
     @Transactional(readOnly = true)
     public Long getUnreadCount(Long recipientId) {
         return notificationRepository.countByRecipientIdAndIsReadFalse(recipientId);
     }
 
+    /**
+     * Modifica el indicador de lectura de una notificación validando autorización.
+     *
+     * @param notificationId Identificador de alerta a modificar.
+     * @param idUsuarioLogueado Identificador del usuario dueño validado en el controller.
+     */
     @Transactional
     public void markAsRead(Long notificationId, Long idUsuarioLogueado) {
         NotificationModel notification = notificationRepository.findById(notificationId)
@@ -76,6 +110,14 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    /**
+     * Consulta los datos del usuario mediante el Feign Client.
+     * Implementa un fallback para retornar un usuario genérico del sistema en caso de error.
+     *
+     * @param userId Identificador del usuario.
+     * @param token Token JWT de autorización.
+     * @return UserDTO con la información del usuario o valores por defecto.
+     */
     private UserDTO obtenerUsuario(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);
@@ -85,6 +127,13 @@ public class NotificationService {
         }
     }
 
+    /**
+     * Convierte la entidad de base de datos a un objeto de transferencia (DTO)
+     *
+     * @param model Entidad NotificationModel obtenida de la base de datos.
+     * @param sender DTO del usuario remitente, si existe.
+     * @return NotificationResponseDTO listo para ser enviado al cliente.
+     */
     private NotificationResponseDTO mapToResponseDTO(NotificationModel model, UserDTO sender) {
         return NotificationResponseDTO.builder()
                 .id(model.getId())

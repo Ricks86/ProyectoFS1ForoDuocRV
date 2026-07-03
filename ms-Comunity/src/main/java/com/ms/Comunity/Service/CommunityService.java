@@ -13,6 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Servicio central para la gestión de las comunidades.
+ * <p>
+ * Se encarga de la persistencia de los grupos, la validación estricta de códigos de acceso privado,
+ * el conteo de miembros y la integración síncrona con el microservicio ms-User para componer
+ * la información del creador en tiempo real mediante el patrón API Composition.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +28,14 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final UserClient userClient;
 
+    /**
+     * Crea una nueva comunidad y asigna al creador como el primer miembro de esta.
+     *
+     * @param dto DTO de creación con el nombre, descripción y código de acceso.
+     * @param creatorId Identidad validada del creador obtenida del JWT.
+     * @param token Token de seguridad.
+     * @return La comunidad mapeada en formato DTO.
+     */
     @Transactional
     public CommunityResponseDTO createCommunity(CommunityCreateDTO dto, Long creatorId, String token) {
         if (communityRepository.existsByName(dto.getName())) {
@@ -43,6 +58,15 @@ public class CommunityService {
         return construirResponseDTO(saved, creatorDto);
     }
 
+    /**
+     * Permite a un nuevo usuario integrarse a una comunidad validando sus credenciales de ingreso.
+     *
+     * @param communityId Identificador del foro.
+     * @param joinDto Estructura con el código de acceso a validar.
+     * @param userId Identificador del nuevo postulante
+     * @param token Token de seguridad
+     * @return Comunidad actualizada con el nuevo conteo de miembros.
+     */
     @Transactional
     public CommunityResponseDTO joinCommunity(Long communityId, CommunityJoinDTO joinDto, Long userId, String token) {
         CommunityModel community = communityRepository.findById(communityId)
@@ -65,6 +89,13 @@ public class CommunityService {
 
         return construirResponseDTO(updated, creatorDto);
     }
+
+    /**
+     * Devuelve el catálogo completo de comunidades activas.
+     *
+     * @param token Token de seguridad para consultar usuarios.
+     * @return Lista compuesta de comunidades.
+     */
     @Transactional(readOnly = true)
     public List<CommunityResponseDTO> getAllCommunities(String token) {
         List<CommunityModel> communities = communityRepository.findAll();
@@ -80,6 +111,14 @@ public class CommunityService {
                 .toList();
     }
 
+    /**
+     * Obtiene la información pública del creador de la comunidad desde ms-User.
+     * Garantiza que la consulta del catálogo de comunidades no falle si el servicio de usuarios cae.
+     *
+     * @param userId Identificador del usuario creador.
+     * @param token Token de autorización.
+     * @return UserDTO correspondiente.
+     */
     private UserDTO obtenerUsuario(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);
@@ -89,6 +128,14 @@ public class CommunityService {
         }
     }
 
+    /**
+     * Transforma la entidad interna en un DTO para exponer en la API,
+     * acoplando los datos completos de su creador.
+     *
+     * @param model Entidad CommunityModel.
+     * @param creator DTO del creador de la comunidad.
+     * @return CommunityResponseDTO estructurado.
+     */
     private CommunityResponseDTO construirResponseDTO(CommunityModel model, UserDTO creator) {
         return CommunityResponseDTO.builder()
                 .id(model.getId())

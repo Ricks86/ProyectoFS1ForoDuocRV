@@ -20,6 +20,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Servicio central para la gestión de las interacciones.
+ * <p>
+ * Se encarga de la persistencia de los likes/dislikes, la comunicación interservicios
+ * para disparar notificaciones automáticamente ante un like, y la integración síncrona
+ * con el microservicio ms-User para componer la información del votante mediante
+ * el patrón API Composition.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,6 +39,15 @@ public class InteractionService {
     private final NotificationClient notificationClient;
     private final CommentClient commentClient;
 
+    /**
+     * Alterna (Agrega, actualiza o elimina) un voto en una entidad específica (POST/COMMENT).
+     * Si la interacción es un UPVOTE nuevo, envía una notificación.
+     *
+     * @param request Datos del voto enviado.
+     * @param userId ID del votante verificado.
+     * @param token Token de autorización para clientes Feign.
+     * @return InteractionResponseDTO reflejando el nuevo estado del voto.
+     */
     @Transactional
     public InteractionResponseDTO toggleVote(InteractionRequestDTO request, Long userId, String token) {
 
@@ -76,6 +93,14 @@ public class InteractionService {
         }
     }
 
+    /**
+     * Obtiene la lista completa de interacciones relacionadas con una entidad.
+     *
+     * @param entityType Tipo de entidad ("POST" o "COMMENT").
+     * @param entityId Identificador de la entidad.
+     * @param token Token de autorización.
+     * @return Lista de votos con sus usuarios compuestos.
+     */
     @Transactional(readOnly = true)
     public List<InteractionResponseDTO> getVotesForEntity(String entityType, Long entityId, String token) {
 
@@ -97,6 +122,15 @@ public class InteractionService {
     }
 
 
+    /**
+     * Lógica asíncrona simulada para emitir una notificación al creador original del contenido
+     * cuando este recibe un voto positivo (UPVOTE).
+     *
+     * @param entityType Tipo de entidad (POST o COMMENT).
+     * @param entityId ID del contenido votado.
+     * @param userIdLogueado ID del usuario que realizó la acción.
+     * @param token Token JWT para propagar la autorización a los clientes Feign.
+     */
     private void dispararNotificacion(String entityType, Long entityId, Long userIdLogueado, String token) {
         try {
             Long authorId = null;
@@ -131,6 +165,15 @@ public class InteractionService {
         }
     }
 
+    /**
+     * Obtiene los datos del votante utilizando comunicación entre microservicios.
+     *Posee un mecanismo de contención para evitar fallos en cascada si ms-User no responde.
+     *      *
+     *
+     * @param userId ID del votante.
+     * @param token Token de seguridad.
+     * @return UserDTO con la información recuperada.
+     */
     private UserDTO obtenerUsuario(Long userId, String token) {
         try {
             return userClient.obtenerUsuarioPorId(userId, token);

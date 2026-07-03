@@ -18,6 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador encargado del perfil público de los usuarios.
+ * Maneja la inicialización de la cuenta tras el registro y permite
+ * editar la información básica como biografía o avatar.
+ *
+ * NOTA: Detalles de rutas y códigos HTTP documentados vía Swagger.
+ */
 
 @RestController
 @RequestMapping("/api/users")

@@ -17,6 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador que expone la API para el sistema de moderación.
+ * Permite a los usuarios denunciar contenido (posts, comentarios) y a los
+ * moderadores revisar y dar por resueltos los tickets.
+ *
+ * NOTA: Los detalles exactos de los payloads y respuestas están en Swagger.
+ */
+
 @RestController
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor
