@@ -18,6 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Servicio encargado de gestionar la lógica al crear usuarios y cuando estos inician sesión
+ * Administra el registro de nuevas credenciales, la validación de accesos
+ * y la emisión de tokens de seguridad JWT
+ */
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +34,20 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserClient userClient;
+
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * <p>
+     * Valida de forma estricta que el nombre de usuario y el correo electrónico no existan previamente
+     * tras la validación, encripta la contraseña utilizando BCrypt y persiste las credenciales
+     * finalmente, ejecuta una llamada síncrona al microservicio ms-User para inicializar el perfil público
+     * si ms-User no responde, la excepción es capturada localmente para garantizar que el registro
+     * no haga un rollback y las credenciales se guarden con éxito.
+     *
+     * @param userAuth Objeto DTO que contiene el username, email y la contraseña cruda.
+     * @return RegisterResponseDTO con el identificador único generado y un mensaje de confirmación.
+     * @throws RuntimeException Si el nombre de usuario o el correo electrónico ya se encuentran en uso.
+     */
 
     @Transactional
     public RegisterResponseDTO register(RegisterRequestDTO userAuth) {
@@ -67,6 +88,17 @@ public class AuthService {
         );
     }
 
+    /**
+     * Autentica a un usuario y genera su token de acceso.
+     * <p>
+     * Busca al usuario por su identificador en el repositorio y compara la contraseña
+     * proporcionada en la petición con el hash BCrypt almacenado
+     * si las credenciales coinciden, emite un token JWT firmado criptográficamente.
+     *
+     * @param request Objeto DTO que encapsula el nombre de usuario y la contraseña a validar.
+     * @return TokenResponseDTO con el token JWT generado, el username y su ID de autorización.
+     * @throws RuntimeException Si el usuario no existe en la base de datos o si la contraseña es incorrecta.
+     */
     public TokenResponseDTO login(LoginRequestDTO request){
 
         UserAuth user = userAuthRepository.findByNombreUser(request.getNombreUser())

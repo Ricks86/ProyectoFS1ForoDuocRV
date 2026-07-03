@@ -19,6 +19,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para Ms-Messagin.
+ * <p>
+ * Gestiona el tráfico HTTP para la comunicación directa y bidireccional entre usuarios.
+ * Su responsabilidad arquitectónica principal es actuar como barrera de seguridad: extrae
+ * y valida la identidad del emisor o consultante directamente desde el token JWT,
+ * evitando la suplantación de identidad antes de delegar la ejecución
+ * a la capa de Servicio. Además, orquesta el registro de los envíos exitosos en ms-Audit.
+ * <p>
+ * NOTA: La especificación técnica de los endpoints, estructuras JSON (DTOs)
+ *  * y mapas de códigos de estado HTTP se encuentra expuesta exclusivamente a través de Swagger UI.
+ */
 @RestController
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor

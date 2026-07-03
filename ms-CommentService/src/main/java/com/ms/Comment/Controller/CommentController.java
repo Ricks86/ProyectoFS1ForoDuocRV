@@ -18,6 +18,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST Para MS Comment
+ * <p>
+ * Gestiona el tráfico HTTP relacionado con las respuestas y debates dentro de los posts.
+ * Su responsabilidad consiste en interceptar las peticiones, extraer y validar
+ * la identidad del usuario a través del token JWT, y delegar el procesamiento y resiliencia
+ * a la capa de Servicio. Adicionalmente, orquesta el registro de eventos en ms-Audit.
+ * <p>
+ * NOTA: La especificación técnica de los endpoints, estructuras JSON (DTOs)
+ * y mapas de códigos de estado HTTP se encuentra expuesta exclusivamente a través de Swagger UI.
+ */
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor

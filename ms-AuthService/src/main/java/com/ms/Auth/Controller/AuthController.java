@@ -16,6 +16,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador REST para el MS de Auth.
+ * <p>
+ * Orquesta las peticiones públicas de inicio de sesión y registro de nuevas cuentas,
+ * además, intercepta las respuestas exitosas para disparar eventos de trazabilidad en el ms-Audit.
+ * <p>
+ * NOTA: La especificación técnica de los endpoints, estructuras JSON (DTOs)
+ * y mapas de códigos de estado HTTP se encuentra expuesta exclusivamente a través de Swagger UI.
+ */
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -71,7 +80,4 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-
-
 }
